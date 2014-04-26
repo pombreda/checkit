@@ -60,6 +60,19 @@ public class TestingServiceImpl implements TestingService {
     }
 
     @Override
+    public void updateTesting(Test test) {
+        //update test only at agent side
+        List<Testing> testingList = testingDAO.getTestingByTestId(test.getTestId());
+        Testing testingObject = new Testing();
+        testingObject.setTestId(test.getTestId());
+        testingObject.setUserId(test.getUserId());
+        for (Testing testing : testingList) {
+            testingObject.setAgentId(testing.getAgentId());
+            networkService.postUpdatingToAgent(testing);
+        }
+    }
+
+    @Override
     public List<Testing> getTestingByUserId(int userId) {
         return testingDAO.getTestingByUserId(userId);
     }

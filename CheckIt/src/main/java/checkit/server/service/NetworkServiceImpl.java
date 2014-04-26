@@ -34,9 +34,6 @@ public class NetworkServiceImpl implements NetworkService {
     @Autowired
     private TestService testService;
 
-    @Autowired
-    private TestingService testingService;
-
     @Scheduled(fixedDelay = 60000)
     public void sendAndEmptyQueue() {
         List<AgentQueue> queue = agentQueueService.getAgentQueue();

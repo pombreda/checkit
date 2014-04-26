@@ -161,10 +161,13 @@ public class DashboardTestsController {
             test.setData(dataJSON);
             testService.updateTest(test);
         }
-        //run or stop testing
-        if (test.isEnabled() && !testingService.isAlreadyTested(test.getTestId())) {
-            //pokud existuje, poslat zadost na aktualizaci
-            testingService.createTesting(test);
+        //run, edit or stop testing
+        if (test.isEnabled()) {
+            if (testingService.isAlreadyTested(test.getTestId())) {
+                testingService.updateTesting(test);
+            } else {
+                testingService.createTesting(test);
+            }
         } else if (!test.isEnabled()) {
             testingService.deleteTesting(test);
         }

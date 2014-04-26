@@ -17,6 +17,7 @@ import java.util.List;
 public interface TestingService {
     public void createTesting(Testing testing);
     public void createTesting(Test test);
+    public void updateTesting(Test test);
     public List<Testing> getTestingByUserId(int userId);
     public List<Testing> getTestingByAgentId(int agentId);
     public List<Testing> getTestingByTestId(int testId);
