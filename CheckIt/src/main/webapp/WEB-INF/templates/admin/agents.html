@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html layout:decorator="/layout/admin">
+    <body>
+        <section class="agents" layout:fragment="content">
+            <div class="content">
+                <h1>Agents</h1>
+                <table th:unless="${#lists.isEmpty(agents)}">
+                    <tr th:attr="class=${agent.enabled == false ? 'disabled' : ''}" th:each="agent: ${agents}">
+                        <td>#<span th:text="${agent.agentId}" th:remove="tag"></span> - <span th:text="${agent.location}" th:remove="tag"></span></td>
+                        <td th:text="${agent.ip}"></td>
+                        <td th:text="${agent.enabled} ? enabled : disabled"></td>
+                        <td><a th:href="@{/admin/agents/remove(id=${agent.agentId})}" onclick="return confirm('Do you really want to delete this agent and permanently lose all the tests connected with it?');">remove</a></td>
+                        <td><a th:href="@{/admin/agents/edit(id=${agent.agentId})}">edit</a></td>
+                    </tr>
+                </table>
+                <p th:if="${#lists.isEmpty(agents)}">No agents</p>
+                <p><a th:href="@{/admin/agents/add}" class="add">add new agent</a></p>
+            </div>
+        </section>
+    </body>
+</html>

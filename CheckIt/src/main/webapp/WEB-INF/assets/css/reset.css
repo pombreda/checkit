@@ -1,0 +1,66 @@
+/* Reset */
+* { font-size: inherit; font-weight: inherit; font-style: inherit; line-height: inherit; font-size: 100%; margin: 0; padding: 0; border: 0; background-repeat: no-repeat; background-position: top left; border: none; font-family: inherit; vertical-align: baseline; }
+
+ol, ul { list-style: none; }
+
+table { border-collapse: separate; border-spacing: 0; }
+
+caption, th, td { text-align: left; font-weight: normal; }
+
+table, td, th { vertical-align: middle; }
+
+blockquote:before, blockquote:after, q:before, q:after { content: ""; }
+
+blockquote, q { quotes: "" ""; }
+
+a img { border: none; }
+
+img { display: block; }
+
+/* Service & structures*/
+.invis { position: absolute; left: -10000px; }
+
+.cleaner { clear: both; }
+
+span.cleaner { display: block; clear: both; }
+
+.container { height: auto; }
+
+.column { float: left; }
+
+.hide { display: none; }
+
+/* Text elements */
+p img { float: left; padding: 0; }
+
+p img.right { float: right; }
+
+blockquote { margin: 1.5em; font-style: italic; }
+
+strong { font-weight: bold; }
+
+em, dfn { font-style: italic; }
+
+dfn { font-weight: bold; }
+
+sup, sub { line-height: 0; }
+
+abbr, acronym { border-bottom: 1px dotted #666; }
+
+address { margin: 0 0 1.5em; font-style: italic; }
+
+pre, code { white-space: pre; }
+
+pre, code, tt { font-family: "Courier New", Courier, monospace; }
+
+h1, h2, h3, h4, h5, h6 { font-weight: normal; }
+
+.clearfix:after { content: "."; display: block; clear: both; visibility: hidden; line-height: 0; height: 0; }
+
+.clearfix { display: inline-block; }
+
+html[xmlns] .clearfix { display: block; }
+
+* html .clearfix { height: 1%; }
+
+/*# sourceMappingURL=reset.css.map */

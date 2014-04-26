@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html layout:decorator="/layout/dashboard">
+    <body>
+        <section layout:fragment="content">
+            <div class="content">
+                <h1>Agents / add agent</h1>
+                <form method="post" th:object="${agent}">
+                    <table>
+                        <tr>
+                            <td>IP or address:</td>
+                            <td><input type="text" th:field="*{ip}" /></td>
+                        </tr>
+                        <tr>
+                            <td>Location:</td>
+                            <td><input type="text" th:field="*{location}" /></td>
+                        </tr>
+                    </table>
+                    <input type="submit" value="Save" />
+                    <p>After saving choose to edit this agent to enable it.</p>
+                </form>
+            </div>
+        </section>
+    </body>
+</html>

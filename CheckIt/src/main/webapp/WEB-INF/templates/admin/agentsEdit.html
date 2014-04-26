@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html layout:decorator="/layout/dashboard">
+    <body>
+        <section class="contacts" layout:fragment="content">
+            <div class="content">
+                <h1>Agents / edit agent</h1>
+                <form method="post" th:object="${agent}">
+                    <table>
+                        <tr>
+                            <td>IP or address:</td>
+                            <td>
+                                <input type="text" th:field="*{ip}" />
+                                <input type="hidden" th:field="*{agentId}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Location:</td>
+                            <td><input type="text" th:field="*{location}" /></td>
+                        </tr>
+                        <tr>
+                            <td>Enabled:</td>
+                            <td><input type="checkbox" th:field="*{enabled}" /></td>
+                        </tr>
+                    </table>
+                    <input type="submit" value="Save" />
+                </form>
+            </div>
+        </section>
+    </body>
+</html>

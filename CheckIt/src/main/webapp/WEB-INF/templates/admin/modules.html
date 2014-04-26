@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html layout:decorator="/layout/admin">
+    <body>
+        <section class="plugins" layout:fragment="content">
+            <div class="content">
+                <h1>Modules</h1>
+                <h2>Report modules</h2>
+                <table>
+                    <tr th:attr="class=${report.enabled == false ? 'disabled' : ''}" th:each="report : ${reports}">
+                        <td th:text="${report.title}"></td>
+                        <td th:text="${report.description}"></td>
+                        <td th:text="${report.filename}"></td>
+                        <td th:text="${report.enabled} ? enabled : disabled"></td>
+                        <td><a th:href="@{/admin/modules/edit(id=${report.filename},type=report)}">edit</a></td>
+                    </tr>
+                </table>
+                <h2>Check modules</h2>
+                <table>
+                    <tr th:attr="class=${check.enabled == false ? 'disabled' : ''}" th:each="check : ${checks}">
+                        <td th:text="${check.title}"></td>
+                        <td th:text="${check.description}"></td>
+                        <td th:text="${check.filename}"></td>
+                        <td th:text="${check.enabled} ? enabled : disabled"></td>
+                        <td><a th:href="@{/admin/modules/edit(id=${check.filename},type=check)}">edit</a></td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+    </body>
+</html>

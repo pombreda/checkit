@@ -1,0 +1,52 @@
+@import 'reset.scss';
+@import 'global.scss';
+
+header {
+    nav {
+        .user {
+            float: right;
+            margin-top: 1em;
+        }
+    }
+}
+.user {
+    h2 {
+        margin-bottom: 0;
+    }
+    p {
+        margin-bottom: 1em;
+    }
+    input[type="submit"] {
+        margin-top: 2em;
+    }
+}
+
+.contacts, .tests {
+    table {
+        width: 100%;
+    }
+    .add {
+        display: inline-block;
+        margin-top: 2em;
+        padding-left: 1.5em;
+        position: relative;
+        
+        &:before {
+            content: "+";
+            position: absolute;
+            display: block;
+            width: 1em;
+            height: 1em;
+            text-align: center;
+            top: 0;
+            left: 0;
+            background-color: $green;
+            color: white;
+            border-radius: 50%;
+        }
+    }
+    .description {
+        color: rgb(180, 180, 180);
+        font-size: .8em;
+    }
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html layout:decorator="/layout/dashboard">
+    <body>
+        <section class="contacts" layout:fragment="content">
+            <div class="content">
+                <h1>Contacts / edit contact</h1>
+                <form method="post" th:object="${contact}">
+                    <table>
+                        <tr>
+                            <td>Title:</td>
+                            <td>
+                                <input type="text" th:field="*{title}" />
+                                <input type="hidden" th:field="*{contactId}" />
+                                <input type="hidden" th:field="*{userId}" />
+                            </td>
+                        </tr>
+                    </table>
+                    <input type="submit" value="Save" />
+                    <h2>Contact details</h2>
+                    <table th:unless="${#lists.isEmpty(contact.contactDetail)}">
+                        <tr th:each="contactDetail: ${contact.contactDetail}">
+                            <td><a th:href="@{/dashboard/contactDetail/edit(id=${contactDetail.contactDetailId})}" th:text="${contactDetail.title}"></a></td>
+                            <td><a th:href="@{/dashboard/contactDetail/remove(id=${contactDetail.contactDetailId})}" onclick="return confirm('Do you really want to delete this contact detail and permanently lose everything connected with it?');">remove</a></td>
+                            <td><a th:href="@{/dashboard/contactDetail/edit(id=${contactDetail.contactDetailId})}">edit</a></td>
+                        </tr>
+                    </table>
+                    <p th:if="${#lists.isEmpty(contact.contactDetail)}">No contact details</p>
+                    <p><a th:href="@{/dashboard/contactDetail/add(id=${contact.contactId})}" class="add">add new contact detail</a></p>
+                    <h2>Tests connected to the contact</h2>
+                    <table th:unless="${#lists.isEmpty(tests)}">
+                        <tr th:each="test: ${tests}">
+                            <td><a th:href="@{/dashboard/tests/edit(id=${test.testId})}" th:text="${test.title}"></a></td>
+                            <td><a th:href="@{/dashboard/contacts/connect(contactId=${contact.contactId}, testId=${test.testId}, remove=true)}" onclick="return confirm('Do you really want to delete this connection? Be calmy, test will not be deleted.');">remove</a></td>
+                        </tr>
+                    </table>
+                    <p th:if="${#lists.isEmpty(tests)}">No tests connected to the contact</p>
+                    <p><a th:href="@{/dashboard/contacts/connect(id=${contact.contactId})}" class="add">connect test to the contact</a></p>
+                </form>
+            </div>
+        </section>
+    </body>
+</html>

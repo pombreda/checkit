@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html layout:decorator="/layout/dashboard">
+    <body>
+        <section class="contacts" layout:fragment="content">
+            <div class="content">
+                <h1>Contact detail / edit contact detail</h1>
+                <form method="post">
+                    <table th:object="${contactDetail}">
+                        <tr>
+                            <td>Title:</td>
+                            <td>
+                                <input type="text" th:field="*{title}" />
+                                <input type="hidden" th:field="*{contactDetailId}" />
+                                <input type="hidden" th:field="*{contactId}" />
+                                <input type="hidden" th:field="*{userId}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Notify when down:</td>
+                            <td>
+                                <input type="checkbox" th:field="*{down}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Notify when up again:</td>
+                            <td>
+                                <input type="checkbox" th:field="*{up}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Send regular reports:</td>
+                            <td>
+                                <input type="checkbox" th:field="*{regular}" />
+                            </td>
+                        </tr>
+                    </table>
+                    <table>
+                        <tr th:object="${formStruct.arrData[__${inputStat.index}__]}" th:each="input,inputStat: ${inputs}">
+                            <td>
+                                <span th:text="${input[2]}"></span><br />
+                                <span class="description" th:text="${input[3]}"></span>
+                            </td>
+                            <td>
+                                <input th:if="${input[1]} == checkbox" type="checkbox" value="true" th:field="*{value}" />
+                                <input th:unless="${input[1]} == checkbox" th:type="${input[1]}" th:field="*{value}" />
+                                <input type="hidden" th:field="*{name}" />
+                                <input type="hidden" th:field="*{type}" />
+                            </td>
+                        </tr>
+                    </table>
+                    <input type="submit" value="Save" />
+                    <p th:text="${json}"></p>
+                </form>
+            </div>
+        </section>
+    </body>
+</html>

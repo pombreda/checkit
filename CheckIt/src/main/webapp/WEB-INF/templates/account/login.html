@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html layout:decorator="/layout/dashboard">
+    <body>
+        <section layout:fragment="content">
+            <div class="content">
+                <h1>Sign in</h1>
+                <div th:if="${error}" class="errorblock">
+                    Your login attempt was not successful. Probably bad username or password. If you are sure you enter right username and password, make sure your account has been activated.
+                </div>
+                <form name="f" th:action="@{j_spring_security_check}" method="POST">
+                    <table>
+                        <tr>
+                            <td>User:</td>
+                            <td><input type="text" name="j_username" value="" /></td>
+                        </tr>
+                        <tr>
+                            <td>Password:</td>
+                            <td><input type="password" name="j_password" /></td>
+                        </tr>
+                        <tr>
+                            <td> </td>
+                            <td><input name="submit" type="submit" value="submit" /></td>
+                        </tr>
+                    </table>
+                </form>
+                <p>Still do not have an account? <a th:href="@{/signup}">Sign up</a>, it is free.</p>
+            </div>
+        </section>
+    </body>
+</html>

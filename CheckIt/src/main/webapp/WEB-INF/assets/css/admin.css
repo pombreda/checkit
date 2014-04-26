@@ -1,0 +1,121 @@
+/* Reset */
+* { font-size: inherit; font-weight: inherit; font-style: inherit; line-height: inherit; font-size: 100%; margin: 0; padding: 0; border: 0; background-repeat: no-repeat; background-position: top left; border: none; font-family: inherit; vertical-align: baseline; }
+
+ol, ul { list-style: none; }
+
+table { border-collapse: separate; border-spacing: 0; }
+
+caption, th, td { text-align: left; font-weight: normal; }
+
+table, td, th { vertical-align: middle; }
+
+blockquote:before, blockquote:after, q:before, q:after { content: ""; }
+
+blockquote, q { quotes: "" ""; }
+
+a img { border: none; }
+
+img { display: block; }
+
+/* Service & structures*/
+.invis { position: absolute; left: -10000px; }
+
+.cleaner { clear: both; }
+
+span.cleaner { display: block; clear: both; }
+
+.container { height: auto; }
+
+.column { float: left; }
+
+.hide { display: none; }
+
+/* Text elements */
+p img { float: left; padding: 0; }
+
+p img.right { float: right; }
+
+blockquote { margin: 1.5em; font-style: italic; }
+
+strong { font-weight: bold; }
+
+em, dfn { font-style: italic; }
+
+dfn { font-weight: bold; }
+
+sup, sub { line-height: 0; }
+
+abbr, acronym { border-bottom: 1px dotted #666; }
+
+address { margin: 0 0 1.5em; font-style: italic; }
+
+pre, code { white-space: pre; }
+
+pre, code, tt { font-family: "Courier New", Courier, monospace; }
+
+h1, h2, h3, h4, h5, h6 { font-weight: normal; }
+
+.clearfix:after { content: "."; display: block; clear: both; visibility: hidden; line-height: 0; height: 0; }
+
+.clearfix { display: inline-block; }
+
+html[xmlns] .clearfix { display: block; }
+
+* html .clearfix { height: 1%; }
+
+html { overflow-y: scroll; }
+
+body { font-size: 16px; font-family: Helvetica, Arial, sans-serif; color: #191a1c; }
+
+h1 { font-size: 1.6em; margin-bottom: 1em; }
+
+h2 { font-size: 1.3em; margin: 2em 0 1em; }
+
+p + p { margin-top: 1em; }
+
+a { text-decoration: none; font-weight: bold; color: #4cbdff; }
+a:hover { text-decoration: underline; }
+
+.content { width: 978px; margin: auto; }
+
+header { background-color: #96c838; color: white; padding: 2em 0; margin-bottom: 2em; }
+header .clearfix { width: 100%; }
+header a { color: white; padding: .4em 1em .5em; border-radius: .5em; -webkit-transition: all 150ms ease; -moz-transition: all 150ms ease; -ms-transition: all 150ms ease; -o-transition: all 150ms ease; transition: all 150ms ease; }
+header a.sign { background-color: #405159; }
+header a:hover { text-decoration: none; background-color: #9fa8ac; color: #405159; }
+header .logo { font-size: 1.8em; float: left; }
+header .logo a { padding: 0; }
+header .logo a:hover { color: white; background-color: #96c838; }
+header .logo a span { color: #191a1c; }
+header .logo a span:hover { color: #191a1c; }
+header nav { float: right; }
+header nav ul { margin-left: 5em; }
+header nav ul li { display: inline-block; margin: .2em 1em; }
+
+input { border: 1px #191a1c solid; padding: .1em; }
+input[type="text"], input[type="password"] { width: 20em; }
+input[type="submit"] { padding: .2em .5em; }
+
+section .errorblock { border: 1px red solid; color: red; margin: 1em 0; padding: 1em; }
+section .okblock { border: 1px green solid; color: green; margin: 1em 0; padding: 1em; }
+section ul li { margin-left: 1.5em; list-style-type: disc; }
+
+table td { padding: .2em 1em .2em 0; }
+
+footer { background-color: #96c838; color: white; margin-top: 2em; padding: 2em 0; }
+footer a { color: white; }
+
+header nav .user { float: right; margin-top: 1em; }
+header .subnav ul li { float: left; margin-right: 2em; }
+
+.users table { width: 100%; }
+.users table th { background-color: #9fa8ac; }
+
+.disabled { color: #b4b4b4; }
+
+.agents table { width: 100%; }
+.agents .add { display: inline-block; margin-top: 2em; padding-left: 1.5em; position: relative; }
+.agents .add:before { content: "+"; position: absolute; display: block; width: 1em; height: 1em; text-align: center; top: 0; left: 0; background-color: #96c838; color: white; border-radius: 50%; }
+.agents .description { color: #b4b4b4; font-size: .8em; }
+
+/*# sourceMappingURL=admin.css.map */

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html layout:decorator="/layout/dashboard">
+    <body>
+        <section class="tests" layout:fragment="content">
+            <div class="content">
+                <h1>Tests / edit test</h1>
+                <form method="post" th:object="${test}">
+                    <table>
+                        <tr>
+                            <td>Title:</td>
+                            <td>
+                                <input type="text" th:field="*{title}" />
+                                <input type="hidden" th:field="*{testId}" />
+                                <input type="hidden" th:field="*{userId}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Interval of checks:</td>
+                            <td>
+                                <select type="number" th:field="*{interval}">
+                                    <option value="15">15s</option>
+                                    <option value="30">30s</option>
+                                    <option value="60" selected="selected">1m</option>
+                                    <option value="300">5m</option>
+                                    <option value="900">15m</option>
+                                    <option value="1800">30m</option>
+                                    <option value="3600">1h</option>
+                                </select>
+                            </td>
+                        </tr>                    
+                        <tr>
+                            <td>Run testing:</td>
+                            <td>
+                                <input type="checkbox" th:field="*{enabled}" />
+                            </td>
+                        </tr>                    
+                    </table>
+                    <table>
+                        <tr th:object="${formStruct.arrData[__${inputStat.index}__]}" th:each="input,inputStat: ${inputs}">
+                            <td>
+                                <span th:text="${input[2]}"></span><br />
+                                <span class="description" th:text="${input[3]}"></span>
+                            </td>
+                            <td>
+                                <input th:if="${input[1]} == checkbox" type="checkbox" value="true" th:field="*{value}" />
+                                <input th:unless="${input[1]} == checkbox" th:type="${input[1]}" th:field="*{value}" />
+                                <input type="hidden" th:field="*{name}" />
+                                <input type="hidden" th:field="*{type}" />
+                            </td>
+                        </tr>
+                    </table>
+                    <input type="submit" value="Save" />
+                    <h2>Contacts connected to the test</h2>
+                    <table th:unless="${#lists.isEmpty(contacts)}">
+                        <tr th:each="contact: ${contacts}">
+                            <td><a th:href="@{/dashboard/contacts/edit(id=${contact.contactId})}" th:text="${contact.title}"></a></td>
+                            <td><a th:href="@{/dashboard/tests/connect(contactId=${contact.contactId}, testId=${test.testId}, remove=true)}" onclick="return confirm('Do you really want to delete this connection? Be calmy, contact will not be deleted.');">remove</a></td>
+                        </tr>
+                    </table>
+                    <p th:if="${#lists.isEmpty(contacts)}">No contacts connected to the test</p>
+                    <p><a th:href="@{/dashboard/tests/connect(id=${test.testId})}" class="add">connect contact to the test</a></p>
+
+                </form>
+            </div>
+        </section>
+    </body>
+</html>

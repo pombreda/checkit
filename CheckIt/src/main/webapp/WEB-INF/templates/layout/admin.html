@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <link th:href="@{/assets/css/admin.css}" type="text/css" rel="stylesheet" media="all" />
+        <script th:src="@{/assets/js/vendor/html5shiv.js}"></script>
+        <script th:src="@{/assets/js/vendor/jquery.min.js}"></script>
+        <title>myCheckIT!</title>
+    </head>
+    <body>
+        <header>
+            <div class="content">
+                <div class="clearfix">
+                    <div class="logo"><a th:href="@{/dashboard/}">myCheck<span>IT</span>!</a></div>
+                    <nav th:if="${#authorization.expression('isAuthenticated()')}">
+                        <ul>
+                            <li><a th:href="@{/dashboard/}">Dashboard</a></li>
+                            <li><a th:href="@{/dashboard/tests}">Tests</a></li>
+                            <li><a th:href="@{/dashboard/reports}">Reports</a></li>
+                            <li><a th:href="@{/dashboard/contacts}">Contacts</a></li>
+                        </ul>
+                        <ul class="user">
+                            <li><a th:href="@{/dashboard/account}" sec:authentication="name"></a></li>
+                            <li><a th:href="@{/j_spring_security_logout}" class="sign">Logout</a></li>
+                            <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin/}" class="sign">Admin</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="subnav">
+                    <ul>
+                        <li><a th:href="@{/admin/users}">Users</a></li>
+                        <li><a th:href="@{/admin/agents}">Agents</a></li>
+                        <li><a th:href="@{/admin/modules}">Modules</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+        <section layout:fragment="content">
+
+        </section>
+        <footer>
+            <div class="content">
+                <p>&copy;2014 CheckIT!</p>
+                <p>...</p>
+            </div>
+        </footer>
+    </body>
+</html>
