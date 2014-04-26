@@ -36,9 +36,9 @@ public class TestDAOImpl implements TestDAO {
     }
     
     @Override
-    public List<Test> getTestList(int userId) {
+    public List<Test> getTestList() {
         List testList = new ArrayList();
-        String sql = "SELECT * FROM tests WHERE user_id=" + userId;
+        String sql = "SELECT * FROM tests";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         testList = jdbcTemplate.query(sql, new TestRowMapper());

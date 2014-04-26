@@ -18,8 +18,8 @@ public class TestServiceImpl implements TestService {
     private TestDAO testDAO;
     
     @Override
-    public List<Test> getTestList(int userId) {
-        return testDAO.getTestList(userId);
+    public List<Test> getTestList() {
+        return testDAO.getTestList();
     }
 
     @Override

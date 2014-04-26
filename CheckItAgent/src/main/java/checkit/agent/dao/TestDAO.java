@@ -14,7 +14,7 @@ import java.util.List;
  * @author Dodo
  */
 public interface TestDAO {
-    public List<Test> getTestList(int userId);
+    public List<Test> getTestList();
     public void createTest(Test test);
     public void deleteTest(int testId);
     public void updateTest(Test test);
