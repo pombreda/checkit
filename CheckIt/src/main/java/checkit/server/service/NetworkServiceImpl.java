@@ -28,6 +28,9 @@ public class NetworkServiceImpl implements NetworkService {
     private AgentService agentService;
 
     @Autowired
+    private AgentQueueService agentQueueService;
+
+    @Autowired
     private TestService testService;
 
     @Scheduled(fixedDelay = 60000)

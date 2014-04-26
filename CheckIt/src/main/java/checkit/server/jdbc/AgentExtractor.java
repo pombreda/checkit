@@ -16,7 +16,7 @@ import org.springframework.jdbc.core.ResultSetExtractor;
  *
  * @author Dodo
  */
-public class AgentExtractor  implements ResultSetExtractor<Agent> {
+public class AgentExtractor implements ResultSetExtractor<Agent> {
     @Override
     public Agent extractData(ResultSet resultSet) throws SQLException, DataAccessException {
         Agent agent = new Agent();

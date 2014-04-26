@@ -7,6 +7,7 @@
 package checkit.server.jdbc;
 
 import checkit.server.domain.Agent;
+import checkit.server.domain.AgentQueue;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
@@ -15,10 +16,10 @@ import org.springframework.jdbc.core.RowMapper;
  *
  * @author Dodo
  */
-public class AgentRowMapper implements RowMapper<Agent> {
+public class AgentQueueRowMapper implements RowMapper<AgentQueue> {
     @Override
-    public Agent mapRow(ResultSet resultSet, int line) throws SQLException {
-        AgentExtractor agentExtractor = new AgentExtractor();
-        return agentExtractor.extractData(resultSet);
+    public AgentQueue mapRow(ResultSet resultSet, int line) throws SQLException {
+        AgentQueueExtractor agentQueueExtractor = new AgentQueueExtractor();
+        return agentQueueExtractor.extractData(resultSet);
     }
 }
