@@ -7,6 +7,7 @@
 package checkit.server.service;
 
 import checkit.server.domain.AgentQueue;
+import checkit.server.domain.Testing;
 import java.util.List;
 
 /**
@@ -16,5 +17,6 @@ import java.util.List;
 public interface AgentQueueService {
     public List<AgentQueue> getAgentQueue();
     public void add(AgentQueue agentQueue);
+    public void add(Testing test, String query);
     public void delete(int agentQueueId);
 }

@@ -18,7 +18,7 @@ public interface TestingDAO {
     public List<Testing> getTestingByUserId(int userId);
     public List<Testing> getTestingByAgentId(int agentId);
     public List<Testing> getTestingByTestId(int testId);
-    public List<Testing> getTestingByTestAndAgentId(int testId, int agentId);
+    public Testing getTestingByTestAndAgentId(int testId, int agentId);
     public List<Testing> getAllTesting();
     public void deleteTesting(Testing testing);
     public void updateAgentOfTesting(Testing testing, int agentId);

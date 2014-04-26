@@ -75,7 +75,7 @@ public class TestingServiceImpl implements TestingService {
     }
 
     @Override
-    public List<Testing> getTestingByTestAndAgentId(int testId, int agentId) {
+    public Testing getTestingByTestAndAgentId(int testId, int agentId) {
         return testingDAO.getTestingByTestAndAgentId(testId, agentId);
     }
 

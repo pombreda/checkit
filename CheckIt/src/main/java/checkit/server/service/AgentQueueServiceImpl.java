@@ -8,6 +8,7 @@ package checkit.server.service;
 
 import checkit.server.dao.AgentQueueDAO;
 import checkit.server.domain.AgentQueue;
+import checkit.server.domain.Testing;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,8 +29,17 @@ public class AgentQueueServiceImpl implements AgentQueueService {
     }
 
     @Override
+    public void add(Testing test, String query) {
+        AgentQueue agentQueue = new AgentQueue();
+        agentQueue.setAgentId(test.getAgentId());
+        agentQueue.setTestId(test.getTestId());
+        agentQueue.setQuery(query);
+        add(agentQueue);
+    }
+    
+    @Override
     public void delete(int agentQueueId) {
         queue.delete(agentQueueId);
     }
-    
+
 }

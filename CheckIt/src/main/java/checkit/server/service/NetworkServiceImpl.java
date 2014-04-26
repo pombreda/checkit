@@ -7,6 +7,7 @@
 package checkit.server.service;
 
 import checkit.server.domain.Agent;
+import checkit.server.domain.AgentQueue;
 import checkit.server.domain.Test;
 import checkit.server.domain.Testing;
 import java.io.IOException;
@@ -14,7 +15,7 @@ import java.io.ObjectOutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +34,21 @@ public class NetworkServiceImpl implements NetworkService {
     @Autowired
     private TestService testService;
 
+    @Autowired
+    private TestingService testingService;
+
     @Scheduled(fixedDelay = 60000)
     public void sendAndEmptyQueue() {
-        System.out.println("Spoustim vyprazdneni fronty v " + new Date());
-        
+        List<AgentQueue> queue = agentQueueService.getAgentQueue();
+        Testing testing = new Testing();
+        //TODO send and empty only if agent is reachable, it will be faster in case of long queue
+        for (AgentQueue item : queue) {
+            testing.setTestId(item.getTestId());
+            testing.setAgentId(item.getAgentId());
+            if (postRequestToAgent(testing, item.getQuery())) {
+                agentQueueService.delete(item.getAgentQueueId());
+            }
+        }
     }
     
     @Async
@@ -70,20 +82,22 @@ public class NetworkServiceImpl implements NetworkService {
     @Override
     public void postCreatingToAgent(Testing testing) {
         if (!postRequestToAgent(testing, "create")) {
-            System.out.println("Pridat do fronty");
+            agentQueueService.add(testing, "create");
         }
     }
 
     @Override
     public void postDeletingToAgent(Testing testing) {
         if (!postRequestToAgent(testing, "delete")) {
-            System.out.println("Pridat do fronty");
+            agentQueueService.add(testing, "delete");
         }
     }
 
     @Override
     public void postUpdatingToAgent(Testing testing) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (!postRequestToAgent(testing, "update")) {
+            agentQueueService.add(testing, "update");
+        }
     }
     
 }

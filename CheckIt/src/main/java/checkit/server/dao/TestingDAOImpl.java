@@ -66,13 +66,14 @@ public class TestingDAOImpl implements TestingDAO {
     }
 
     @Override
-    public List<Testing> getTestingByTestAndAgentId(int testId, int agentId) {
-        List testingList = new ArrayList();
+    public Testing getTestingByTestAndAgentId(int testId, int agentId) {
+        List<Testing> testingList = new ArrayList<Testing>();
         String sql = "SELECT * FROM testing WHERE test_id=" + testId + " AND agent_id=" + agentId;
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         testingList = jdbcTemplate.query(sql, new TestingRowMapper());
-        return testingList;    
+        if (testingList.isEmpty()) return null;
+        return testingList.get(0); 
     }
 
     @Override
