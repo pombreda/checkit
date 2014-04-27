@@ -102,3 +102,13 @@ CREATE TABLE agent_queue(
     test_id INTEGER NOT NULL,
     query VARCHAR(50) NOT NULL
 );
+
+CREATE TABLE results(
+    test_id INTEGER NOT NULL,
+    agent_id INTEGER NOT NULL,
+    time TIMESTAMP NOT NULL,
+    ok BOOLEAN NOT NULL,
+    data JSON,
+    FOREIGN KEY (test_id) REFERENCES tests(test_id) ON DELETE CASCADE,
+    PRIMARY KEY (test_id, agent_id, time)
+);
