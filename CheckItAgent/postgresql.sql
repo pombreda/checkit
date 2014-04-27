@@ -17,6 +17,7 @@ CREATE TABLE tests(
 CREATE TABLE results(
     test_id INTEGER NOT NULL,
     time TIMESTAMP NOT NULL,
+    ok BOOLEAN NOT NULL,
     data JSON,
     PRIMARY KEY (test_id, time)
 );

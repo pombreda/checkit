@@ -15,7 +15,8 @@ import java.util.Date;
  */
 public class Result implements Serializable {
     private int testId;
-    private Date time;
+    private String time;
+    private boolean ok;
     private String data;
     private int agentId;
 
@@ -27,12 +28,20 @@ public class Result implements Serializable {
         this.testId = testId;
     }
 
-    public Date getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(String time) {
         this.time = time;
+    }
+
+    public boolean isOk() {
+        return ok;
+    }
+
+    public void setOk(boolean ok) {
+        this.ok = ok;
     }
 
     public String getData() {

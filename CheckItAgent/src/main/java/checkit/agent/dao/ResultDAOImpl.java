@@ -9,7 +9,9 @@ package checkit.agent.dao;
 import checkit.agent.jdbc.ResultRowMapper;
 import checkit.server.domain.Result;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +26,11 @@ public class ResultDAOImpl implements ResultDAO {
     @Autowired
     private DataSource dataSource;
     
+    private static java.sql.Timestamp getCurrentTimestamp() {
+	Date today = new java.util.Date();
+	return new Timestamp(today.getTime());
+    }
+        
     private PGobject stringToJSON(String jsonString) {
         PGobject json = new PGobject();
         json.setType("json");
@@ -47,14 +54,15 @@ public class ResultDAOImpl implements ResultDAO {
 
     @Override
     public void createResult(Result result) {
-        String sql = "INSERT INTO results (test_id, time, data) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO results (test_id, time, ok, data) VALUES (?, ?, ?, ?)";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         jdbcTemplate.update(
             sql,
             new Object[] {
                 result.getTestId(),
-                result.getTime(),
+                getCurrentTimestamp(),
+                result.isOk(),
                 stringToJSON(result.getData())
             }
         );
@@ -62,7 +70,7 @@ public class ResultDAOImpl implements ResultDAO {
 
     @Override
     public void deleteResult(Result result) {
-        String sql = "DELETE FROM results WHERE test_id=" + result.getTestId() + " AND time=" + result.getTime();
+        String sql = "DELETE FROM results WHERE test_id=" + result.getTestId() + " AND time='" + result.getTime() + "'";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         jdbcTemplate.update(sql);
