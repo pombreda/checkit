@@ -23,7 +23,7 @@ public class ResultExtractor implements ResultSetExtractor<Result> {
         result.setTestId(resultSet.getInt(1));
         result.setAgentId(resultSet.getInt(2));
         result.setTime(resultSet.getString(3));
-        result.setOk(resultSet.getBoolean(4));
+        result.setStatus(resultSet.getString(4));
         result.setData(resultSet.getString(5));
         return result;
     }

@@ -23,8 +23,12 @@ public class ServerServiceImpl implements ServerService {
     }
 
     @Override
+    public Server getServerWithTheHighestPriority() {
+        return serverDAO.getServerWithTheHighestPriority();
+    }
+    @Override
     public Server getServerByIp(String ip) {
         return serverDAO.getServerByIp(ip);
     }
-    
+
 }

@@ -15,8 +15,12 @@ import java.util.List;
  */
 public interface ContactDetailService {
     public List<ContactDetail> getContactDetailList(int contactId, int userId);
+    public List<ContactDetail> getContactDetailListWhereDownIsActive(int contactId, int userId);
+    public List<ContactDetail> getContactDetailListWhereUpIsActive(int contactId, int userId);
     public void createContactDetail(ContactDetail contactDetail);
     public void deleteContactDetail(int contactDetailId);
     public void updateContactDetail(ContactDetail contactDetail);
     public ContactDetail getContactDetailById(int contactDetailId);
+    public List<ContactDetail> getContactDetailListByTestIdWhereUpIsActive(int testId);
+    public List<ContactDetail> getContactDetailListByTestIdWhereDownIsActive(int testId);
 }

@@ -65,6 +65,7 @@ CREATE TABLE tests(
     user_id INTEGER NOT NULL,
     plugin_filename VARCHAR(50) NOT NULL,
     interval INTEGER NOT NULL,
+    ok BOOLEAN NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (plugin_filename) REFERENCES plugins_check(filename) ON DELETE CASCADE
 );
@@ -79,9 +80,15 @@ CREATE TABLE reports(
     PRIMARY KEY (user_id, test_id, contact_id)
 );
 
+CREATE RULE "reports_on_duplicate_ignore" AS ON INSERT TO "reports"
+    WHERE EXISTS(SELECT 1 FROM reports
+        WHERE (test_id, test_id, contact_id)=(NEW.test_id, NEW.test_id, NEW.contact_id)
+    ) DO INSTEAD NOTHING;
+
 CREATE TABLE agents(
     agent_id SERIAL PRIMARY KEY,
     ip VARCHAR(50) NOT NULL,
+    post_address VARCHAR(50) NOT NULL,
     location VARCHAR(50) NOT NULL,
     enabled BOOLEAN
 );
@@ -107,7 +114,7 @@ CREATE TABLE results(
     test_id INTEGER NOT NULL,
     agent_id INTEGER NOT NULL,
     time TIMESTAMP NOT NULL,
-    ok BOOLEAN NOT NULL,
+    status VARCHAR(1) NOT NULL,
     data JSON,
     FOREIGN KEY (test_id) REFERENCES tests(test_id) ON DELETE CASCADE,
     PRIMARY KEY (test_id, agent_id, time)

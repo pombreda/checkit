@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -70,6 +71,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
+    @Async
     public void sendActivationLink(User user, String hash) {
         String message = 
             "Dear " + user.getUsername() + ",<br /><br />" +
@@ -84,6 +86,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
+    @Async
     public void sendUpdateLink(User user, String hash) {
         String message = 
             "Dear " + user.getUsername() + ",<br /><br />" +

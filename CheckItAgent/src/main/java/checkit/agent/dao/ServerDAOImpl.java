@@ -29,6 +29,17 @@ public class ServerDAOImpl implements ServerDAO {
         serverList = jdbcTemplate.query(sql, new ServerRowMapper());
         return serverList;        
     }
+    
+    @Override
+    public Server getServerWithTheHighestPriority() {
+        List<Server> server = new ArrayList<Server>();
+        String sql = "SELECT * FROM servers WHERE priority=(SELECT MAX(priority) FROM servers)";
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        server = jdbcTemplate.query(sql, new ServerRowMapper());
+        if (server.isEmpty()) return null;
+        return server.get(0);
+    }
 
     @Override
     public Server getServerByIp(String ip) {

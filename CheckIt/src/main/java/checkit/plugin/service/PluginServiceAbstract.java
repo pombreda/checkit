@@ -118,7 +118,29 @@ public abstract class PluginServiceAbstract {
         return json.toJSONString();
     }
 
-    //Services
+    protected Object getCallParams(Object instance, String data) {
+        //returns values for plugin running
+        Object paramsName = call(instance, "getCallRequiredParamsName", (Object[]) null);
+        Object params = getValuesFromJSONString(data, paramsName);
+        return params;
+    }
+    
+    protected Object getValuesFromJSONString(String json, Object params) {
+        //gives values of JSON names in params. E.g. name: Dodo, params is name, returns Dodo. - uses for give a data to run plugin
+        List values = new ArrayList();
+        try {
+            JSONParser parser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) parser.parse(json);
+            for (Object param: (Object[]) params) {
+                values.add(jsonObject.get(param));
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(PluginServiceAbstract.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return values.toArray();
+    }
+
+//Services
     public abstract void registerPlugin(String filename);
     public abstract void deletePlugin(String filename);
     public abstract void updatePlugin(Plugin plugin);

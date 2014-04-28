@@ -7,6 +7,7 @@
 package checkit.agent.service;
 
 import checkit.server.domain.Result;
+import checkit.server.domain.Server;
 import checkit.server.domain.Test;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -29,6 +30,9 @@ import org.springframework.stereotype.Service;
 public class CronService {
     @Autowired
     private TestService testService;
+    
+    @Autowired
+    private ServerService serverService;
     
     @Autowired
     private ResultService resultService;
@@ -67,10 +71,7 @@ public class CronService {
         
         for (Result result : resultList) {
             if (postRequestToServer(result)) {
-                System.out.println("Odeslano, mazu");
                 resultService.deleteResult(result);
-            } else {
-                System.out.println("Server nedostupny, nic nemazu a cekam");
             }
         }
 
@@ -78,13 +79,12 @@ public class CronService {
     
     @Async
     private boolean postRequestToServer(Result result) {
-        //TODO - load IP from DB later. This solution is only because of localhost (I cant get anything else but 127.0.0.1 - imposible to send anything)
-        String ip = "http://localhost:8080/CheckIt/postResult";
+        Server server = serverService.getServerWithTheHighestPriority();
         int responseCode = 0;
         String responseMessage = "";
         
         try {
-            URL url = new URL(ip);
+            URL url = new URL(server.getPostAddress() + "postResult");
             HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
             urlCon.setDoOutput(true);
 

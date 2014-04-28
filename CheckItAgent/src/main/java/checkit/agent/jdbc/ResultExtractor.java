@@ -30,7 +30,7 @@ public class ResultExtractor implements ResultSetExtractor<Result> {
             
         }
 */        
-        result.setOk(resultSet.getBoolean(3));
+        result.setStatus(resultSet.getString(3));
         result.setData(resultSet.getString(4));
         return result;
     }

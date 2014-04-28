@@ -54,7 +54,7 @@ public class ResultDAOImpl implements ResultDAO {
 
     @Override
     public void createResult(Result result) {
-        String sql = "INSERT INTO results (test_id, time, ok, data) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO results (test_id, time, status, data) VALUES (?, ?, ?, ?)";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         jdbcTemplate.update(
@@ -62,7 +62,7 @@ public class ResultDAOImpl implements ResultDAO {
             new Object[] {
                 result.getTestId(),
                 getCurrentTimestamp(),
-                result.isOk(),
+                result.getStatus(),
                 stringToJSON(result.getData())
             }
         );

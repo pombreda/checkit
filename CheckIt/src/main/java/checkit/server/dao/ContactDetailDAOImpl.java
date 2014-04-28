@@ -46,6 +46,26 @@ public class ContactDetailDAOImpl implements ContactDetailDAO {
     }
 
     @Override
+    public List<ContactDetail> getContactDetailListWhereDownIsActive(int contactId, int userId) {
+        List contactDetailList = new ArrayList();
+        String sql = "SELECT * FROM contact_detail WHERE contact_id=" + contactId + " AND user_id=" + userId + " AND down=true";
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        contactDetailList = jdbcTemplate.query(sql, new ContactDetailRowMapper());
+        return contactDetailList;
+    }
+
+    @Override
+    public List<ContactDetail> getContactDetailListWhereUpIsActive(int contactId, int userId) {
+        List contactDetailList = new ArrayList();
+        String sql = "SELECT * FROM contact_detail WHERE contact_id=" + contactId + " AND user_id=" + userId + " AND up=true";
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        contactDetailList = jdbcTemplate.query(sql, new ContactDetailRowMapper());
+        return contactDetailList;
+    }
+    
+    @Override
     public void createContactDetail(ContactDetail contactDetail) {
         String sql = "INSERT INTO contact_detail (title, data, contact_id, user_id, plugin_filename, down, up, regular) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
@@ -102,5 +122,5 @@ public class ContactDetailDAOImpl implements ContactDetailDAO {
         if (contactDetail.isEmpty()) return null;
         return contactDetail.get(0);
     }
-    
+
 }

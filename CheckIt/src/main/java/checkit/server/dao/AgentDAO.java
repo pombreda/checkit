@@ -19,5 +19,5 @@ public interface AgentDAO {
     public void deleteAgent(int agentId);
     public void updateAgent(Agent agent);
     public Agent getAgentById(int agentId);
-
+    public Agent getAgentByIp(String ip);
 }

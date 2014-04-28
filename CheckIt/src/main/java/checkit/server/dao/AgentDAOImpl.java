@@ -32,13 +32,14 @@ public class AgentDAOImpl implements AgentDAO {
 
     @Override
     public void createAgent(Agent agent) {
-        String sql = "INSERT INTO agents (ip, location, enabled) VALUES (?, ?, FALSE)";
+        String sql = "INSERT INTO agents (ip, post_address, location, enabled) VALUES (?, ?, ?, FALSE)";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         jdbcTemplate.update(
             sql,
             new Object[] {
                 agent.getIp(),
+                agent.getPostAddress(),
                 agent.getLocation()
             }
         );
@@ -54,13 +55,14 @@ public class AgentDAOImpl implements AgentDAO {
 
     @Override
     public void updateAgent(Agent agent) {
-        String sql = "UPDATE agents SET ip=?, location=?, enabled=? WHERE agent_id=?";
+        String sql = "UPDATE agents SET ip=?, post_address=?, location=?, enabled=? WHERE agent_id=?";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         jdbcTemplate.update(
             sql,
             new Object[] {
                 agent.getIp(),
+                agent.getPostAddress(),
                 agent.getLocation(),
                 agent.isEnabled(),
                 agent.getAgentId()
@@ -76,6 +78,18 @@ public class AgentDAOImpl implements AgentDAO {
 
         agent = jdbcTemplate.query(sql, new AgentRowMapper());
         if (agent.isEmpty()) return null;
-        return agent.get(0);    }
+        return agent.get(0);  
+    }
+
+    @Override
+    public Agent getAgentByIp(String ip) {
+        List<Agent> agent = new ArrayList<Agent>();
+        String sql = "SELECT * FROM agents WHERE ip='" + ip + "'";
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        agent = jdbcTemplate.query(sql, new AgentRowMapper());
+        if (agent.isEmpty()) return null;
+        return agent.get(0);  
+    }
     
 }

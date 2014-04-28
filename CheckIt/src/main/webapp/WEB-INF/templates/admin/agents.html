@@ -8,6 +8,7 @@
                     <tr th:attr="class=${agent.enabled == false ? 'disabled' : ''}" th:each="agent: ${agents}">
                         <td>#<span th:text="${agent.agentId}" th:remove="tag"></span> - <span th:text="${agent.location}" th:remove="tag"></span></td>
                         <td th:text="${agent.ip}"></td>
+                        <td th:text="${agent.postAddress}"></td>
                         <td th:text="${agent.enabled} ? enabled : disabled"></td>
                         <td><a th:href="@{/admin/agents/remove(id=${agent.agentId})}" onclick="return confirm('Do you really want to delete this agent and permanently lose all the tests connected with it?');">remove</a></td>
                         <td><a th:href="@{/admin/agents/edit(id=${agent.agentId})}">edit</a></td>

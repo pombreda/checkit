@@ -7,7 +7,6 @@
 package checkit.server.domain;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  *
@@ -16,7 +15,7 @@ import java.util.Date;
 public class Result implements Serializable {
     private int testId;
     private String time;
-    private boolean ok;
+    private String status;
     private String data;
     private int agentId;
 
@@ -36,12 +35,12 @@ public class Result implements Serializable {
         this.time = time;
     }
 
-    public boolean isOk() {
-        return ok;
+    public String getStatus() {
+        return status;
     }
 
-    public void setOk(boolean ok) {
-        this.ok = ok;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getData() {

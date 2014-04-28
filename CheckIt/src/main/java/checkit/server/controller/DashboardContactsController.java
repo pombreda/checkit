@@ -118,7 +118,7 @@ public class DashboardContactsController {
             report.setUserId(userId);
             reportService.deleteReport(report);
         }
-        return "redirect:/dashboard/contacts/edit?id=" + testId;
+        return "redirect:/dashboard/contacts/edit?id=" + contactId;
     }
 
     @RequestMapping(value = "/dashboard/contacts/add", method = RequestMethod.POST)

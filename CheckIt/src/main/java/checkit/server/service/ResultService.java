@@ -7,6 +7,7 @@
 package checkit.server.service;
 
 import checkit.server.domain.Result;
+import checkit.server.domain.Testing;
 import java.util.List;
 
 /**
@@ -17,4 +18,6 @@ public interface ResultService {
     public List<Result> getResultList(int testId);
     public void createResult(Result result);
     public void deleteResult(Result result);
+    public void postStartTesting(Testing testing);
+    public void postStopTesting(Testing testing);
 }

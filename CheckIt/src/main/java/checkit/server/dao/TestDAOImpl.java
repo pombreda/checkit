@@ -47,7 +47,7 @@ public class TestDAOImpl implements TestDAO {
 
     @Override
     public void createTest(Test test) {
-        String sql = "INSERT INTO tests (title, data, enabled, user_id, plugin_filename, interval) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO tests (title, data, enabled, user_id, plugin_filename, interval, ok) VALUES (?, ?, ?, ?, ?, ?, TRUE)";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         jdbcTemplate.update(
@@ -73,7 +73,7 @@ public class TestDAOImpl implements TestDAO {
 
     @Override
     public void updateTest(Test test) {
-        String sql = "UPDATE tests SET title=?, data=?, enabled=?, interval=? WHERE test_id=? AND user_id=?";
+        String sql = "UPDATE tests SET title=?, data=?, enabled=?, interval=?, ok=? WHERE test_id=? AND user_id=?";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         jdbcTemplate.update(
@@ -83,6 +83,7 @@ public class TestDAOImpl implements TestDAO {
                 stringToJSON(test.getData()),
                 test.isEnabled(),
                 test.getInterval(),
+                test.isOk(),
                 test.getTestId(),
                 test.getUserId()
             }

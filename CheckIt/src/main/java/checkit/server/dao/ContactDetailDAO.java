@@ -15,6 +15,8 @@ import java.util.List;
  */
 public interface ContactDetailDAO {
     public List<ContactDetail> getContactDetailList(int contactId, int userId);
+    public List<ContactDetail> getContactDetailListWhereDownIsActive(int contactId, int userId);
+    public List<ContactDetail> getContactDetailListWhereUpIsActive(int contactId, int userId);
     public void createContactDetail(ContactDetail contactDetail);
     public void deleteContactDetail(int contactDetailId);
     public void updateContactDetail(ContactDetail contactDetail);

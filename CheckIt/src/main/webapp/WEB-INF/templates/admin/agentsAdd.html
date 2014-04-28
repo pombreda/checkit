@@ -7,8 +7,12 @@
                 <form method="post" th:object="${agent}">
                     <table>
                         <tr>
-                            <td>IP or address:</td>
+                            <td>IP:</td>
                             <td><input type="text" th:field="*{ip}" /></td>
+                        </tr>
+                        <tr>
+                            <td>Post address:</td>
+                            <td><input type="text" th:field="*{postAddress}" /></td>
                         </tr>
                         <tr>
                             <td>Location:</td>

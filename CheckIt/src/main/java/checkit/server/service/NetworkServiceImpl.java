@@ -53,7 +53,7 @@ public class NetworkServiceImpl implements NetworkService {
         Agent agent = agentService.getAgentById(testing.getAgentId());
         Test test = testService.getTestById(testing.getTestId());
         
-        String ip = agent.getIp();
+        String ip = agent.getPostAddress();
         int responseCode = 0;
         String responseMessage = "";
         

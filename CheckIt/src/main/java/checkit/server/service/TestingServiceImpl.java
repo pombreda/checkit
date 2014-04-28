@@ -26,6 +26,9 @@ public class TestingServiceImpl implements TestingService {
     @Autowired
     private NetworkService networkService;
     
+    @Autowired
+    private ResultService resultService;
+    
     private int getIdOfLeastBusyAgent() {
         List<Agent> agents = agentDAO.getAgentList();
 
@@ -47,6 +50,7 @@ public class TestingServiceImpl implements TestingService {
     @Override
     public void createTesting(Testing testing) {
         networkService.postCreatingToAgent(testing);
+        resultService.postStartTesting(testing);
         testingDAO.createTesting(testing);
     }
 
@@ -111,6 +115,7 @@ public class TestingServiceImpl implements TestingService {
         for (Testing testing : testingList) {
             testingObject.setAgentId(testing.getAgentId());
             networkService.postDeletingToAgent(testing);
+            resultService.postStopTesting(testing);
             testingDAO.deleteTesting(testing);
         }
     }

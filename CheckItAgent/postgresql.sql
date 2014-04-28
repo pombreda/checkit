@@ -1,5 +1,6 @@
 CREATE TABLE servers(
     ip VARCHAR(50) PRIMARY KEY,
+    post_address VARCHAR(50) NOT NULL,
     priority INT NOT NULL
 );
 
@@ -17,7 +18,7 @@ CREATE TABLE tests(
 CREATE TABLE results(
     test_id INTEGER NOT NULL,
     time TIMESTAMP NOT NULL,
-    ok BOOLEAN NOT NULL,
+    status VARCHAR(1) NOT NULL,
     data JSON,
     PRIMARY KEY (test_id, time)
 );

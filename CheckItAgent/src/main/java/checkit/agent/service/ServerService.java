@@ -15,5 +15,6 @@ import java.util.List;
  */
 public interface ServerService {
     public List<Server> getServerList();
+    public Server getServerWithTheHighestPriority();
     public Server getServerByIp(String ip);
 }

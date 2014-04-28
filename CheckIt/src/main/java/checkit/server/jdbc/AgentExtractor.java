@@ -22,8 +22,9 @@ public class AgentExtractor implements ResultSetExtractor<Agent> {
         Agent agent = new Agent();
         agent.setAgentId(resultSet.getInt(1));
         agent.setIp(resultSet.getString(2));
-        agent.setLocation(resultSet.getString(3));
-        agent.setEnabled(resultSet.getBoolean(4));
+        agent.setPostAddress(resultSet.getString(3));
+        agent.setLocation(resultSet.getString(4));
+        agent.setEnabled(resultSet.getBoolean(5));
         return agent;
     }
 }

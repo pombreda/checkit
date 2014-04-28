@@ -13,6 +13,7 @@ package checkit.server.domain;
 public class Agent {
     private int agentId;
     private String ip;
+    private String postAddress;
     private String location;
     private boolean enabled;
 
@@ -30,6 +31,14 @@ public class Agent {
 
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    public String getPostAddress() {
+        return postAddress;
+    }
+
+    public void setPostAddress(String postAddress) {
+        this.postAddress = postAddress;
     }
 
     public String getLocation() {

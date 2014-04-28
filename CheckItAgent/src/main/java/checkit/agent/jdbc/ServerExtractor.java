@@ -21,7 +21,8 @@ public class ServerExtractor  implements ResultSetExtractor<Server> {
     public Server extractData(ResultSet resultSet) throws SQLException, DataAccessException {
         Server server = new Server();
         server.setIp(resultSet.getString(1));
-        server.setPriority(resultSet.getInt(2));
+        server.setPostAddress(resultSet.getString(2));
+        server.setPriority(resultSet.getInt(3));
         return server;
     }
 }

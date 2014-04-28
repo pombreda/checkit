@@ -53,6 +53,7 @@ public class ReportDAOImpl implements ReportDAO {
     @Override
     public void createReport(Report report) {
         String sql = "INSERT INTO reports (user_id, test_id, contact_id) VALUES (?, ?, ?)";
+                
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         jdbcTemplate.update(
@@ -60,7 +61,7 @@ public class ReportDAOImpl implements ReportDAO {
             new Object[] {
                 report.getUserId(),
                 report.getTestId(),
-                report.getContactId()
+                report.getContactId(),
             }
         );    
     }

@@ -20,6 +20,7 @@ public class Test implements Serializable {
     private int userId;
     private String pluginFilename;
     private int interval;
+    private boolean ok;
 
     public int getTestId() {
         return testId;
@@ -75,6 +76,14 @@ public class Test implements Serializable {
 
     public void setInterval(int interval) {
         this.interval = interval;
+    }
+
+    public boolean isOk() {
+        return ok;
+    }
+
+    public void setOk(boolean ok) {
+        this.ok = ok;
     }
     
 }

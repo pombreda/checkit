@@ -36,12 +36,18 @@ public class PluginService {
         Object resultParams = call(instance, "getResultParamsName", (Object[]) null);
         
         Object resultValues = call(instance, "run", params);
-        boolean isItOk = Boolean.parseBoolean(call(instance, "isItOk", resultValues).toString());
+        String status;
+        if (Boolean.parseBoolean(call(instance, "isItOk", resultValues).toString())) {
+            status = "U";
+        } else {
+            status = "D";
+        }
+            
         String resultJSON = createJSONStringFromResults(resultParams, resultValues);
 
         Result result = new Result();
         result.setTestId(test.getTestId());
-        result.setOk(isItOk);
+        result.setStatus(status);
         result.setData(resultJSON);
         resultService.createResult(result);
     }

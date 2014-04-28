@@ -41,5 +41,10 @@ public class AgentServiceImpl implements AgentService {
     public Agent getAgentById(int agentId) {
         return agentDAO.getAgentById(agentId);
     }
+
+    @Override
+    public Agent getAgentByIp(String ip) {
+        return agentDAO.getAgentByIp(ip);
+    }
     
 }
