@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html layout:decorator="/layout/dashboard">
+    <body>
+        <section layout:fragment="content" class="reports">
+            <div class="content">
+                <h1 th:text="${title}"></h1>
+                <p>tady budou grafy</p>
+                <table class="results">
+                <loop th:remove="tag" th:each="result: ${results}">
+                    <tr class="down" th:if="${result.status == 'D'}">
+                        <td>DOWN</td>
+                        <td th:text="${result.time}"></td>
+                        <td th:text="${result.data}"></td>
+                    </tr>
+                    <tr class="up" th:if="${result.status == 'U'}">
+                        <td>UP</td>
+                        <td th:text="${result.time}"></td>
+                        <td th:text="${result.data}"></td>
+                    </tr>
+                    <tr class="run" th:if="${result.status == 'R'}">
+                        <td>RUN</td>
+                        <td th:text="${result.time}"></td>
+                        <td th:text="${result.data}"></td>
+                    </tr>
+                    <tr class="stop" th:if="${result.status == 'S'}">
+                        <td>STOP</td>
+                        <td th:text="${result.time}"></td>
+                        <td th:text="${result.data}"></td>
+                    </tr>
+                </loop>
+                </table>
+            </div>
+        </section>
+    </body>
+</html>

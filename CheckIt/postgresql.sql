@@ -66,6 +66,7 @@ CREATE TABLE tests(
     plugin_filename VARCHAR(50) NOT NULL,
     interval INTEGER NOT NULL,
     ok BOOLEAN NOT NULL,
+    checked BOOLEAN NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (plugin_filename) REFERENCES plugins_check(filename) ON DELETE CASCADE
 );

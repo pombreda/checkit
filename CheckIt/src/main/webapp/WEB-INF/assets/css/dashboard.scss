@@ -50,3 +50,27 @@ header {
         font-size: .8em;
     }
 }
+
+.reports {
+    table.results {
+        border-collapse: collapse;
+        border-spacing: 0;
+        
+        td {
+            border: 1px $gray solid;
+            padding: .2em 1em;
+        }
+        tr {
+            &.run td {
+                font-weight: bold;
+            }
+            &.stop td {
+                color: $gray;
+                font-weight: bold;
+            }
+            &.down td {
+                color: $gray;
+            }
+        }
+    }
+}

@@ -58,22 +58,24 @@ public class NetworkController {
                     Result result = (Result) in.readObject();
                     result.setAgentId(agent.getAgentId());
                     Test test = testService.getTestById(result.getTestId());
-                    if ((result.getStatus().equals("U") != test.isOk()) && test.isEnabled()) {
-                        resultService.createResult(result);
 
-                        test.setOk(result.getStatus().equals("U"));
-                        testService.updateTest(test);
+                    if ((result.getStatus().equals("U") != test.isOk() || !test.isChecked()) && test.isEnabled()) {
+                        resultService.createResult(result);
 
                         List<ContactDetail> contactDetailList;
                         if (!result.getStatus().equals("U")) {
-                            contactDetailList = contactDetailService.getContactDetailListByTestIdWhereDownIsActive(test.getTestId());
-                            pluginService.reportDown(contactDetailList, test.getTitle());
-//                            System.out.println("Sending down...");
-                        } else {
-                            contactDetailList = contactDetailService.getContactDetailListByTestIdWhereUpIsActive(test.getTestId());
-                            pluginService.reportUp(contactDetailList, test.getTitle());
-//                            System.out.println("Sending up...");
+//                            contactDetailList = contactDetailService.getContactDetailListByTestIdWhereDownIsActive(test.getTestId());
+//                            pluginService.reportDown(contactDetailList, test.getTitle());
+                            System.out.println("Sending down...");
+                        } else if (test.isChecked()) {
+//                            contactDetailList = contactDetailService.getContactDetailListByTestIdWhereUpIsActive(test.getTestId());
+//                            pluginService.reportUp(contactDetailList, test.getTitle());
+                            System.out.println("Sending up...");
                         }
+
+                        test.setOk(result.getStatus().equals("U"));
+                        test.setChecked(true);
+                        testService.updateTest(test);
                     }
                 } catch (ClassNotFoundException e) {
 //                    e.printStackTrace();

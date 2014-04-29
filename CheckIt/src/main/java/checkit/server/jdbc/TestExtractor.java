@@ -28,6 +28,7 @@ public class TestExtractor implements ResultSetExtractor<Test> {
         test.setPluginFilename(resultSet.getString(6));
         test.setInterval(resultSet.getInt(7));
         test.setOk(resultSet.getBoolean(8));
+        test.setChecked(resultSet.getBoolean(9));
         return test;
     }
 }

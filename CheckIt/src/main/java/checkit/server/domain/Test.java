@@ -21,6 +21,7 @@ public class Test implements Serializable {
     private String pluginFilename;
     private int interval;
     private boolean ok;
+    private boolean checked;
 
     public int getTestId() {
         return testId;
@@ -84,6 +85,14 @@ public class Test implements Serializable {
 
     public void setOk(boolean ok) {
         this.ok = ok;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
     
 }

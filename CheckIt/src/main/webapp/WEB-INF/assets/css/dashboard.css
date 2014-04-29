@@ -116,4 +116,10 @@ header nav .user { float: right; margin-top: 1em; }
 .contacts .add:before, .tests .add:before { content: "+"; position: absolute; display: block; width: 1em; height: 1em; text-align: center; top: 0; left: 0; background-color: #96c838; color: white; border-radius: 50%; }
 .contacts .description, .tests .description { color: #b4b4b4; font-size: .8em; }
 
+.reports table.results { border-collapse: collapse; border-spacing: 0; }
+.reports table.results td { border: 1px #9fa8ac solid; padding: .2em 1em; }
+.reports table.results tr.run td { font-weight: bold; }
+.reports table.results tr.stop td { color: #9fa8ac; font-weight: bold; }
+.reports table.results tr.down td { color: #9fa8ac; }
+
 /*# sourceMappingURL=dashboard.css.map */

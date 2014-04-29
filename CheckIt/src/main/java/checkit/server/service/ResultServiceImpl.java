@@ -45,9 +45,8 @@ public class ResultServiceImpl implements ResultService {
         result.setStatus("R");
         createResult(result);
         
-        //The assumption that the service works when testing starts.
         Test test = testService.getTestById(testing.getTestId());
-        test.setOk(true);
+        test.setChecked(false);
         testService.updateTest(test);
     }
 

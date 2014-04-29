@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html layout:decorator="/layout/dashboard">
     <body>
-        <section layout:fragment="content">
+        <section layout:fragment="content" class="reports">
             <div class="content">
                 <h1>Reports</h1>
-                <p>...</p>
+                <table th:unless="${#lists.isEmpty(tests)}">
+                    <tr th:each="test: ${tests}">
+                        <td><a th:href="@{/dashboard/reports/detail(id=${test.testId})}" th:text="${test.title}"></a></td>
+                        <td th:if="${test.enabled == false}">PAUSED</td>
+                        <td th:unless="${test.enabled == false}" th:text="${test.ok == false ? 'DOWN' : 'UP'}"></td>
+                    </tr>
+                </table>
+                <p th:if="${#lists.isEmpty(tests)}">No tests, no reports</p>
             </div>
         </section>
     </body>

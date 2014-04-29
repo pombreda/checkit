@@ -41,7 +41,7 @@ public class ResultDAOImpl implements ResultDAO {
     @Override
     public List<Result> getResultList(int testId) {
         List pluginCheckList = new ArrayList();
-        String sql = "SELECT * FROM results WHERE test_id=" + testId;
+        String sql = "SELECT * FROM results WHERE test_id=" + testId + " ORDER BY time DESC";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         pluginCheckList = jdbcTemplate.query(sql, new ResultRowMapper());
