@@ -134,8 +134,10 @@ public abstract class PluginServiceAbstract {
             for (Object param: (Object[]) params) {
                 values.add(jsonObject.get(param));
             }
-        } catch (ParseException ex) {
-            Logger.getLogger(PluginServiceAbstract.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException | NullPointerException ex) {
+            for (Object param: (Object[]) params) {
+                values.add("");
+            }
         }
         return values.toArray();
     }

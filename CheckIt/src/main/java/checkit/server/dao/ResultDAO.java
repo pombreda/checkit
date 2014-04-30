@@ -15,6 +15,7 @@ import java.util.List;
  */
 public interface ResultDAO {
     public List<Result> getResultList(int testId);
+    public List<Result> getResultListAsc(int testId);
     public void createResult(Result result);
     public void deleteResult(Result result);
 }

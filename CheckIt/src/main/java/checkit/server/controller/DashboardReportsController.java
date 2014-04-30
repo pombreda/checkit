@@ -6,6 +6,7 @@
 
 package checkit.server.controller;
 
+import checkit.plugin.service.PluginCheckService;
 import checkit.server.domain.Result;
 import checkit.server.domain.Test;
 import checkit.server.domain.User;
@@ -13,6 +14,8 @@ import checkit.server.service.ResultService;
 import checkit.server.service.TestService;
 import checkit.server.service.UserService;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,6 +35,9 @@ public class DashboardReportsController {
     @Autowired
     private ResultService resultService;
     
+    @Autowired
+    private PluginCheckService pluginService;
+    
     @RequestMapping(value = "/dashboard/reports", method = RequestMethod.GET)
     public String show(ModelMap model, Principal principal) {
         String username = principal.getName();
@@ -50,8 +56,23 @@ public class DashboardReportsController {
         Test test = testService.getTestById(testId);
         if (test.getUserId() == userId) {
             List<Result> results = resultService.getResultList(testId);
+            List<Result> graphResults = resultService.createResultGraphOutput(resultService.getResultListAsc(testId));
+            
+            List<String> data = new ArrayList<String>();
+            for (Result result : results) {
+                data.add(result.getData());
+            }
+            
+            List<String> tableHeader = pluginService.getTableHeader(test.getPluginFilename());
+            List< List<Object> > tableValues = pluginService.getTableValues(test.getPluginFilename(), data);
+
             model.addAttribute("title", test.getTitle());
             model.addAttribute("results", results);
+            model.addAttribute("chartLastDay", resultService.getChartData(graphResults, 1));
+            model.addAttribute("chartLastWeek", resultService.getChartData(graphResults, 7));
+            model.addAttribute("chartLastMonth", resultService.getChartData(graphResults, 30));
+            model.addAttribute("tableHeader", tableHeader);
+            model.addAttribute("tableValues", tableValues);
             return "/dashboard/reportsDetail";
         }
         return "redirect:/dashboard/reports";

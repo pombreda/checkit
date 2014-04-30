@@ -16,8 +16,11 @@ import java.util.List;
  */
 public interface ResultService {
     public List<Result> getResultList(int testId);
+    public List<Result> getResultListAsc(int testId);
     public void createResult(Result result);
     public void deleteResult(Result result);
     public void postStartTesting(Testing testing);
     public void postStopTesting(Testing testing);
+    public List<Result> createResultGraphOutput(List<Result> results);
+    public List<Long> getChartData(List<Result> results, long numberOfDays);
 }

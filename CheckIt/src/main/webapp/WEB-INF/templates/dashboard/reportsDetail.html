@@ -1,31 +1,80 @@
 <!DOCTYPE html>
 <html layout:decorator="/layout/dashboard">
+    <head>
+        <link type="text/css" rel="stylesheet" media="all" th:href="@{/assets/css/vendor/jquery.jqplot.min.css}" />
+        <!--[if lt IE 9]><script th:src="@{/assets/js/vendor/excanvas.min.js}"></script><![endif]-->
+        <script th:src="@{/assets/js/vendor/jquery.jqplot.min.js}"></script>
+        <script th:src="@{/assets/js/vendor/jqplot.pieRenderer.min.js}"></script>
+        <script th:inline="javascript">
+            $(document).ready(function(){ 
+            /*[+
+                var payDaySlices = [
+                    ['Uptime',[[${chartLastDay[1]}]]],
+                    ['Downtime',[[${chartLastDay[2]}]]],
+                    ['Unmonitored',[[${chartLastDay[2]}]]]
+                ];
+            +]*/
+                var pieDay = $.jqplot('pieDay', [payDaySlices], {
+                    grid: {
+                        drawBorder: false, 
+                        drawGridlines: false,
+                        background: '#ffffff',
+                        shadow:false
+                    },
+                    axesDefaults: {
+                    },
+                    seriesDefaults:{
+                        renderer:$.jqplot.PieRenderer,
+                        rendererOptions: {
+                            showDataLabels: true,
+                            highlightMouseOver: false,
+                            highlightMouseDown: false,
+                            highlightColor: null,
+                        }
+                    },
+                    seriesColors: ["#97df71", "#dc6b6b", "#b6b6b6"],
+                    legend: {
+                        show: true,
+                        rendererOptions: {
+                            numberRows: 1
+                        },
+                        location: 's'
+                    }
+                }); 
+            });
+        </script>
+    </head>
     <body>
         <section layout:fragment="content" class="reports">
             <div class="content">
                 <h1 th:text="${title}"></h1>
-                <p>tady budou grafy</p>
+                <div id="pieDay" class="pie"></div>
                 <table class="results">
-                <loop th:remove="tag" th:each="result: ${results}">
+                    <tr>
+                        <th>Status</th>
+                        <th>Time</th>
+                        <th th:each="header : ${tableHeader}" th:text="${header}"></th>
+                    </tr>
+                <loop th:remove="tag" th:each="result,resultStat: ${results}">
                     <tr class="down" th:if="${result.status == 'D'}">
                         <td>DOWN</td>
                         <td th:text="${result.time}"></td>
-                        <td th:text="${result.data}"></td>
+                        <td th:each="column: ${tableValues[__${resultStat.index}__]}" th:text="${column}"></td>
                     </tr>
                     <tr class="up" th:if="${result.status == 'U'}">
                         <td>UP</td>
                         <td th:text="${result.time}"></td>
-                        <td th:text="${result.data}"></td>
+                        <td th:each="column: ${tableValues[__${resultStat.index}__]}" th:text="${column}"></td>
                     </tr>
                     <tr class="run" th:if="${result.status == 'R'}">
                         <td>RUN</td>
                         <td th:text="${result.time}"></td>
-                        <td th:text="${result.data}"></td>
+                        <td th:each="column: ${tableValues[__${resultStat.index}__]}" th:text="${column}"></td>
                     </tr>
                     <tr class="stop" th:if="${result.status == 'S'}">
                         <td>STOP</td>
                         <td th:text="${result.time}"></td>
-                        <td th:text="${result.data}"></td>
+                        <td th:each="column: ${tableValues[__${resultStat.index}__]}" th:text="${column}"></td>
                     </tr>
                 </loop>
                 </table>

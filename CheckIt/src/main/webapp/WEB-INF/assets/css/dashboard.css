@@ -121,5 +121,6 @@ header nav .user { float: right; margin-top: 1em; }
 .reports table.results tr.run td { font-weight: bold; }
 .reports table.results tr.stop td { color: #9fa8ac; font-weight: bold; }
 .reports table.results tr.down td { color: #9fa8ac; }
+.reports .pie { margin: 20px; width: 300px; height: 300px; }
 
 /*# sourceMappingURL=dashboard.css.map */

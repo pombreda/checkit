@@ -49,6 +49,16 @@ public class ResultDAOImpl implements ResultDAO {
     }
 
     @Override
+    public List<Result> getResultListAsc(int testId) {
+        List pluginCheckList = new ArrayList();
+        String sql = "SELECT * FROM results WHERE test_id=" + testId + " ORDER BY time ASC";
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        pluginCheckList = jdbcTemplate.query(sql, new ResultRowMapper());
+        return pluginCheckList;    
+    }
+
+    @Override
     public void createResult(Result result) {
         String sql = "INSERT INTO results (test_id, agent_id, time, status, data) VALUES (?, ?, ?, ?, ?)";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);

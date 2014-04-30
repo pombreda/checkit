@@ -8,6 +8,8 @@ package checkit.plugin.service;
 
 import checkit.plugin.dao.PluginCheckDAO;
 import checkit.server.domain.Plugin;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,4 +65,25 @@ public class PluginCheckService extends PluginServiceAbstract {
         pluginCheckDAO.updatePluginCheck(plugin);
     }
 
+    public List<String> getTableHeader(String pluginName) {
+        Object instance = getPluginInstance(pluginName);
+        Object[] header = (Object[]) call(instance, "getTableRequiredHeaderTitle", (Object[]) null);
+        List<String> output = new ArrayList<String>();
+        for (Object item : header) {
+            output.add(item.toString());
+        }
+        return output;
+    }
+    
+    public List< List<Object> > getTableValues(String pluginName, List<String> data) {
+        Object instance = getPluginInstance(pluginName);
+        Object params = call(instance, "getTableRequiredParamsName", (Object[]) null);
+        List< List<Object> > output = new ArrayList<List<Object>>();
+        Object[] values;
+        for (int i = 0; i<data.size(); i++) {
+            values = (Object[]) getValuesFromJSONString(data.get(i), params);
+            output.add(new ArrayList<Object>(Arrays.asList(values)));
+        }
+        return output;
+    }
 }
