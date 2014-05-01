@@ -69,8 +69,10 @@ public class PluginCheckService extends PluginServiceAbstract {
         Object instance = getPluginInstance(pluginName);
         Object[] header = (Object[]) call(instance, "getTableRequiredHeaderTitle", (Object[]) null);
         List<String> output = new ArrayList<String>();
-        for (Object item : header) {
-            output.add(item.toString());
+        if (header != null) {
+            for (Object item : header) {
+                output.add(item.toString());
+            }
         }
         return output;
     }
@@ -80,9 +82,11 @@ public class PluginCheckService extends PluginServiceAbstract {
         Object params = call(instance, "getTableRequiredParamsName", (Object[]) null);
         List< List<Object> > output = new ArrayList<List<Object>>();
         Object[] values;
-        for (int i = 0; i<data.size(); i++) {
-            values = (Object[]) getValuesFromJSONString(data.get(i), params);
-            output.add(new ArrayList<Object>(Arrays.asList(values)));
+        if (params != null) {
+            for (int i = 0; i<data.size(); i++) {
+                values = (Object[]) getValuesFromJSONString(data.get(i), params);
+                output.add(new ArrayList<Object>(Arrays.asList(values)));
+            }
         }
         return output;
     }

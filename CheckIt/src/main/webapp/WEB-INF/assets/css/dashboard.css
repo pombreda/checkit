@@ -121,6 +121,12 @@ header nav .user { float: right; margin-top: 1em; }
 .reports table.results tr.run td { font-weight: bold; }
 .reports table.results tr.stop td { color: #9fa8ac; font-weight: bold; }
 .reports table.results tr.down td { color: #9fa8ac; }
-.reports .pie { margin: 20px; width: 300px; height: 300px; }
+.reports .pies { margin-bottom: 5em; }
+.reports .pie { margin: 0 0 2em 0; width: 300px; height: 300px; float: left; }
+.reports .pie + .pie { margin-left: 19px; }
+.reports .pie > div { width: 100%; height: 100%; }
+.reports .pie h2 { text-align: center; }
+.reports .allTime { width: 100%; height: 200px; margin-bottom: 5em; }
+.reports .allTime .jqplot-axis { display: none; }
 
 /*# sourceMappingURL=dashboard.css.map */

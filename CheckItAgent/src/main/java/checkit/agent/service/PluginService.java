@@ -34,8 +34,8 @@ public class PluginService {
         Object instance = getPluginInstance(test.getPluginFilename());
         Object params = getCallParams(instance, test.getData());
         Object resultParams = call(instance, "getResultParamsName", (Object[]) null);
-        
         Object resultValues = call(instance, "run", params);
+
         String status;
         if (Boolean.parseBoolean(call(instance, "isItOk", resultValues).toString())) {
             status = "U";
@@ -103,6 +103,7 @@ public class PluginService {
             instance = cls.newInstance();
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | MalformedURLException ex) {
             Logger.getLogger(PluginService.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
         }
         return instance;
     }

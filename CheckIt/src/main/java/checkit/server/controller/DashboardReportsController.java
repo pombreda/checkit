@@ -71,6 +71,7 @@ public class DashboardReportsController {
             model.addAttribute("chartLastDay", resultService.getChartData(graphResults, 1));
             model.addAttribute("chartLastWeek", resultService.getChartData(graphResults, 7));
             model.addAttribute("chartLastMonth", resultService.getChartData(graphResults, 30));
+            model.addAttribute("allTime", graphResults);
             model.addAttribute("tableHeader", tableHeader);
             model.addAttribute("tableValues", tableValues);
             return "/dashboard/reportsDetail";
