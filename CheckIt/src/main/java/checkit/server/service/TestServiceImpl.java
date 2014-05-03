@@ -6,6 +6,7 @@
 
 package checkit.server.service;
 
+import checkit.plugin.domain.Input;
 import checkit.plugin.service.PluginCheckService;
 import checkit.server.dao.TestDAO;
 import checkit.server.domain.Report;
@@ -41,7 +42,7 @@ public class TestServiceImpl implements TestService {
     public void createTest(Test test) {
         String plugin = test.getPluginFilename();
         Object instance = pluginCheckService.getPluginInstance(plugin);
-        List< List<String> > inputs = pluginCheckService.getInputs(instance);
+        List<Input> inputs = pluginCheckService.getInputs(instance);
         String dataInitJSON = pluginCheckService.getInitEmptyDataJSON(inputs);
         test.setData(dataInitJSON);
         testDAO.createTest(test);

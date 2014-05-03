@@ -6,6 +6,7 @@
 
 package checkit.server.service;
 
+import checkit.plugin.domain.Input;
 import checkit.plugin.service.PluginReportService;
 import checkit.server.dao.ContactDetailDAO;
 import checkit.server.domain.Contact;
@@ -49,7 +50,7 @@ public class ContactDetailServiceImpl implements ContactDetailService {
     public void createContactDetail(ContactDetail contactDetail) {
         String plugin = contactDetail.getPluginFilename();
         Object instance = pluginReportService.getPluginInstance(plugin);
-        List< List<String> > inputs = pluginReportService.getInputs(instance);
+        List<Input> inputs = pluginReportService.getInputs(instance);
         String dataInitJSON = pluginReportService.getInitEmptyDataJSON(inputs);
         contactDetail.setData(dataInitJSON);
         contactDetailDAO.createContactDetail(contactDetail);

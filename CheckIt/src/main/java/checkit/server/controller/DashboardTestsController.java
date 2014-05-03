@@ -7,6 +7,7 @@
 package checkit.server.controller;
 
 import checkit.plugin.domain.FormStruct;
+import checkit.plugin.domain.Input;
 import checkit.plugin.service.FormStructService;
 import checkit.plugin.service.PluginCheckService;
 import checkit.server.domain.Contact;
@@ -93,7 +94,7 @@ public class DashboardTestsController {
             String pluginFilename = test.getPluginFilename();
             Object plugin = pluginService.getPluginInstance(pluginFilename);
             //get required inputs of plugin
-            List< List<String> > inputs = pluginService.getInputs(plugin);
+            List<Input> inputs = pluginService.getInputs(plugin);
             //get user values of inputs + set IDs
             FormStruct formStruct = pluginService.getInputValues(inputs, test.getData());
             //need to parse users input with variable number of lines

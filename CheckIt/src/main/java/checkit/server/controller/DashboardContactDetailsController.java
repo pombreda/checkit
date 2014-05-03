@@ -7,6 +7,7 @@
 package checkit.server.controller;
 
 import checkit.plugin.domain.FormStruct;
+import checkit.plugin.domain.Input;
 import checkit.plugin.service.FormStructService;
 import checkit.plugin.service.PluginReportService;
 import checkit.server.domain.ContactDetail;
@@ -74,7 +75,7 @@ public class DashboardContactDetailsController {
             String pluginFilename = contactDetail.getPluginFilename();
             Object plugin = reportService.getPluginInstance(pluginFilename);
             //get required inputs of plugin
-            List< List<String> > inputs = reportService.getInputs(plugin);
+            List<Input> inputs = reportService.getInputs(plugin);
             //get user values of inputs + set IDs
             FormStruct formStruct = reportService.getInputValues(inputs, contactDetail.getData());
 

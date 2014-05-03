@@ -8,6 +8,7 @@ package checkit.plugin.service;
 
 import checkit.plugin.domain.FormStruct;
 import checkit.plugin.domain.FormStructRow;
+import checkit.plugin.domain.Input;
 import checkit.server.domain.Plugin;
 import java.beans.Expression;
 import java.io.File;
@@ -66,23 +67,37 @@ public abstract class PluginServiceAbstract {
         return result;
     }
     
-    public List< List<String> > getInputs(Object instance) {
+    public List<Input> getInputs(Object instance) {
         String jsonString = call(instance, "getOptionsJSON", (Object[]) null).toString();
-        List< List<String> > json = new ArrayList<List<String>>();
+        List<Input> json = new ArrayList<Input>();
         
         try {
             JSONParser parser = new JSONParser();
             
             JSONArray inputs = (JSONArray)((JSONObject) parser.parse(jsonString)).get("inputs");
+            JSONArray options;
+            List<String> optionsList = new ArrayList<String>();
+            Input input;
             Iterator<JSONObject> iterator = inputs.iterator();
             while (iterator.hasNext()) {
                 final JSONObject obj = iterator.next();
-                json.add(new ArrayList<String>() {{
-                    add(obj.get("id").toString());
-                    add(obj.get("type").toString());
-                    add(obj.get("title").toString());
-                    add(obj.get("description").toString());
-                }});
+                input = new Input();
+                input.setId(obj.get("id").toString());
+                input.setType(obj.get("type").toString());
+                input.setTitle(obj.get("title").toString());
+                input.setDescription(obj.get("description").toString());
+                options = (JSONArray) obj.get("options");
+                
+                if (options != null) {
+                    Iterator<String> option = options.iterator();
+                    while (option.hasNext()) {
+                        optionsList.add(option.next());
+                    }
+                    input.setOptions(optionsList);
+                } else {
+                    input.setOptions(null);
+                }
+                json.add(input);
             }
         } catch (ParseException ex) {
             Logger.getLogger(PluginServiceAbstract.class.getName()).log(Level.SEVERE, null, ex);
@@ -91,7 +106,7 @@ public abstract class PluginServiceAbstract {
         return json;
     }
     
-    public FormStruct getInputValues(List< List<String> > inputs, String data) {
+    public FormStruct getInputValues(List<Input> inputs, String data) {
         FormStruct formStruct = new FormStruct();
         ArrayList<FormStructRow> rows = new ArrayList<FormStructRow>();
         String currentId;
@@ -99,9 +114,9 @@ public abstract class PluginServiceAbstract {
             JSONParser parser = new JSONParser();
             JSONObject dataJson;
             dataJson = (JSONObject) parser.parse(data);
-            for(List<String> input : inputs) {
-                currentId = input.get(0);
-                rows.add(new FormStructRow(currentId, dataJson.get(currentId).toString(), input.get(1)));
+            for(Input input : inputs) {
+                currentId = input.getId();
+                rows.add(new FormStructRow(currentId, dataJson.get(currentId).toString(), input.getType()));
             }
             formStruct.setArrData(rows);
         } catch (ParseException ex) {
@@ -110,10 +125,10 @@ public abstract class PluginServiceAbstract {
         return formStruct;
     }
     
-    public String getInitEmptyDataJSON(List< List<String> > inputs) {
+    public String getInitEmptyDataJSON(List<Input> inputs) {
         JSONObject json = new JSONObject();
-        for (List<String> row : inputs) {
-            json.put(row.get(0), "");
+        for (Input row : inputs) {
+            json.put(row.getId(), "");
         }
         return json.toJSONString();
     }
