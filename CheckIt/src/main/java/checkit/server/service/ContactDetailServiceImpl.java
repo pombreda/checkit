@@ -47,6 +47,11 @@ public class ContactDetailServiceImpl implements ContactDetailService {
     }
 
     @Override
+    public List<ContactDetail> getContactDetailListWhereRegularIsActive(int contactId, int userId) {
+        return contactDetailDAO.getContactDetailListWhereRegularIsActive(contactId, userId);
+    }
+
+    @Override
     public void createContactDetail(ContactDetail contactDetail) {
         String plugin = contactDetail.getPluginFilename();
         Object instance = pluginReportService.getPluginInstance(plugin);
@@ -89,6 +94,17 @@ public class ContactDetailServiceImpl implements ContactDetailService {
         List<ContactDetail> result = new ArrayList();
         for (Contact item : contactList) {
             result.addAll(getContactDetailListWhereDownIsActive(item.getContactId(), item.getUserId()));
+        }
+        return result;
+    }
+    
+    @Override
+    public List<ContactDetail> getContactDetailListByTestIdWhereRegularIsActive(int testId) {
+        List<Report> reportList = reportService.getReportListByTest(testId);
+        List<Contact> contactList = contactService.getContactListByReport(reportList);
+        List<ContactDetail> result = new ArrayList();
+        for (Contact item : contactList) {
+            result.addAll(getContactDetailListWhereRegularIsActive(item.getContactId(), item.getUserId()));
         }
         return result;
     }

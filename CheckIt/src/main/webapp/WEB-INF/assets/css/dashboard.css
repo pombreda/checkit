@@ -127,6 +127,5 @@ header nav .user { float: right; margin-top: 1em; }
 .reports .pie > div { width: 100%; height: 100%; }
 .reports .pie h2 { text-align: center; }
 .reports .allTime { width: 100%; height: 200px; margin-bottom: 5em; }
-.reports .allTime .jqplot-axis { display: none; }
 
 /*# sourceMappingURL=dashboard.css.map */

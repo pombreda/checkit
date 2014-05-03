@@ -22,5 +22,9 @@ public interface ResultService {
     public void postStartTesting(Testing testing);
     public void postStopTesting(Testing testing);
     public List<Result> createResultGraphOutput(List<Result> results);
-    public List<Long> getChartData(List<Result> results, long numberOfDays);
+    public List<Result> getDataForLastDays(List<Result> results, long numberOfDays);
+    public List<Long> getTimesForLastDays(List<Result> results, long numberOfDays);
+    public List<Integer> getCountsForLastDays(List<Result> results, long numberOfDays);
+    public int getRegularReportDownCount(List<Result> results);
+    public long getRegularReportDownTime(List<Result> results);
 }

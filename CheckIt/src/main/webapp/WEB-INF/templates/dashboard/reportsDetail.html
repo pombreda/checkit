@@ -9,22 +9,22 @@
         <script th:src="@{/assets/js/graphs.js}"></script>
         <script th:inline="javascript">
             /*[+
-                var payDaySlices = [
-                    ['Uptime',[[${chartLastDay[1]}]]],
-                    ['Downtime',[[${chartLastDay[2]}]]],
-                    ['Unmonitored',[[${chartLastDay[0]}]]]
-                ];
-                var payWeekSlices = [
+                var pieWeekSlices = [
                     ['Uptime',[[${chartLastWeek[1]}]]],
                     ['Downtime',[[${chartLastWeek[2]}]]],
                     ['Unmonitored',[[${chartLastWeek[0]}]]]
                 ];
-                var payMonthSlices = [
+                var pieMonthSlices = [
                     ['Uptime',[[${chartLastMonth[1]}]]],
                     ['Downtime',[[${chartLastMonth[2]}]]],
                     ['Unmonitored',[[${chartLastMonth[0]}]]]
                 ];
-                var allTimeBasicData = [[${allTime}]];
+                var pieAllSlices = [
+                    ['Uptime',[[${chartAllTime[1]}]]],
+                    ['Downtime',[[${chartAllTime[2]}]]],
+                    ['Unmonitored',[[${chartAllTime[0]}]]]
+                ];
+                var lastDayBasicData = [[${chartLastDay}]];
             +]*/
         </script>
     </head>
@@ -32,11 +32,9 @@
         <section layout:fragment="content" class="reports">
             <div class="content">
                 <h1 th:text="${title}"></h1>
+                <h2>Last 24 hours</h2>
+                <div class="allTime" id="allTime"></div>
                 <div class="clearfix pies">
-                    <div class="pie">
-                        <h2>Last 24 hours</h2>
-                        <div id="pieDay"></div>
-                    </div>
                     <div class="pie">
                         <h2>Last 7 days</h2>
                         <div id="pieWeek"></div>
@@ -45,8 +43,11 @@
                         <h2>Last 30 days</h2>
                         <div id="pieMonth"></div>
                     </div>
+                    <div class="pie">
+                        <h2>All testing time</h2>
+                        <div id="pieAll"></div>
+                    </div>
                 </div>
-                <div class="allTime" id="allTime"></div>
                 <table class="results">
                     <tr>
                         <th>Status</th>

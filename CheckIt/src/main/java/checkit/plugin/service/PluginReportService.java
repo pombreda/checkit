@@ -41,6 +41,17 @@ public class PluginReportService extends PluginServiceAbstract {
         }                
     }
     
+    @Async
+    public void reportRegular(List<ContactDetail> contactDetail, String testTitle, int numberOfDowns, long timeOfDowns) {
+        Object instance, params, result;
+        for (ContactDetail item : contactDetail) {
+            instance = getPluginInstance(item.getPluginFilename());
+            params = getCallParams(instance, item.getData());
+
+            result = call(instance, "reportRegular", testTitle, numberOfDowns, timeOfDowns, params);
+        }                
+    }
+    
     @Override
     protected String getPath() {
         return "D:\\Skola\\CVUT\\bakule\\! zdrojak\\plugins\\report\\";

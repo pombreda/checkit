@@ -1,12 +1,14 @@
-function getDateTime(daysBack) {
-    var now = new Date(); 
-    now.setDate(now.getDate()-daysBack);
-    var year = now.getFullYear();
-    var month = now.getMonth() + 1; 
-    var day = now.getDate();
-    var hour = now.getHours();
-    var minute = now.getMinutes();
-    var second = now.getSeconds(); 
+function minusSeconds(time, seconds) {
+    var regex = /(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/;
+    var partTime = time.match(regex);
+    var date = new Date(partTime[1], partTime[2] - 1, partTime[3], partTime[4], partTime[5], partTime[6] - seconds);
+
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1; 
+    var day = date.getDate();
+    var hour = date.getHours();
+    var minute = date.getMinutes();
+    var second = date.getSeconds(); 
 
     if (month < 10) {
         month = '0' + month;
@@ -45,8 +47,7 @@ $(document).ready(function(){
                 highlightMouseOver: false,
                 highlightMouseDown: false,
                 highlightColor: null,
-                dataLabelThreshold: 0.01,
-                sliceMargin: 15
+                dataLabelThreshold: 1
             }
         },
         seriesColors: ["#97df71", "#dc6b6b", "#b6b6b6"],
@@ -59,7 +60,7 @@ $(document).ready(function(){
         }
     };
     
-    var allTimeOptions = {
+    var lastDayOptions = {
         grid: {
             drawBorder: false,
             shadow: false,
@@ -94,40 +95,46 @@ $(document).ready(function(){
             rendererOptions: {
                 drawBaseline: false
             },
-            tickOptions: {
-                show: false,
-                showLabel: false
-            },
             pad: 0
         },
         axes: {       
             xaxis: {
                 renderer: $.jqplot.DateAxisRenderer
+            },
+            yaxis: {
+                min: -1,
+                max: 1,
+                tickOptions: {
+                    show: false,
+                    showLabel: false
+                }
             }
         }
     };
     
-    var pieDay = $.jqplot('pieDay', [payDaySlices], pieOptions); 
-    var pieWeek = $.jqplot('pieWeek', [payWeekSlices], pieOptions); 
-    var pieMonth = $.jqplot('pieMonth', [payMonthSlices], pieOptions);
+    var pieWeek = $.jqplot('pieWeek', [pieWeekSlices], pieOptions); 
+    var pieMonth = $.jqplot('pieMonth', [pieMonthSlices], pieOptions);
+    var pieAll = $.jqplot('pieAll', [pieAllSlices], pieOptions); 
     
-    var allTimeData = new Array();
+    var lastDayData = new Array();
     var status, time;
     var lastStatus = 0;
-    for (var i=0; i<allTimeBasicData.length; i++) {
-        if (allTimeBasicData[i].status === "U") status = 1;
-        else if (allTimeBasicData[i].status === "D") status = -1;
+    for (var i=0; i<lastDayBasicData.length; i++) {
+        if (lastDayBasicData[i].status === "U") status = 1;
+        else if (lastDayBasicData[i].status === "D") status = -1;
         else status = 0;
-        time = allTimeBasicData[i].time.split(".").shift();
+        time = lastDayBasicData[i].time.split(".").shift();
         
         if (i > 0) {
-            allTimeData.push(new Array(time + ".000", lastStatus)); // + .000 Chrome bug-fix
+            lastDayData.push(new Array(minusSeconds(time, 5), lastStatus)); //-5 seconds = jqPlot bugfix
+        }        
+        if (i !== lastDayBasicData.length-1) {  
+            lastDayData.push(new Array(time, status));
         }
-        allTimeData.push(new Array(time + ".001", status)); // + .001 Chrome bug-fix
         
         lastStatus = status;
     }
-    var date = getDateTime(0);
-    allTimeData.push(new Array(date + ".000", lastStatus)); //Chrome bug-fix
-    var allTime = $.jqplot('allTime', [allTimeData], allTimeOptions);
+    if (lastDayData.length < 3 && lastDayData.length > 0) lastDayData.push(lastDayData[0]); //jqPlot bugfix
+
+    var allTime = $.jqplot('allTime', [lastDayData], lastDayOptions);
 });

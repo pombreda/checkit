@@ -28,7 +28,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Send regular reports:</td>
+                            <td>Send weekly reports:</td>
                             <td>
                                 <input type="checkbox" th:field="*{regular}" />
                             </td>
@@ -37,12 +37,15 @@
                     <table>
                         <tr th:object="${formStruct.arrData[__${inputStat.index}__]}" th:each="input,inputStat: ${inputs}">
                             <td>
-                                <span th:text="${input[2]}"></span><br />
-                                <span class="description" th:text="${input[3]}"></span>
+                                <span th:text="${input.title}"></span><br />
+                                <span class="description" th:text="${input.description}"></span>
                             </td>
-                            <td>
-                                <input th:if="${input[1]} == checkbox" type="checkbox" value="true" th:field="*{value}" />
-                                <input th:unless="${input[1]} == checkbox" th:type="${input[1]}" th:field="*{value}" />
+                            <td th:switch="${input.type}">
+                                <input th:case="checkbox" type="checkbox" value="true" th:field="*{value}" />
+                                <select th:case="select" th:field="*{value}">
+                                    <option th:each="option : ${input.options}" th:text="${option}" th:value="${option}"></option>
+                                </select>
+                                <input th:case="*" th:type="${input.type}" th:field="*{value}" />
                                 <input type="hidden" th:field="*{name}" />
                                 <input type="hidden" th:field="*{type}" />
                             </td>

@@ -16,6 +16,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -115,18 +117,83 @@ public class ResultServiceImpl implements ResultService {
         return currentValues;
     }
     
+    private int[] addCountToActivity(String status, int[] currentValues) {
+        switch (status) {
+            case "N":
+                currentValues[0]++;
+                break;
+            case "U":
+                currentValues[1]++;
+                break;
+            case "D":
+                currentValues[2]++;
+                break;
+        }
+        return currentValues;
+    }
+    
     @Override
-    public List<Long> getChartData(List<Result> results, long numberOfDays) {
-        //Return list of three items: 0 - do not measured, 1 - up, 2 - down
-        long[] output = new long[]{0L, 0L, 0L};
+    public List<Result> getDataForLastDays(List<Result> results, long numberOfDays) {
         Date date = new Date();
         date.setTime(date.getTime() - numberOfDays*1000*60*60*24);
+        
+        Date resultDate;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        String beginningStatus = "undefined";
+        String lastStatus = "undefined";
+        int length = results.size();
+        for (int i=length-1; i>=0; i--) {
+            try {
+                if (lastStatus.equals("undefined")) {
+                    lastStatus = results.get(i).getStatus();
+                }
+                resultDate = dateFormat.parse(results.get(i).getTime());
+                if (resultDate.compareTo(date) < 0) {
+                    if (beginningStatus.equals("undefined")) {
+                        beginningStatus = results.get(i).getStatus();
+                    }
+                    results.remove(i);
+                }
+            } catch (ParseException ex) {
+            }
+        }
+        if (beginningStatus.equals("undefined")) {
+            beginningStatus = "N";
+        }
+
+        //add beginning and last status to the left and right edge of the interval
+        Result result = new Result();
+        result.setTime(dateFormat.format(date));
+        result.setStatus(beginningStatus);
+        results.add(0, result);
+
+        result = new Result();
+        result.setTime(dateFormat.format(new Date()));
+        result.setStatus(lastStatus);
+        results.add(result);
+        
+        return results;
+    }
+    
+    @Override
+    public List<Long> getTimesForLastDays(List<Result> results, long numberOfDays) {
+        //Return list of three items: 0 - do not measured, 1 - up, 2 - down
+        //-1 for all data
+        long[] output = new long[]{0L, 0L, 0L};
+        Date date = new Date();
+        if (numberOfDays >= 0) {
+            date.setTime(date.getTime() - numberOfDays*1000*60*60*24);
+        } else {
+            try {
+                date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(results.get(0).getTime());
+            } catch (ParseException ex) {}
+        }
         Date resultDate;
         String currentStatus = "N";
         for (Result result : results) {
             try {
                 resultDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(result.getTime());
-                if (resultDate.after(date)) {
+                if (resultDate.compareTo(date) >= 0) {
                     output = addTimeToActivity(currentStatus, resultDate, date, output);
                     date = resultDate;
                 }
@@ -142,5 +209,50 @@ public class ResultServiceImpl implements ResultService {
             outputList.add(value);
         }
         return outputList;
+    }
+
+    @Override
+    public List<Integer> getCountsForLastDays(List<Result> results, long numberOfDays) {
+        //Return list of three items: 0 - do not measured, 1 - up, 2 - down
+        //-1 for all data
+        int[] output = new int[]{0, 0, 0};
+        Date date = new Date();
+        if (numberOfDays >= 0) {
+            date.setTime(date.getTime() - numberOfDays*1000*60*60*24);
+        } else {
+            try {
+                date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(results.get(0).getTime());
+            } catch (ParseException ex) {}
+        }
+        Date resultDate;
+        String currentStatus = "N";
+        for (Result result : results) {
+            try {
+                resultDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(result.getTime());
+                if (resultDate.compareTo(date) >= 0) {
+                    output = addCountToActivity(currentStatus, output);
+                }
+                currentStatus = result.getStatus();
+            } catch (ParseException ex) {
+            }
+        }
+        
+        List<Integer> outputList = new ArrayList<Integer>();
+        for (int value : output) {
+            outputList.add(value);
+        }
+        return outputList;
+    }
+
+    @Override
+    public int getRegularReportDownCount(List<Result> results) {
+        int downCount = getCountsForLastDays(results, 7).get(2);
+        return downCount;
+    }
+
+    @Override
+    public long getRegularReportDownTime(List<Result> results) {
+        long downTime = getTimesForLastDays(results, 7).get(2);
+        return downTime;
     }
 }

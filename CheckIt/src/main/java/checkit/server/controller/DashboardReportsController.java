@@ -15,7 +15,6 @@ import checkit.server.service.TestService;
 import checkit.server.service.UserService;
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -68,10 +67,10 @@ public class DashboardReportsController {
 
             model.addAttribute("title", test.getTitle());
             model.addAttribute("results", results);
-            model.addAttribute("chartLastDay", resultService.getChartData(graphResults, 1));
-            model.addAttribute("chartLastWeek", resultService.getChartData(graphResults, 7));
-            model.addAttribute("chartLastMonth", resultService.getChartData(graphResults, 30));
-            model.addAttribute("allTime", graphResults);
+            model.addAttribute("chartLastWeek", resultService.getTimesForLastDays(graphResults, 7));
+            model.addAttribute("chartLastMonth", resultService.getTimesForLastDays(graphResults, 30));
+            model.addAttribute("chartAllTime", resultService.getTimesForLastDays(graphResults, -1));
+            model.addAttribute("chartLastDay", resultService.getDataForLastDays(graphResults, 1));
             model.addAttribute("tableHeader", tableHeader);
             model.addAttribute("tableValues", tableValues);
             return "/dashboard/reportsDetail";
