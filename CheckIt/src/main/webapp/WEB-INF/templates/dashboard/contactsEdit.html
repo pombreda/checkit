@@ -3,11 +3,11 @@
     <body>
         <section class="contacts" layout:fragment="content">
             <div class="content">
-                <h1>Contacts / edit contact</h1>
+                <h1><span th:remove="tag" th:text="#{contact.title}"></span> <span th:remove="tag" th:text="#{separator}"></span> <span th:remove="tag" th:text="#{contact.edit.title}"></span></h1>
                 <form method="post" th:object="${contact}">
                     <table>
                         <tr>
-                            <td>Title:</td>
+                            <td th:text="#{contact.form.title}"></td>
                             <td>
                                 <input type="text" th:field="*{title}" />
                                 <input type="hidden" th:field="*{contactId}" />
@@ -16,25 +16,25 @@
                         </tr>
                     </table>
                     <input type="submit" value="Save" />
-                    <h2>Contact details</h2>
+                    <h2 th:text="#{contact.form.details.title}"></h2>
                     <table th:unless="${#lists.isEmpty(contact.contactDetail)}">
                         <tr th:each="contactDetail: ${contact.contactDetail}">
                             <td><a th:href="@{/dashboard/contactDetail/edit(id=${contactDetail.contactDetailId})}" th:text="${contactDetail.title}"></a></td>
-                            <td><a th:href="@{/dashboard/contactDetail/remove(id=${contactDetail.contactDetailId})}" onclick="return confirm('Do you really want to delete this contact detail and permanently lose everything connected with it?');">remove</a></td>
-                            <td><a th:href="@{/dashboard/contactDetail/edit(id=${contactDetail.contactDetailId})}">edit</a></td>
+                            <td><a th:href="@{/dashboard/contactDetail/remove(id=${contactDetail.contactDetailId})}" th:text="#{remove}" th:onclick="'javascript:return confirm(\'' + #{contact.form.details.remove} + '\');'"></a></td>
+                            <td><a th:href="@{/dashboard/contactDetail/edit(id=${contactDetail.contactDetailId})}" th:text="#{edit}"></a></td>
                         </tr>
                     </table>
-                    <p th:if="${#lists.isEmpty(contact.contactDetail)}">No contact details</p>
-                    <p><a th:href="@{/dashboard/contactDetail/add(id=${contact.contactId})}" class="add">add new contact detail</a></p>
-                    <h2>Tests connected to the contact</h2>
-                    <table th:unless="${#lists.isEmpty(tests)}">
-                        <tr th:each="test: ${tests}">
-                            <td><a th:href="@{/dashboard/tests/edit(id=${test.testId})}" th:text="${test.title}"></a></td>
-                            <td><a th:href="@{/dashboard/contacts/connect(contactId=${contact.contactId}, testId=${test.testId}, remove=true)}" onclick="return confirm('Do you really want to delete this connection? Be calmy, test will not be deleted.');">remove</a></td>
+                    <p th:if="${#lists.isEmpty(contact.contactDetail)}" th:text="#{contact.form.details.empty}"></p>
+                    <p><a th:href="@{/dashboard/contactDetail/add(id=${contact.contactId})}" class="add" th:text="#{contact.form.details.add}"></a></p>
+                    <h2 th:text="#{contact.form.connect.title}"></h2>
+                    <table th:unless="${#lists.isEmpty(checks)}">
+                        <tr th:each="check: ${checks}">
+                            <td><a th:href="@{/dashboard/checks/edit(id=${check.checkId})}" th:text="${check.title}"></a></td>
+                            <td><a th:href="@{/dashboard/contacts/connect(contactId=${contact.contactId}, checkId=${check.checkId}, remove=true)}" th:text="#{remove}" th:onclick="'javascript:return confirm(\'' + #{contact.form.connect.remove} + '\');'"></a></td>
                         </tr>
                     </table>
-                    <p th:if="${#lists.isEmpty(tests)}">No tests connected to the contact</p>
-                    <p><a th:href="@{/dashboard/contacts/connect(id=${contact.contactId})}" class="add">connect test to the contact</a></p>
+                    <p th:if="${#lists.isEmpty(checks)}" th:text="#{contact.form.connect.empty}"></p>
+                    <p><a th:href="@{/dashboard/contacts/connect(id=${contact.contactId})}" class="add" th:text="#{contact.form.connect.add}"></a></p>
                 </form>
             </div>
         </section>

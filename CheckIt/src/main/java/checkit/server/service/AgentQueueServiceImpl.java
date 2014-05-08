@@ -1,14 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package checkit.server.service;
 
 import checkit.server.dao.AgentQueueDAO;
 import checkit.server.domain.AgentQueue;
-import checkit.server.domain.Testing;
+import checkit.server.domain.Checking;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,10 +23,10 @@ public class AgentQueueServiceImpl implements AgentQueueService {
     }
 
     @Override
-    public void add(Testing test, String query) {
+    public void add(Checking checking, String query) {
         AgentQueue agentQueue = new AgentQueue();
-        agentQueue.setAgentId(test.getAgentId());
-        agentQueue.setTestId(test.getTestId());
+        agentQueue.setAgentId(checking.getAgentId());
+        agentQueue.setCheckId(checking.getCheckId());
         agentQueue.setQuery(query);
         add(agentQueue);
     }

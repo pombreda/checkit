@@ -3,24 +3,27 @@
     <body>
         <section layout:fragment="content">
             <div class="content">
-                <h1>Agents / add agent</h1>
+                <h1><span th:remove="tag" th:text="#{admin.agent.title}"></span> <span th:remove="tag" th:text="#{separator}"></span> <span th:remove="tag" th:text="#{admin.agent.add}"></span></h1>
                 <form method="post" th:object="${agent}">
                     <table>
                         <tr>
-                            <td>IP:</td>
+                            <td th:text="#{admin.agent.form.ip}"></td>
                             <td><input type="text" th:field="*{ip}" /></td>
+                            <td class="error"><p th:if="${#fields.hasErrors('ip')}" th:errors="*{ip}"></p></td>
                         </tr>
                         <tr>
-                            <td>Post address:</td>
+                            <td th:text="#{admin.agent.form.post}"></td>
                             <td><input type="text" th:field="*{postAddress}" /></td>
+                            <td class="error"><p th:if="${#fields.hasErrors('postAddress')}" th:errors="*{postAddress}"></p></td>
                         </tr>
                         <tr>
-                            <td>Location:</td>
+                            <td th:text="#{admin.agent.form.location}"></td>
                             <td><input type="text" th:field="*{location}" /></td>
+                            <td class="error"><p th:if="${#fields.hasErrors('location')}" th:errors="*{location}"></p></td>
                         </tr>
                     </table>
-                    <input type="submit" value="Save" />
-                    <p>After saving choose to edit this agent to enable it.</p>
+                    <input type="submit" th:value="#{admin.agent.form.add.send}" />
+                    <p th:text="#{admin.agent.form.add.text}"></p>
                 </form>
             </div>
         </section>

@@ -1,15 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package checkit.server.service;
 
 import checkit.server.domain.Agent;
 import checkit.server.domain.AgentQueue;
-import checkit.server.domain.Test;
-import checkit.server.domain.Testing;
+import checkit.server.domain.Check;
+import checkit.server.domain.Checking;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.HttpURLConnection;
@@ -32,26 +26,26 @@ public class NetworkServiceImpl implements NetworkService {
     private AgentQueueService agentQueueService;
 
     @Autowired
-    private TestService testService;
+    private CheckService checkService;
 
     @Scheduled(fixedDelay = 60000)
     public void sendAndEmptyQueue() {
         List<AgentQueue> queue = agentQueueService.getAgentQueue();
-        Testing testing = new Testing();
+        Checking checking = new Checking();
         //TODO send and empty only if agent is reachable, it will be faster in case of long queue
         for (AgentQueue item : queue) {
-            testing.setTestId(item.getTestId());
-            testing.setAgentId(item.getAgentId());
-            if (postRequestToAgent(testing, item.getQuery())) {
+            checking.setCheckId(item.getCheckId());
+            checking.setAgentId(item.getAgentId());
+            if (postRequestToAgent(checking, item.getQuery())) {
                 agentQueueService.delete(item.getAgentQueueId());
             }
         }
     }
     
     @Async
-    private boolean postRequestToAgent(Testing testing, String query) {
-        Agent agent = agentService.getAgentById(testing.getAgentId());
-        Test test = testService.getTestById(testing.getTestId());
+    private boolean postRequestToAgent(Checking checking, String query) {
+        Agent agent = agentService.getAgentById(checking.getAgentId());
+        Check check = checkService.getCheckById(checking.getCheckId());
         
         String ip = agent.getPostAddress();
         int responseCode = 0;
@@ -63,7 +57,7 @@ public class NetworkServiceImpl implements NetworkService {
             urlCon.setDoOutput(true);
 
             try (ObjectOutputStream out = new ObjectOutputStream(urlCon.getOutputStream())) {
-                out.writeObject(test);
+                out.writeObject(check);
             }
 
             responseCode = urlCon.getResponseCode();
@@ -77,23 +71,23 @@ public class NetworkServiceImpl implements NetworkService {
     }
     
     @Override
-    public void postCreatingToAgent(Testing testing) {
-        if (!postRequestToAgent(testing, "create")) {
-            agentQueueService.add(testing, "create");
+    public void postCreatingToAgent(Checking checking) {
+        if (!postRequestToAgent(checking, "create")) {
+            agentQueueService.add(checking, "create");
         }
     }
 
     @Override
-    public void postDeletingToAgent(Testing testing) {
-        if (!postRequestToAgent(testing, "delete")) {
-            agentQueueService.add(testing, "delete");
+    public void postDeletingToAgent(Checking checking) {
+        if (!postRequestToAgent(checking, "delete")) {
+            agentQueueService.add(checking, "delete");
         }
     }
 
     @Override
-    public void postUpdatingToAgent(Testing testing) {
-        if (!postRequestToAgent(testing, "update")) {
-            agentQueueService.add(testing, "update");
+    public void postUpdatingToAgent(Checking checking) {
+        if (!postRequestToAgent(checking, "update")) {
+            agentQueueService.add(checking, "update");
         }
     }
     

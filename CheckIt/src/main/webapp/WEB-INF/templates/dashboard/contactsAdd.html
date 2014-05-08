@@ -3,16 +3,16 @@
     <body>
         <section layout:fragment="content">
             <div class="content">
-                <h1>Contacts / add contact</h1>
+                <h1><span th:remove="tag" th:text="#{contact.title}"></span> <span th:remove="tag" th:text="#{separator}"></span> <span th:remove="tag" th:text="#{contact.add.title}"></span></h1>
                 <form method="post" th:object="${contact}">
                     <table>
                         <tr>
-                            <td>Title:</td>
+                            <td th:text="#{contact.form.title}"></td>
                             <td><input type="text" th:field="*{title}" /></td>
                         </tr>
                     </table>
-                    <input type="submit" value="Save" />
-                    <p>After saving choose to edit this contact for adding contact details.</p>
+                    <input type="submit" th:value="#{contact.form.add.send}" />
+                    <p th:text="#{contact.form.add.text}"></p>
                 </form>
             </div>
         </section>

@@ -19,15 +19,15 @@
                     <div class="logo"><a th:href="@{/dashboard/}">myCheck<span>IT</span>!</a></div>
                     <nav th:if="${#authorization.expression('isAuthenticated()')}">
                         <ul>
-                            <li><a th:href="@{/dashboard/}">Dashboard</a></li>
-                            <li><a th:href="@{/dashboard/tests}">Tests</a></li>
-                            <li><a th:href="@{/dashboard/reports}">Reports</a></li>
-                            <li><a th:href="@{/dashboard/contacts}">Contacts</a></li>
+                            <li><a th:href="@{/dashboard/}" th:text="#{system.menu.dashboard}"></a></li>
+                            <li><a th:href="@{/dashboard/checks}" th:text="#{system.menu.dashboard.checks}"></a></li>
+                            <li><a th:href="@{/dashboard/results}" th:text="#{system.menu.dashboard.results}"></a></li>
+                            <li><a th:href="@{/dashboard/contacts}" th:text="#{system.menu.dashboard.contacts}"></a></li>
                         </ul>
                         <ul class="user">
                             <li><a th:href="@{/dashboard/account}" sec:authentication="name"></a></li>
-                            <li><a th:href="@{/j_spring_security_logout}" class="sign">Logout</a></li>
-                            <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin/}" class="sign">Admin</a></li>
+                            <li><a th:href="@{/j_spring_security_logout}" class="sign" th:text="#{system.menu.logout}"></a></li>
+                            <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin/}" class="sign" th:text="#{system.menu.admin}"></a></li>
                         </ul>
                     </nav>
                 </div>

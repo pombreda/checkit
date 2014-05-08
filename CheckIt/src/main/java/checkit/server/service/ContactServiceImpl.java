@@ -1,14 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package checkit.server.service;
 
 import checkit.server.dao.ContactDAO;
 import checkit.server.domain.Contact;
-import checkit.server.domain.Report;
+import checkit.server.domain.Reporting;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +19,9 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public List<Contact> getContactListByReport(List<Report> report) {
+    public List<Contact> getContactListByReporting(List<Reporting> reporting) {
         List<Contact> result = new ArrayList();
-        for (Report item : report) {
+        for (Reporting item : reporting) {
             result.add(getContactById(item.getContactId()));
         }
         return result;

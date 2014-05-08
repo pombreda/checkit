@@ -1,38 +1,43 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package checkit.agent.service;
 
 import checkit.server.domain.Result;
-import checkit.server.domain.Test;
+import checkit.server.domain.Check;
 import java.beans.Expression;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PluginService {
+    private Map<String, Object> pluginInstance = new HashMap<String, Object>();
+
     @Autowired
     private ResultService resultService;
 
+    @Autowired
+    MessageSource messageSource;
+    Locale locale = LocaleContextHolder.getLocale();
+    
     @Async
-    public void runTestAndSaveResult(Test test) {
-        Object instance = getPluginInstance(test.getPluginFilename());
-        Object params = getCallParams(instance, test.getData());
+    public void runCheckAndSaveResult(Check check) {
+        Object instance = getPluginInstance(check.getFilename());
+        Object params = getCallParams(instance, check.getData());
         Object resultParams = call(instance, "getResultParamsName", (Object[]) null);
         Object resultValues = call(instance, "run", params);
 
@@ -46,14 +51,14 @@ public class PluginService {
         String resultJSON = createJSONStringFromResults(resultParams, resultValues);
 
         Result result = new Result();
-        result.setTestId(test.getTestId());
+        result.setCheckId(check.getCheckId());
         result.setStatus(status);
         result.setData(resultJSON);
         resultService.createResult(result);
     }
     
     private Object getCallParams(Object instance, String data) {
-        //returns values for test running
+        //returns values for check running
         Object paramsName = call(instance, "getCallRequiredParamsName", (Object[]) null);
         Object params = getValuesFromJSONString(data, paramsName);
         return params;
@@ -88,22 +93,25 @@ public class PluginService {
     
     private Object getPluginInstance(String filename) {
         //TODO - this is really awful and painful. ASAP rewrite to OSGi or any other framework
-        Object instance = null;
-        try {
-            File file  = new File("D:\\Skola\\CVUT\\bakule\\! zdrojak\\plugins\\agent\\" + filename + ".jar");
-            URL url = file.toURI().toURL();
-            URL[] urls = new URL[]{url};
+        Object instance = pluginInstance.get(filename);
+        if (instance == null) {
+            try {
+                File file  = new File(messageSource.getMessage("path.plugin.agent", null, locale) + filename + ".jar");
+                URL url = file.toURI().toURL();
+                URL[] urls = new URL[]{url};
 
-            ClassLoader loader = URLClassLoader.newInstance(
-                urls,
-                getClass().getClassLoader()
-            );
-            Class<?> cls = Class.forName("checkit.plugin.check." + filename, true, loader);
+                ClassLoader loader = URLClassLoader.newInstance(
+                    urls,
+                    getClass().getClassLoader()
+                );
+                Class<?> cls = Class.forName("checkit.plugin.check." + filename, true, loader);
 
-            instance = cls.newInstance();
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | MalformedURLException ex) {
-            Logger.getLogger(PluginService.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println(ex);
+                instance = cls.newInstance();
+                pluginInstance.put(filename, instance);
+            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | MalformedURLException ex) {
+                Logger.getLogger(PluginService.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex);
+            }
         }
         return instance;
     }

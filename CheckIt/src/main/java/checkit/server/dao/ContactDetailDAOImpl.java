@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package checkit.server.dao;
 
 import checkit.server.domain.ContactDetail;
@@ -77,7 +71,7 @@ public class ContactDetailDAOImpl implements ContactDetailDAO {
     
     @Override
     public void createContactDetail(ContactDetail contactDetail) {
-        String sql = "INSERT INTO contact_detail (title, data, contact_id, user_id, plugin_filename, down, up, regular) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO contact_detail (title, data, contact_id, user_id, filename, down, up, regular) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         jdbcTemplate.update(
@@ -87,7 +81,7 @@ public class ContactDetailDAOImpl implements ContactDetailDAO {
                 stringToJSON(contactDetail.getData()),
                 contactDetail.getContactId(),
                 contactDetail.getUserId(),
-                contactDetail.getPluginFilename(),
+                contactDetail.getFilename(),
                 contactDetail.isDown(),
                 contactDetail.isUp(),
                 contactDetail.isRegular()

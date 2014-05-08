@@ -3,9 +3,8 @@
     <body>
         <section layout:fragment="content">
             <div class="content">
-                <h1>Registration done!</h1>
-                <p>We sent you activation link to your email address. Please, check your inbox or spam folder.</p>
-                <p>If our email does not arrive even after a few minutes, please, click this link to send email again. (TODO)</p>
+                <h1 th:text="#{account.registration.title}"></h1>
+                <p th:text="#{account.registration.text}"></p>
             </div>
         </section>
     </body>

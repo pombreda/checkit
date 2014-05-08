@@ -96,6 +96,8 @@ input { border: 1px #191a1c solid; padding: .1em; }
 input[type="text"], input[type="password"] { width: 20em; }
 input[type="submit"] { padding: .2em .5em; }
 
+.error { color: red; font-weight: bold; }
+
 section .errorblock { border: 1px red solid; color: red; margin: 1em 0; padding: 1em; }
 section .okblock { border: 1px green solid; color: green; margin: 1em 0; padding: 1em; }
 section ul li { margin-left: 1.5em; list-style-type: disc; }
@@ -111,21 +113,21 @@ header nav .user { float: right; margin-top: 1em; }
 .user p { margin-bottom: 1em; }
 .user input[type="submit"] { margin-top: 2em; }
 
-.contacts table, .tests table { width: 100%; }
-.contacts .add, .tests .add { display: inline-block; margin-top: 2em; padding-left: 1.5em; position: relative; }
-.contacts .add:before, .tests .add:before { content: "+"; position: absolute; display: block; width: 1em; height: 1em; text-align: center; top: 0; left: 0; background-color: #96c838; color: white; border-radius: 50%; }
-.contacts .description, .tests .description { color: #b4b4b4; font-size: .8em; }
+.contacts table, .checks table { width: 100%; }
+.contacts .add, .checks .add { display: inline-block; margin-top: 2em; padding-left: 1.5em; position: relative; }
+.contacts .add:before, .checks .add:before { content: "+"; position: absolute; display: block; width: 1em; height: 1em; text-align: center; top: 0; left: 0; background-color: #96c838; color: white; border-radius: 50%; }
+.contacts .description, .checks .description { color: #b4b4b4; font-size: .8em; }
 
-.reports table.results { border-collapse: collapse; border-spacing: 0; }
-.reports table.results td { border: 1px #9fa8ac solid; padding: .2em 1em; }
-.reports table.results tr.run td { font-weight: bold; }
-.reports table.results tr.stop td { color: #9fa8ac; font-weight: bold; }
-.reports table.results tr.down td { color: #9fa8ac; }
-.reports .pies { margin-bottom: 5em; }
-.reports .pie { margin: 0 0 2em 0; width: 300px; height: 300px; float: left; }
-.reports .pie + .pie { margin-left: 19px; }
-.reports .pie > div { width: 100%; height: 100%; }
-.reports .pie h2 { text-align: center; }
-.reports .allTime { width: 100%; height: 200px; margin-bottom: 5em; }
+.results table.results { border-collapse: collapse; border-spacing: 0; }
+.results table.results td { border: 1px #9fa8ac solid; padding: .2em 1em; }
+.results table.results tr.run td { font-weight: bold; }
+.results table.results tr.stop td { color: #9fa8ac; font-weight: bold; }
+.results table.results tr.down td { color: #9fa8ac; }
+.results .pies { margin-bottom: 5em; }
+.results .pie { margin: 0 0 2em 0; width: 300px; height: 300px; float: left; }
+.results .pie + .pie { margin-left: 19px; }
+.results .pie > div { width: 100%; height: 100%; }
+.results .pie h2 { text-align: center; }
+.results .allTime { width: 100%; height: 200px; margin-bottom: 5em; }
 
 /*# sourceMappingURL=dashboard.css.map */

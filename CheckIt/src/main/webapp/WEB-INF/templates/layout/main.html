@@ -19,11 +19,11 @@
                     <div class="logo"><a th:href="@{/}">Check<span>IT</span>!</a></div>
                     <nav>
                         <ul>
-                            <li><a th:href="@{/}">About</a></li>
-                            <li><a th:href="@{/features}">Features</a></li>
-                            <li><a th:href="@{/faq}">FAQ</a></li>
-                            <li><a th:href="@{/signup}">Sign up</a></li>
-                            <li><a th:href="@{/dashboard/}" class="sign">Sign in</a></li>
+                            <li><a th:href="@{/}" th:text="#{system.menu.about}"></a></li>
+                            <li><a th:href="@{/features}" th:text="#{system.menu.features}"></a></li>
+                            <li><a th:href="@{/faq}" th:text="#{system.menu.faq}"></a></li>
+                            <li><a th:href="@{/signup}" th:text="#{system.menu.signup}"></a></li>
+                            <li><a th:href="@{/dashboard/}" class="sign" th:text="#{system.menu.signin}"></a></li>
                         </ul>
                     </nav>
                 </div>

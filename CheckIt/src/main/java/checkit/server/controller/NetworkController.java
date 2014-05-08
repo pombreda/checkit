@@ -1,23 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package checkit.server.controller;
 
 import checkit.plugin.service.PluginReportService;
 import checkit.server.domain.Agent;
 import checkit.server.domain.ContactDetail;
 import checkit.server.domain.Result;
-import checkit.server.domain.Test;
+import checkit.server.domain.Check;
 import checkit.server.service.AgentService;
 import checkit.server.service.ContactDetailService;
 import checkit.server.service.ResultService;
-import checkit.server.service.TestService;
+import checkit.server.service.CheckService;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,10 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-/**
- *
- * @author Dodo
- */
 @Controller
 public class NetworkController {
     @Autowired
@@ -38,7 +30,7 @@ public class NetworkController {
     private AgentService agentService;
     
     @Autowired
-    private TestService testService;
+    private CheckService checkService;
     
     @Autowired
     private PluginReportService pluginService;
@@ -57,28 +49,32 @@ public class NetworkController {
                 try {
                     Result result = (Result) in.readObject();
                     result.setAgentId(agent.getAgentId());
-                    Test test = testService.getTestById(result.getTestId());
+                    Check check = checkService.getCheckById(result.getCheckId());
+                    
+                    if (check == null) {
+                        return;
+                    }
 
-                    if ((result.getStatus().equals("U") != test.isOk() || !test.isChecked()) && test.isEnabled()) {
+                    if ((result.getStatus().equals("U") != check.isOk() || !check.isChecked()) && check.isEnabled()) {
                         resultService.createResult(result);
 
                         List<ContactDetail> contactDetailList;
                         if (!result.getStatus().equals("U")) {
-//                            contactDetailList = contactDetailService.getContactDetailListByTestIdWhereDownIsActive(test.getTestId());
-//                            pluginService.reportDown(contactDetailList, test.getTitle());
+//                            contactDetailList = contactDetailService.getContactDetailListByCheckIdWhereDownIsActive(check.getCheckId());
+//                            pluginService.reportDown(contactDetailList, check.getTitle());
                             System.out.println("Sending down...");
-                        } else if (test.isChecked()) {
-//                            contactDetailList = contactDetailService.getContactDetailListByTestIdWhereUpIsActive(test.getTestId());
-//                            pluginService.reportUp(contactDetailList, test.getTitle());
+                        } else if (check.isChecked()) {
+//                            contactDetailList = contactDetailService.getContactDetailListByCheckIdWhereUpIsActive(check.getCheckId());
+//                            pluginService.reportUp(contactDetailList, check.getTitle());
                             System.out.println("Sending up...");
                         }
 
-                        test.setOk(result.getStatus().equals("U"));
-                        test.setChecked(true);
-                        testService.updateTest(test);
+                        check.setOk(result.getStatus().equals("U"));
+                        check.setChecked(true);
+                        checkService.updateCheck(check);
                     }
-                } catch (ClassNotFoundException e) {
-//                    e.printStackTrace();
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(NetworkController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }    
         }

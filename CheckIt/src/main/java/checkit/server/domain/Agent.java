@@ -1,19 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package checkit.server.domain;
 
-/**
- *
- * @author Dodo
- */
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class Agent {
     private int agentId;
+    @NotEmpty
     private String ip;
+    @NotEmpty
     private String postAddress;
+    @NotEmpty
     private String location;
     private boolean enabled;
 

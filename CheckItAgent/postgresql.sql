@@ -4,21 +4,18 @@ CREATE TABLE servers(
     priority INT NOT NULL
 );
 
-CREATE TABLE tests(
-    test_id INTEGER NOT NULL,
-    title VARCHAR(50) NOT NULL,
-    data JSON,
-    enabled BOOLEAN NOT NULL,
-    user_id INTEGER NOT NULL,
-    plugin_filename VARCHAR(50) NOT NULL,
+CREATE TABLE checks(
+    check_id INTEGER NOT NULL,
+    data JSON NOT NULL,
+    filename VARCHAR(50) NOT NULL,
     interval INT NOT NULL,
-    PRIMARY KEY (test_id)
+    PRIMARY KEY (check_id)
 );
 
 CREATE TABLE results(
-    test_id INTEGER NOT NULL,
+    check_id INTEGER NOT NULL,
     time TIMESTAMP NOT NULL,
     status VARCHAR(1) NOT NULL,
-    data JSON,
-    PRIMARY KEY (test_id, time)
+    data JSON NOT NULL,
+    PRIMARY KEY (check_id, time)
 );

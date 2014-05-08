@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package checkit.agent.dao;
 
 import checkit.agent.jdbc.ResultRowMapper;
@@ -54,13 +48,13 @@ public class ResultDAOImpl implements ResultDAO {
 
     @Override
     public void createResult(Result result) {
-        String sql = "INSERT INTO results (test_id, time, status, data) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO results (check_id, time, status, data) VALUES (?, ?, ?, ?)";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         jdbcTemplate.update(
             sql,
             new Object[] {
-                result.getTestId(),
+                result.getCheckId(),
                 getCurrentTimestamp(),
                 result.getStatus(),
                 stringToJSON(result.getData())
@@ -70,7 +64,7 @@ public class ResultDAOImpl implements ResultDAO {
 
     @Override
     public void deleteResult(Result result) {
-        String sql = "DELETE FROM results WHERE test_id=" + result.getTestId() + " AND time='" + result.getTime() + "'";
+        String sql = "DELETE FROM results WHERE check_id=" + result.getCheckId() + " AND time='" + result.getTime() + "'";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         jdbcTemplate.update(sql);

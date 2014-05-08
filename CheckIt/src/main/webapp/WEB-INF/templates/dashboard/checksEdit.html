@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html layout:decorator="/layout/dashboard">
+    <body>
+        <section class="checks" layout:fragment="content">
+            <div class="content">
+                <h1><span th:remove="tag" th:text="#{check.title}"></span> <span th:remove="tag" th:text="#{separator}"></span> <span th:remove="tag" th:text="#{check.edit.title}"></span></h1>
+                <form method="post" th:object="${check}">
+                    <table>
+                        <tr>
+                            <td th:text="#{check.form.title}"></td>
+                            <td>
+                                <input type="text" th:field="*{title}" />
+                                <input type="hidden" th:field="*{checkId}" />
+                                <input type="hidden" th:field="*{userId}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{check.form.interval}"></td>
+                            <td>
+                                <select type="number" th:field="*{interval}">
+                                    <option value="15">15<span th:remove="tag" th:text="#{time.second}"></span></option>
+                                    <option value="30">30<span th:remove="tag" th:text="#{time.second}"></span></option>
+                                    <option value="60" selected="selected">1<span th:remove="tag" th:text="#{time.minute}"></span></option>
+                                    <option value="300">5<span th:remove="tag" th:text="#{time.minute}"></span></option>
+                                    <option value="900">15<span th:remove="tag" th:text="#{time.minute}"></span></option>
+                                    <option value="1800">30<span th:remove="tag" th:text="#{time.minute}"></span></option>
+                                    <option value="3600">1<span th:remove="tag" th:text="#{time.hour}"></span></option>
+                                </select>
+                            </td>
+                        </tr>                    
+                        <tr>
+                            <td th:text="#{check.form.run}"></td>
+                            <td>
+                                <input type="checkbox" th:field="*{enabled}" />
+                            </td>
+                        </tr>                    
+                    </table>
+                    <table>
+                        <tr th:object="${formStruct.arrData[__${inputStat.index}__]}" th:each="input,inputStat: ${inputs}">
+                            <td>
+                                <span th:text="${input.title}"></span><br />
+                                <span class="description" th:text="${input.description}"></span>
+                            </td>
+                            <td th:switch="${input.type}">
+                                <input th:case="checkbox" type="checkbox" value="true" th:field="*{value}" />
+                                <select th:case="select" th:field="*{value}">
+                                    <option th:each="option : ${input.options}" th:text="${option}" th:value="${option}"></option>
+                                </select>
+                                <input th:case="*" th:type="${input.type}" th:field="*{value}" />
+                                <input type="hidden" th:field="*{name}" />
+                                <input type="hidden" th:field="*{type}" />
+                            </td>
+                        </tr>
+                    </table>
+                    <input type="submit" value="Save" />
+                    <h2 th:text="#{check.form.contacts.title}"></h2>
+                    <table th:unless="${#lists.isEmpty(contacts)}">
+                        <tr th:each="contact: ${contacts}">
+                            <td><a th:href="@{/dashboard/contacts/edit(id=${contact.contactId})}" th:text="${contact.title}"></a></td>
+                            <td><a th:href="@{/dashboard/checks/connect(contactId=${contact.contactId}, checkId=${check.checkId}, remove=true)}" th:text="#{remove}" th:onclick="'javascript:return confirm(\'' + #{check.form.contacts.remove} + '\');'"></a></td>
+                        </tr>
+                    </table>
+                    <p th:if="${#lists.isEmpty(contacts)}" th:text="#{check.form.contacts.empty}"></p>
+                    <p><a th:href="@{/dashboard/checks/connect(id=${check.checkId})}" class="add" th:text="#{check.form.contacts.add}"></a></p>
+
+                </form>
+            </div>
+        </section>
+    </body>
+</html>

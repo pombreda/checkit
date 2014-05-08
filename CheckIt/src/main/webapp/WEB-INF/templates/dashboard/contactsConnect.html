@@ -3,10 +3,10 @@
     <body>
         <section layout:fragment="content">
             <div class="content">
-                <h1>Contacts / connect to test</h1>
-                <form method="post" th:object="${report}">
-                    <select th:field="*{testId}">
-                        <option th:each="test : ${tests}" th:value="${test.testId}" th:text="${test.title}"></option>
+                <h1><span th:remove="tag" th:text="#{contact.title}"></span> <span th:remove="tag" th:text="#{separator}"></span> <span th:remove="tag" th:text="#{contact.connect.title}"></span></h1>
+                <form method="post" th:object="${reporting}">
+                    <select th:field="*{checkId}">
+                        <option th:each="check : ${checks}" th:value="${check.checkId}" th:text="${check.title}"></option>
                     </select>
                     <input type="submit" value="Save" />
                 </form>

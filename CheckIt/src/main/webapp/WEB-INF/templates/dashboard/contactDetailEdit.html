@@ -3,11 +3,11 @@
     <body>
         <section class="contacts" layout:fragment="content">
             <div class="content">
-                <h1>Contact detail / edit contact detail</h1>
+                <h1><span th:remove="tag" th:text="#{contactDetail.title}"></span> <span th:remove="tag" th:text="#{separator}"></span> <span th:remove="tag" th:text="#{contactDetail.edit.title}"></span></h1>
                 <form method="post">
                     <table th:object="${contactDetail}">
                         <tr>
-                            <td>Title:</td>
+                            <td th:text="#{contactDetail.form.title}"></td>
                             <td>
                                 <input type="text" th:field="*{title}" />
                                 <input type="hidden" th:field="*{contactDetailId}" />
@@ -16,19 +16,19 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Notify when down:</td>
+                            <td th:text="#{contactDetail.form.down}"></td>
                             <td>
                                 <input type="checkbox" th:field="*{down}" />
                             </td>
                         </tr>
                         <tr>
-                            <td>Notify when up again:</td>
+                            <td th:text="#{contactDetail.form.up}"></td>
                             <td>
                                 <input type="checkbox" th:field="*{up}" />
                             </td>
                         </tr>
                         <tr>
-                            <td>Send weekly reports:</td>
+                            <td th:text="#{contactDetail.form.regular}"></td>
                             <td>
                                 <input type="checkbox" th:field="*{regular}" />
                             </td>
@@ -51,8 +51,7 @@
                             </td>
                         </tr>
                     </table>
-                    <input type="submit" value="Save" />
-                    <p th:text="${json}"></p>
+                    <input type="submit" th:value="#{contactDetail.form.edit.send}" />
                 </form>
             </div>
         </section>

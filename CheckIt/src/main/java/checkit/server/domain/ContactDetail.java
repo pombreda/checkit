@@ -1,22 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package checkit.server.domain;
 
-/**
- *
- * @author Dodo
- */
 public class ContactDetail {
     private int contactDetailId;
     private String title;
     private String data;
     private int contactId;
     private int userId;
-    private String pluginFilename;
+    private String filename;
     private boolean down;
     private boolean up;
     private boolean regular;
@@ -61,12 +51,12 @@ public class ContactDetail {
         this.userId = userId;
     }
 
-    public String getPluginFilename() {
-        return pluginFilename;
+    public String getFilename() {
+        return filename;
     }
 
-    public void setPluginFilename(String pluginFilename) {
-        this.pluginFilename = pluginFilename;
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     public boolean isDown() {

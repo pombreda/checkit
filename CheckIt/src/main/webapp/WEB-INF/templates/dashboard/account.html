@@ -4,50 +4,57 @@
         <section class="user" layout:fragment="content">
             <div class="content">
                 <div th:if="${error}" class="errorblock">
-                    Unable to make changes. The following occurred:
+                    <span th:remove="tag" th:text="#{account.form.edit.error}"></span>
                     <ul>
-                        <li th:if="${weakPassword}">password has to be at least 8 chars long, has to contain number, lowercase and uppercase without any whitespaces</li>
-                        <li th:if="${confirmError}">passwords do not match</li>
-                        <li th:if="${emailConflict}">email <span th:text="${oldEmail}" th:remove="tag"></span> has already been used</li>
-                        <li th:if="${emailError}"><span th:text="${oldEmail}" th:remove="tag"></span> is not valid email address</li>
+                        <li th:if="${weakPassword}" th:text="#{account.form.edit.error.weakPassword}"></li>
+                        <li th:if="${confirmError}" th:text="#{account.form.edit.error.confirmError}"></li>
+                        <li th:if="${emailConflict}">
+                            <span th:remove="tag" th:text="#{account.form.edit.error.emailConflict.part1}"></span>
+                            <span th:text="${oldEmail}" th:remove="tag"></span>
+                            <span th:remove="tag" th:text="#{account.form.edit.error.emailConflict.part2}"></span>
+                        </li>
+                        <li th:if="${emailError}">
+                            <span th:text="${oldEmail}" th:remove="tag"></span>
+                            <span th:remove="tag" th:text="#{account.form.edit.error.emailError}"></span>
+                        </li>
                     </ul>
                 </div>
                 <div th:if="${ok}" class="okblock">
-                    Your data has been updated. <span th:if="${emailInfo}" th:remove="tag">Until you confirm your new email address by link we just sent you, your old email address will be still active.</span>
+                    <span th:remove="tag" th:text="#{account.form.ok}"></span> <span th:if="${emailInfo}" th:remove="tag" th:text="#{account.form.edit.ok.emailInfo}"></span>
                 </div>
-                <h1>Account</h1>
+                <h1 th:text="#{account.edit.title}"></h1>
                 <form method="post" th:action="@{/dashboard/account}" th:object="${user}">
                     <table>
                         <tr>
-                            <td>Username:</td>
+                            <td th:text="#{account.form.username}"></td>
                             <td sec:authentication="name"></td>
                         </tr>
                     </table>
-                    <h2>Change email (optional):</h2>
+                    <h2 th:text="#{account.form.edit.changeEmail}"></h2>
                     <table>
                         <tr>
-                            <td>Email:</td>
+                            <td th:text="#{account.form.email}"></td>
                             <td><input type="text" th:field="*{email}" /></td>
                         </tr>
                     </table>
-                    <h2>Change password (optional):</h2>
-                    <p>Leave it blank if you do not want to change your password.</p>
+                    <h2 th:text="#{account.form.edit.changePassword}"></h2>
+                    <p th:text="#{account.form.edit.changePassword.text}"></p>
                     <table>
                         <tr>
-                            <td>Password:</td>
+                            <td th:text="#{account.form.password}"></td>
                             <td><input type="password" th:field="*{password}" /></td>
                         </tr>
                         <tr>
-                            <td>Confirm password:</td>
+                            <td th:text="#{account.form.confirmPassword}"></td>
                             <td><input type="password" th:field="*{confirmPassword}" /></td>
                         </tr>
                     </table>
                     <input type="submit" value="Change" />
                 </form>
-                <h2>Delete account</h2>
-                <p>IMPORTANT! By deleting your account you will permanently lose all the data, contacts, tests, settings etc. This step can not be undone!</p>
-                <form method="post" th:action="@{/dashboard/deleteAccount}" onsubmit="return confirm('Do you really want to delete your account and permanently lose everything?');">
-                    <input type="submit" value="Delete account" />
+                <h2 th:text="#{account.delete.title}"></h2>
+                <p th:text="#{account.delete.text}"></p>
+                <form method="post" th:action="@{/dashboard/deleteAccount}" th:onsubmit="'javascript:return confirm(\'' + #{account.form.delete.confirm} + '\');'">
+                    <input type="submit" th:value="#{account.form.delete.send}" />
                 </form>
             </div>
         </section>

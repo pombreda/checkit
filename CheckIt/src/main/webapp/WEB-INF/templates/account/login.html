@@ -3,27 +3,25 @@
     <body>
         <section layout:fragment="content">
             <div class="content">
-                <h1>Sign in</h1>
-                <div th:if="${error}" class="errorblock">
-                    Your login attempt was not successful. Probably bad username or password. If you are sure you enter right username and password, make sure your account has been activated.
-                </div>
+                <h1 th:text="#{account.signin.title}"></h1>
+                <div th:if="${error}" class="errorblock" th:text="#{account.form.signin.error}"></div>
                 <form name="f" th:action="@{j_spring_security_check}" method="POST">
                     <table>
                         <tr>
-                            <td>User:</td>
+                            <td th:text="#{account.form.username}"></td>
                             <td><input type="text" name="j_username" value="" /></td>
                         </tr>
                         <tr>
-                            <td>Password:</td>
+                            <td th:text="#{account.form.password}"></td>
                             <td><input type="password" name="j_password" /></td>
                         </tr>
                         <tr>
                             <td> </td>
-                            <td><input name="submit" type="submit" value="submit" /></td>
+                            <td><input name="submit" type="submit" th:value="#{account.form.signin.send}" /></td>
                         </tr>
                     </table>
                 </form>
-                <p>Still do not have an account? <a th:href="@{/signup}">Sign up</a>, it is free.</p>
+                <p><span th:remove="tag" th:text="#{account.doNotHaveAccount}"></span> <a th:href="@{/signup}" th:text="#{account.signup.title}"></a>, <span th:remove="tag" th:text="#{account.itIsFree}"></span>.</p>
             </div>
         </section>
     </body>

@@ -1,23 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package checkit.plugin.service;
 
 import checkit.plugin.domain.FormStruct;
 import checkit.plugin.domain.FormStructRow;
 import checkit.plugin.domain.Input;
-import checkit.server.domain.Plugin;
+import checkit.plugin.domain.Plugin;
 import java.beans.Expression;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.simple.JSONArray;
@@ -25,11 +21,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-/**
- *
- * @author Dodo
- */
 public abstract class PluginServiceAbstract {
+    private Map<String, Object> pluginInstance = new HashMap<String, Object>();
 
     //Classloader
     protected abstract String getPath();
@@ -37,21 +30,24 @@ public abstract class PluginServiceAbstract {
     
     public Object getPluginInstance(String filename) {
         //TODO - this is really awful and painful. ASAP rewrite to OSGi or any other framework
-        Object instance = null;
-        try {
-            File file  = new File(getPath() + filename + ".jar");
-            URL url = file.toURI().toURL();
-            URL[] urls = new URL[]{url};
+        Object instance = pluginInstance.get(filename);
+        if (instance == null) {
+            try {
+                File file  = new File(getPath() + filename + ".jar");
+                URL url = file.toURI().toURL();
+                URL[] urls = new URL[]{url};
 
-            ClassLoader loader = URLClassLoader.newInstance(
-                urls,
-                getClass().getClassLoader()
-            );
-            Class<?> cls = Class.forName(getClassPrefix() + "." + filename, true, loader);
+                ClassLoader loader = URLClassLoader.newInstance(
+                    urls,
+                    getClass().getClassLoader()
+                );
+                Class<?> cls = Class.forName(getClassPrefix() + "." + filename, true, loader);
 
-            instance = cls.newInstance();
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | MalformedURLException ex) {
-            Logger.getLogger(PluginReportService.class.getName()).log(Level.SEVERE, null, ex);
+                instance = cls.newInstance();                
+                pluginInstance.put(filename, instance);
+            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | MalformedURLException ex) {
+                Logger.getLogger(PluginReportService.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return instance;
     }

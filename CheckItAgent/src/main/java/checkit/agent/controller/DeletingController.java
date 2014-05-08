@@ -1,14 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package checkit.agent.controller;
 
 import checkit.agent.service.ServerService;
-import checkit.agent.service.TestService;
-import checkit.server.domain.Test;
+import checkit.agent.service.CheckService;
+import checkit.server.domain.Check;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +18,7 @@ public class DeletingController {
     private ServerService serverService;
     
     @Autowired
-    private TestService testService;
+    private CheckService checkService;
     
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
@@ -34,8 +28,8 @@ public class DeletingController {
 
             try (ObjectInputStream in = new ObjectInputStream(request.getInputStream())) {
                 try {
-                    Test test = (Test) in.readObject();
-                    testService.deleteTest(test.getTestId());
+                    Check check = (Check) in.readObject();
+                    checkService.deleteCheck(check.getCheckId());
                 } catch (ClassNotFoundException e) {
 //                    e.printStackTrace();
                 }

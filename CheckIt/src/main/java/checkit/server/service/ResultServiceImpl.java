@@ -1,23 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package checkit.server.service;
 
 import checkit.server.dao.ResultDAO;
 import checkit.server.domain.Result;
-import checkit.server.domain.Test;
-import checkit.server.domain.Testing;
+import checkit.server.domain.Check;
+import checkit.server.domain.Checking;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,16 +19,18 @@ public class ResultServiceImpl implements ResultService {
     private ResultDAO resultDAO;
     
     @Autowired
-    private TestService testService;
+    private CheckService checkService;
+    
+    private final String dateFormat = "yyyy-MM-dd HH:mm:ss.SSS";
     
     @Override
-    public List<Result> getResultList(int testId) {
-        return resultDAO.getResultList(testId);
+    public List<Result> getResultList(int checkId) {
+        return resultDAO.getResultList(checkId);
     }
 
     @Override
-    public List<Result> getResultListAsc(int testId) {
-        return resultDAO.getResultListAsc(testId);
+    public List<Result> getResultListAsc(int checkId) {
+        return resultDAO.getResultListAsc(checkId);
     }
 
     @Override
@@ -50,30 +44,30 @@ public class ResultServiceImpl implements ResultService {
     }
 
     @Override
-    public void postStartTesting(Testing testing) {
-        Result result = createResultFromTesting(testing);
+    public void postStartChecking(Checking checking) {
+        Result result = createResultFromChecking(checking);
         result.setStatus("R");
         createResult(result);
         
-        Test test = testService.getTestById(testing.getTestId());
-        test.setChecked(false);
-        testService.updateTest(test);
+        Check check = checkService.getCheckById(checking.getCheckId());
+        check.setChecked(false);
+        checkService.updateCheck(check);
     }
 
     @Override
-    public void postStopTesting(Testing testing) {
-        Result result = createResultFromTesting(testing);
+    public void postStopChecking(Checking checking) {
+        Result result = createResultFromChecking(checking);
         result.setStatus("S");
         createResult(result);
     }
     
-    private Result createResultFromTesting(Testing testing) {
+    private Result createResultFromChecking(Checking checking) {
 	Date today = new java.util.Date();
 	Date now = new Timestamp(today.getTime());
 
         Result result = new Result();
-        result.setAgentId(testing.getAgentId());
-        result.setTestId(testing.getTestId());
+        result.setAgentId(checking.getAgentId());
+        result.setCheckId(checking.getCheckId());
         result.setTime(now.toString());
         
         return result;
@@ -138,7 +132,7 @@ public class ResultServiceImpl implements ResultService {
         date.setTime(date.getTime() - numberOfDays*1000*60*60*24);
         
         Date resultDate;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
         String beginningStatus = "undefined";
         String lastStatus = "undefined";
         int length = results.size();
@@ -147,7 +141,7 @@ public class ResultServiceImpl implements ResultService {
                 if (lastStatus.equals("undefined")) {
                     lastStatus = results.get(i).getStatus();
                 }
-                resultDate = dateFormat.parse(results.get(i).getTime());
+                resultDate = simpleDateFormat.parse(results.get(i).getTime());
                 if (resultDate.compareTo(date) < 0) {
                     if (beginningStatus.equals("undefined")) {
                         beginningStatus = results.get(i).getStatus();
@@ -163,12 +157,12 @@ public class ResultServiceImpl implements ResultService {
 
         //add beginning and last status to the left and right edge of the interval
         Result result = new Result();
-        result.setTime(dateFormat.format(date));
+        result.setTime(simpleDateFormat.format(date));
         result.setStatus(beginningStatus);
         results.add(0, result);
 
         result = new Result();
-        result.setTime(dateFormat.format(new Date()));
+        result.setTime(simpleDateFormat.format(new Date()));
         result.setStatus(lastStatus);
         results.add(result);
         
@@ -185,14 +179,14 @@ public class ResultServiceImpl implements ResultService {
             date.setTime(date.getTime() - numberOfDays*1000*60*60*24);
         } else {
             try {
-                date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(results.get(0).getTime());
+                date = new SimpleDateFormat(dateFormat).parse(results.get(0).getTime());
             } catch (ParseException ex) {}
         }
         Date resultDate;
         String currentStatus = "N";
         for (Result result : results) {
             try {
-                resultDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(result.getTime());
+                resultDate = new SimpleDateFormat(dateFormat).parse(result.getTime());
                 if (resultDate.compareTo(date) >= 0) {
                     output = addTimeToActivity(currentStatus, resultDate, date, output);
                     date = resultDate;
@@ -221,14 +215,14 @@ public class ResultServiceImpl implements ResultService {
             date.setTime(date.getTime() - numberOfDays*1000*60*60*24);
         } else {
             try {
-                date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(results.get(0).getTime());
+                date = new SimpleDateFormat(dateFormat).parse(results.get(0).getTime());
             } catch (ParseException ex) {}
         }
         Date resultDate;
         String currentStatus = "N";
         for (Result result : results) {
             try {
-                resultDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(result.getTime());
+                resultDate = new SimpleDateFormat(dateFormat).parse(result.getTime());
                 if (resultDate.compareTo(date) >= 0) {
                     output = addCountToActivity(currentStatus, output);
                 }

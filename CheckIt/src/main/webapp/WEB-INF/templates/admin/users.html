@@ -3,15 +3,15 @@
     <body>
         <section layout:fragment="content" class="users">
             <div class="content">
-                <h1>Users</h1>
+                <h1 th:text="#{admin.user.title}"></h1>
                 <table>
                     <tr>
-                        <th>ID</th>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Date of registration</th>
-                        <th>Role</th>
-                        <th>Status</th>
+                        <th th:text="#{admin.user.table.id}"></th>
+                        <th th:text="#{admin.user.table.username}"></th>
+                        <th th:text="#{admin.user.table.email}"></th>
+                        <th th:text="#{admin.user.table.date}"></th>
+                        <th th:text="#{admin.user.table.role}"></th>
+                        <th th:text="#{admin.user.table.status}"></th>
                     </tr>
                     <tr th:each="user : ${users}">
                         <td th:text="${user.userId}"></td>

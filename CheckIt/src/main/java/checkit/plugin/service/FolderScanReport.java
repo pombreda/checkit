@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package checkit.plugin.service;
 
 import java.io.IOException;
@@ -14,9 +8,12 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -25,10 +22,15 @@ public class FolderScanReport {
     @Autowired
     private PluginReportService reportService;
 
+    @Autowired
+    MessageSource messageSource;
+    
+    Locale locale = LocaleContextHolder.getLocale();
+
     @Async
     public void run() {
         boolean scanFolder = true; //TODO - add to global settings
-        Path myDir = Paths.get("D:\\Skola\\CVUT\\bakule\\! zdrojak\\plugins\\report\\");
+        Path myDir = Paths.get(messageSource.getMessage("path.plugin.report", null, locale));
         while (scanFolder) {
             try {
                 WatchService watcher = myDir.getFileSystem().newWatchService();

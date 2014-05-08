@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package checkit.server.controller;
 
 import checkit.plugin.domain.FormStruct;
@@ -17,7 +11,10 @@ import checkit.server.service.ContactService;
 import checkit.server.service.UserService;
 import java.security.Principal;
 import java.util.List;
+import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,10 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-/**
- *
- * @author Dodo
- */
 @Controller
 public class DashboardContactDetailsController {
     @Autowired
@@ -45,6 +38,10 @@ public class DashboardContactDetailsController {
     
     @Autowired
     private PluginReportService reportService;
+    
+    @Autowired
+    MessageSource messageSource;
+    Locale locale = LocaleContextHolder.getLocale();
     
     @RequestMapping(value = "/dashboard/contactDetail/add", method = RequestMethod.GET, params = {"id"})
     public String add(ModelMap model, @ModelAttribute ContactDetail contactDetail) {
@@ -72,7 +69,7 @@ public class DashboardContactDetailsController {
         ContactDetail contactDetail = contactDetailService.getContactDetailById(contactDetailId);
 
         if (contactDetail.getUserId() == userId) {
-            String pluginFilename = contactDetail.getPluginFilename();
+            String pluginFilename = contactDetail.getFilename();
             Object plugin = reportService.getPluginInstance(pluginFilename);
             //get required inputs of plugin
             List<Input> inputs = reportService.getInputs(plugin);
@@ -95,7 +92,7 @@ public class DashboardContactDetailsController {
         int userId = user.getUserId();
 
         if (contactDetail.getTitle().equals("")) {
-            contactDetail.setTitle("Unknown title");
+            contactDetail.setTitle(messageSource.getMessage("unknownTitle", null, locale));
         }
         int userIdByContactId = contactService.getContactById(contactId).getUserId();
         if (userIdByContactId == userId) {

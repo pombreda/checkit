@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package checkit.server.service;
 
 import checkit.plugin.domain.Input;
@@ -11,7 +5,7 @@ import checkit.plugin.service.PluginReportService;
 import checkit.server.dao.ContactDetailDAO;
 import checkit.server.domain.Contact;
 import checkit.server.domain.ContactDetail;
-import checkit.server.domain.Report;
+import checkit.server.domain.Reporting;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +17,7 @@ public class ContactDetailServiceImpl implements ContactDetailService {
     private ContactDetailDAO contactDetailDAO;
 
     @Autowired
-    private ReportService reportService;
+    private ReportingService reportingService;
     
     @Autowired
     private ContactService contactService;
@@ -53,7 +47,7 @@ public class ContactDetailServiceImpl implements ContactDetailService {
 
     @Override
     public void createContactDetail(ContactDetail contactDetail) {
-        String plugin = contactDetail.getPluginFilename();
+        String plugin = contactDetail.getFilename();
         Object instance = pluginReportService.getPluginInstance(plugin);
         List<Input> inputs = pluginReportService.getInputs(instance);
         String dataInitJSON = pluginReportService.getInitEmptyDataJSON(inputs);
@@ -77,9 +71,9 @@ public class ContactDetailServiceImpl implements ContactDetailService {
     }
     
     @Override
-    public List<ContactDetail> getContactDetailListByTestIdWhereUpIsActive(int testId) {
-        List<Report> reportList = reportService.getReportListByTest(testId);
-        List<Contact> contactList = contactService.getContactListByReport(reportList);
+    public List<ContactDetail> getContactDetailListByCheckIdWhereUpIsActive(int checkId) {
+        List<Reporting> reportingList = reportingService.getReportingListByCheck(checkId);
+        List<Contact> contactList = contactService.getContactListByReporting(reportingList);
         List<ContactDetail> result = new ArrayList();
         for (Contact item : contactList) {
             result.addAll(getContactDetailListWhereUpIsActive(item.getContactId(), item.getUserId()));
@@ -88,9 +82,9 @@ public class ContactDetailServiceImpl implements ContactDetailService {
     }
 
     @Override
-    public List<ContactDetail> getContactDetailListByTestIdWhereDownIsActive(int testId) {
-        List<Report> reportList = reportService.getReportListByTest(testId);
-        List<Contact> contactList = contactService.getContactListByReport(reportList);
+    public List<ContactDetail> getContactDetailListByCheckIdWhereDownIsActive(int checkId) {
+        List<Reporting> reportingList = reportingService.getReportingListByCheck(checkId);
+        List<Contact> contactList = contactService.getContactListByReporting(reportingList);
         List<ContactDetail> result = new ArrayList();
         for (Contact item : contactList) {
             result.addAll(getContactDetailListWhereDownIsActive(item.getContactId(), item.getUserId()));
@@ -99,9 +93,9 @@ public class ContactDetailServiceImpl implements ContactDetailService {
     }
     
     @Override
-    public List<ContactDetail> getContactDetailListByTestIdWhereRegularIsActive(int testId) {
-        List<Report> reportList = reportService.getReportListByTest(testId);
-        List<Contact> contactList = contactService.getContactListByReport(reportList);
+    public List<ContactDetail> getContactDetailListByCheckIdWhereRegularIsActive(int checkId) {
+        List<Reporting> reportingList = reportingService.getReportingListByCheck(checkId);
+        List<Contact> contactList = contactService.getContactListByReporting(reportingList);
         List<ContactDetail> result = new ArrayList();
         for (Contact item : contactList) {
             result.addAll(getContactDetailListWhereRegularIsActive(item.getContactId(), item.getUserId()));

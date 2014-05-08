@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html layout:decorator="/layout/dashboard">
+    <body>
+        <section layout:fragment="content" class="results">
+            <div class="content">
+                <h1 th:text="#{result.title}"></h1>
+                <table th:unless="${#lists.isEmpty(checks)}">
+                    <tr th:each="check: ${checks}">
+                        <td><a th:href="@{/dashboard/results/detail(id=${check.checkId})}" th:text="${check.title}"></a></td>
+                        <td th:if="${check.enabled == false}" th:text="#{result.paused}"></td>
+                        <td th:unless="${check.enabled == false}" th:text="${check.ok == false} ? #{result.down} : #{result.up}"></td>
+                    </tr>
+                </table>
+                <p th:if="${#lists.isEmpty(checks)}" th:text="#{result.empty}"></p>
+            </div>
+        </section>
+    </body>
+</html>

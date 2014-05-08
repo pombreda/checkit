@@ -1,18 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package checkit.server.domain;
 
-/**
- *
- * @author Dodo
- */
 public class AgentQueue {
     private int agentQueueId;
-    private int testId;
+    private int checkId;
     private int agentId;
     private String query;
 
@@ -24,12 +14,12 @@ public class AgentQueue {
         this.agentQueueId = agentQueueId;
     }
 
-    public int getTestId() {
-        return testId;
+    public int getCheckId() {
+        return checkId;
     }
 
-    public void setTestId(int testId) {
-        this.testId = testId;
+    public void setCheckId(int checkId) {
+        this.checkId = checkId;
     }
 
     public int getAgentId() {

@@ -1,14 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package checkit.agent.service;
 
 import checkit.server.domain.Result;
 import checkit.server.domain.Server;
-import checkit.server.domain.Test;
+import checkit.server.domain.Check;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.HttpURLConnection;
@@ -22,14 +16,10 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author Dodo
- */
 @Service
 public class CronService {
     @Autowired
-    private TestService testService;
+    private CheckService checkService;
     
     @Autowired
     private ServerService serverService;
@@ -54,11 +44,11 @@ public class CronService {
     
     @Scheduled(fixedDelay = minInterval * 1000)
     public void Cron() {
-        List<Test> testList = testService.getTestList();
+        List<Check> checkList = checkService.getCheckList();
         
-        for (Test test : testList) {
-            if (timeCounter % test.getInterval() == 0) {
-                pluginService.runTestAndSaveResult(test);
+        for (Check check : checkList) {
+            if (timeCounter % check.getInterval() == 0) {
+                pluginService.runCheckAndSaveResult(check);
             }
         }
 

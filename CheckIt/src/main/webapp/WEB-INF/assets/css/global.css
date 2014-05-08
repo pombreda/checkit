@@ -31,6 +31,8 @@ input { border: 1px #191a1c solid; padding: .1em; }
 input[type="text"], input[type="password"] { width: 20em; }
 input[type="submit"] { padding: .2em .5em; }
 
+.error { color: red; font-weight: bold; }
+
 section .errorblock { border: 1px red solid; color: red; margin: 1em 0; padding: 1em; }
 section .okblock { border: 1px green solid; color: green; margin: 1em 0; padding: 1em; }
 section ul li { margin-left: 1.5em; list-style-type: disc; }

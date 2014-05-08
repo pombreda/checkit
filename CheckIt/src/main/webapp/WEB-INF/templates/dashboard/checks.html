@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html layout:decorator="/layout/dashboard">
+    <body>
+        <section class="checks" layout:fragment="content">
+            <div class="content">
+                <h1 th:text="#{check.title}"></h1>
+                <table th:unless="${#lists.isEmpty(checks)}">
+                    <tr th:each="check: ${checks}">
+                        <td><a th:href="@{/dashboard/checks/edit(id=${check.checkId})}" th:text="${check.title}"></a></td>
+                        <td><a th:href="@{/dashboard/checks/remove(id=${check.checkId})}" th:text="#{remove}" th:onclick="'javascript:return confirm(\'' + #{check.action.remove} + '\');'"></a></td>
+                        <td><a th:href="@{/dashboard/checks/edit(id=${check.checkId})}" th:text="#{edit}"></a></td>
+                    </tr>
+                </table>
+                <p th:if="${#lists.isEmpty(checks)}" th:text="#{check.empty}"></p>
+                <p><a th:href="@{/dashboard/checks/add}" class="add" th:text="#{check.add}"></a></p>
+            </div>
+        </section>
+    </body>
+</html>

@@ -1,17 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package checkit.plugin.service;
 
 import checkit.plugin.dao.PluginCheckDAO;
-import checkit.server.domain.Plugin;
+import checkit.plugin.domain.Plugin;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,9 +16,14 @@ public class PluginCheckService extends PluginServiceAbstract {
     @Autowired
     private PluginCheckDAO pluginCheckDAO;
 
+    @Autowired
+    MessageSource messageSource;
+    
+    Locale locale = LocaleContextHolder.getLocale();
+
     @Override
     protected String getPath() {
-        return "D:\\Skola\\CVUT\\bakule\\! zdrojak\\plugins\\check\\";
+        return messageSource.getMessage("path.plugin.check", null, locale);
     }
 
     @Override

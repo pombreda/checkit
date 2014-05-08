@@ -31,59 +31,59 @@ CREATE TABLE contacts(
 CREATE TABLE plugins_report(
     filename VARCHAR(50) PRIMARY KEY,
     enabled BOOLEAN NOT NULL,
-    title VARCHAR(50) UNIQUE,
+    title VARCHAR(50) UNIQUE NOT NULL,
     description VARCHAR(50)
 );
 
 CREATE TABLE plugins_check(
     filename VARCHAR(50) PRIMARY KEY,
     enabled BOOLEAN NOT NULL,
-    title VARCHAR(50) UNIQUE,
+    title VARCHAR(50) UNIQUE NOT NULL,
     description VARCHAR(50)
 );
 
 CREATE TABLE contact_detail(
     contact_detail_id SERIAL PRIMARY KEY,
     title VARCHAR(50) NOT NULL,
-    data JSON,
+    data JSON NOT NULL,
     contact_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
-    plugin_filename VARCHAR(50) NOT NULL,
-    down BOOLEAN,
-    up BOOLEAN,
-    regular BOOLEAN,
+    filename VARCHAR(50) NOT NULL,
+    down BOOLEAN NOT NULL,
+    up BOOLEAN NOT NULL,
+    regular BOOLEAN NOT NULL,
     FOREIGN KEY (contact_id) REFERENCES contacts(contact_id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (plugin_filename) REFERENCES plugins_report(filename) ON DELETE CASCADE
+    FOREIGN KEY (filename) REFERENCES plugins_report(filename) ON DELETE CASCADE
 );
 
-CREATE TABLE tests(
-    test_id SERIAL PRIMARY KEY,
+CREATE TABLE checks(
+    check_id SERIAL PRIMARY KEY,
     title VARCHAR(50) NOT NULL,
-    data JSON,
+    data JSON NOT NULL,
     enabled BOOLEAN NOT NULL,
     user_id INTEGER NOT NULL,
-    plugin_filename VARCHAR(50) NOT NULL,
+    filename VARCHAR(50) NOT NULL,
     interval INTEGER NOT NULL,
     ok BOOLEAN NOT NULL,
     checked BOOLEAN NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (plugin_filename) REFERENCES plugins_check(filename) ON DELETE CASCADE
+    FOREIGN KEY (filename) REFERENCES plugins_check(filename) ON DELETE CASCADE
 );
 
-CREATE TABLE reports(
+CREATE TABLE reporting(
     user_id INTEGER NOT NULL,
-    test_id INTEGER NOT NULL,
+    check_id INTEGER NOT NULL,
     contact_id INTEGER NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (test_id) REFERENCES tests(test_id) ON DELETE CASCADE,
+    FOREIGN KEY (check_id) REFERENCES checks(check_id) ON DELETE CASCADE,
     FOREIGN KEY (contact_id) REFERENCES contacts(contact_id) ON DELETE CASCADE,
-    PRIMARY KEY (user_id, test_id, contact_id)
+    PRIMARY KEY (user_id, check_id, contact_id)
 );
 
-CREATE RULE "reports_on_duplicate_ignore" AS ON INSERT TO "reports"
-    WHERE EXISTS(SELECT 1 FROM reports
-        WHERE (test_id, test_id, contact_id)=(NEW.test_id, NEW.test_id, NEW.contact_id)
+CREATE RULE "reporting_on_duplicate_ignore" AS ON INSERT TO "reporting"
+    WHERE EXISTS(SELECT 1 FROM reporting
+        WHERE (check_id, check_id, contact_id)=(NEW.check_id, NEW.check_id, NEW.contact_id)
     ) DO INSTEAD NOTHING;
 
 CREATE TABLE agents(
@@ -91,32 +91,32 @@ CREATE TABLE agents(
     ip VARCHAR(50) NOT NULL,
     post_address VARCHAR(50) NOT NULL,
     location VARCHAR(50) NOT NULL,
-    enabled BOOLEAN
+    enabled BOOLEAN NOT NULL
 );
 
-CREATE TABLE testing(
+CREATE TABLE checking(
     agent_id INTEGER NOT NULL,
-    test_id INTEGER NOT NULL,
+    check_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
     FOREIGN KEY (agent_id) REFERENCES agents(agent_id) ON DELETE RESTRICT,
-    FOREIGN KEY (test_id) REFERENCES tests(test_id) ON DELETE CASCADE,
+    FOREIGN KEY (check_id) REFERENCES checks(check_id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    PRIMARY KEY (agent_id, test_id)
+    PRIMARY KEY (agent_id, check_id)
 );
 
 CREATE TABLE agent_queue(
     agent_queue_id SERIAL PRIMARY KEY,
     agent_id INTEGER NOT NULL,
-    test_id INTEGER NOT NULL,
+    check_id INTEGER NOT NULL,
     query VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE results(
-    test_id INTEGER NOT NULL,
+    check_id INTEGER NOT NULL,
     agent_id INTEGER NOT NULL,
     time TIMESTAMP NOT NULL,
     status VARCHAR(1) NOT NULL,
     data JSON,
-    FOREIGN KEY (test_id) REFERENCES tests(test_id) ON DELETE CASCADE,
-    PRIMARY KEY (test_id, agent_id, time)
+    FOREIGN KEY (check_id) REFERENCES checks(check_id) ON DELETE CASCADE,
+    PRIMARY KEY (check_id, agent_id, time)
 );

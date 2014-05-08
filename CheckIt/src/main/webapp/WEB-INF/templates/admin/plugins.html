@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html layout:decorator="/layout/admin">
+    <body>
+        <section class="plugins" layout:fragment="content">
+            <div class="content">
+                <h1 th:text="#{admin.plugin.title}"></h1>
+                <h2 th:text="#{admin.plugin.report}"></h2>
+                <table>
+                    <tr th:attr="class=${report.enabled == false ? 'disabled' : ''}" th:each="report : ${reports}">
+                        <td th:text="${report.title}"></td>
+                        <td th:text="${report.description}"></td>
+                        <td th:text="${report.filename}"></td>
+                        <td th:text="${report.enabled} ? enabled : disabled"></td>
+                        <td><a th:href="@{/admin/plugins/edit(id=${report.filename},type=report)}" th:text="#{edit}"></a></td>
+                    </tr>
+                </table>
+                <h2 th:text="#{admin.plugin.check}"></h2>
+                <table>
+                    <tr th:attr="class=${check.enabled == false ? 'disabled' : ''}" th:each="check : ${checks}">
+                        <td th:text="${check.title}"></td>
+                        <td th:text="${check.description}"></td>
+                        <td th:text="${check.filename}"></td>
+                        <td th:text="${check.enabled} ? enabled : disabled"></td>
+                        <td><a th:href="@{/admin/plugins/edit(id=${check.filename},type=check)}" th:text="#{edit}"></a></td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+    </body>
+</html>

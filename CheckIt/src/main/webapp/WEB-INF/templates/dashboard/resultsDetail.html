@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html layout:decorator="/layout/dashboard">
+    <head>
+        <link type="text/css" rel="stylesheet" media="all" th:href="@{/assets/css/vendor/jquery.jqplot.min.css}" />
+        <!--[if lt IE 9]><script th:src="@{/assets/js/vendor/excanvas.min.js}"></script><![endif]-->
+        <script th:src="@{/assets/js/vendor/jquery.jqplot.min.js}"></script>
+        <script th:src="@{/assets/js/vendor/jqplot.pieRenderer.min.js}"></script>
+        <script th:src="@{/assets/js/vendor/jqplot.dateAxisRenderer.min.js}"></script>
+        <script th:src="@{/assets/js/graphs.js}"></script>
+        <script th:inline="javascript">
+            /*[+
+                var pieWeekSlices = [
+                    ['Uptime',[[${chartLastWeek[1]}]]],
+                    ['Downtime',[[${chartLastWeek[2]}]]],
+                    ['Unmonitored',[[${chartLastWeek[0]}]]]
+                ];
+                var pieMonthSlices = [
+                    ['Uptime',[[${chartLastMonth[1]}]]],
+                    ['Downtime',[[${chartLastMonth[2]}]]],
+                    ['Unmonitored',[[${chartLastMonth[0]}]]]
+                ];
+                var pieAllSlices = [
+                    ['Uptime',[[${chartAllTime[1]}]]],
+                    ['Downtime',[[${chartAllTime[2]}]]],
+                    ['Unmonitored',[[${chartAllTime[0]}]]]
+                ];
+                var lastDayBasicData = [[${chartLastDay}]];
+            +]*/
+        </script>
+    </head>
+    <body>
+        <section layout:fragment="content" class="results">
+            <div class="content">
+                <h1><span th:remove="tag" th:text="#{result.title}"></span> <span th:remove="tag" th:text="#{separator}"></span> <span th:remove="tag" th:text="${title}"></span></h1>
+                <h2 th:text="#{result.lastDay}"></h2>
+                <div class="allTime" id="allTime"></div>
+                <div class="clearfix pies">
+                    <div class="pie">
+                        <h2 th:text="#{result.lastWeek}"></h2>
+                        <div id="pieWeek"></div>
+                    </div>
+                    <div class="pie">
+                        <h2 th:text="#{result.lastMonth}"></h2>
+                        <div id="pieMonth"></div>
+                    </div>
+                    <div class="pie">
+                        <h2 th:text="#{result.allTime}"></h2>
+                        <div id="pieAll"></div>
+                    </div>
+                </div>
+                <table class="results">
+                    <tr>
+                        <th th:text="#{result.status}"></th>
+                        <th th:text="#{result.time}"></th>
+                        <if th:unless="${#lists.isEmpty(tableValues)}" th:remove="tag">
+                            <th th:each="header : ${tableHeader}" th:text="${header}"></th>
+                        </if>
+                    </tr>
+                <loop th:remove="tag" th:each="result,resultStat: ${results}">
+                    <tr class="down" th:if="${result.status == 'D'}">
+                        <td th:text="#{result.down}"></td>
+                        <td th:text="${result.time}"></td>
+                        <if th:unless="${#lists.isEmpty(tableValues)}" th:remove="tag">
+                            <td th:each="column: ${tableValues[__${resultStat.index}__]}" th:text="${column}"></td>
+                        </if>
+                    </tr>
+                    <tr class="up" th:if="${result.status == 'U'}">
+                        <td th:text="#{result.up}"></td>
+                        <td th:text="${result.time}"></td>
+                        <if th:unless="${#lists.isEmpty(tableValues)}" th:remove="tag">
+                            <td th:each="column: ${tableValues[__${resultStat.index}__]}" th:text="${column}"></td>
+                        </if>
+                    </tr>
+                    <tr class="run" th:if="${result.status == 'R'}">
+                        <td th:text="#{result.run}"></td>
+                        <td th:text="${result.time}"></td>
+                        <if th:unless="${#lists.isEmpty(tableValues)}" th:remove="tag">
+                            <td th:each="column: ${tableValues[__${resultStat.index}__]}" th:text="${column}"></td>
+                        </if>
+                    </tr>
+                    <tr class="stop" th:if="${result.status == 'S'}">
+                        <td th:text="#{result.stop}"></td>
+                        <td th:text="${result.time}"></td>
+                        <if th:unless="${#lists.isEmpty(tableValues)}" th:remove="tag">
+                            <td th:each="column: ${tableValues[__${resultStat.index}__]}" th:text="${column}"></td>
+                        </if>
+                    </tr>
+                </loop>
+                </table>
+            </div>
+        </section>
+    </body>
+</html>

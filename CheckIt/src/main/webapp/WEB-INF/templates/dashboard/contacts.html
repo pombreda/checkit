@@ -3,16 +3,16 @@
     <body>
         <section class="contacts" layout:fragment="content">
             <div class="content">
-                <h1>Contacts</h1>
+                <h1 th:text="#{contact.title}"></h1>
                 <table th:unless="${#lists.isEmpty(contacts)}">
                     <tr th:each="contact: ${contacts}">
                         <td><a th:href="@{/dashboard/contacts/edit(id=${contact.contactId})}" th:text="${contact.title}"></a></td>
-                        <td><a th:href="@{/dashboard/contacts/remove(id=${contact.contactId})}" onclick="return confirm('Do you really want to delete this contact and permanently lose everything connected with it?');">remove</a></td>
-                        <td><a th:href="@{/dashboard/contacts/edit(id=${contact.contactId})}">edit</a></td>
+                        <td><a th:href="@{/dashboard/contacts/remove(id=${contact.contactId})}" th:text="#{remove}" th:onclick="'javascript:return confirm(\'' + #{contact.action.remove} + '\');'"></a></td>
+                        <td><a th:href="@{/dashboard/contacts/edit(id=${contact.contactId})}" th:text="#{edit}"></a></td>
                     </tr>
                 </table>
-                <p th:if="${#lists.isEmpty(contacts)}">No contacts</p>
-                <p><a th:href="@{/dashboard/contacts/add}" class="add">add new contact</a></p>
+                <p th:if="${#lists.isEmpty(contacts)}" th:text="#{contact.action.empty}"></p>
+                <p><a th:href="@{/dashboard/contacts/add}" class="add" th:text="#{contact.action.add}"></a></p>
             </div>
         </section>
     </body>

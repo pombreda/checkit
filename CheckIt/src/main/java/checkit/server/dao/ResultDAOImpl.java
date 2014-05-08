@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package checkit.server.dao;
 
 import checkit.server.jdbc.ResultRowMapper;
@@ -39,9 +33,9 @@ public class ResultDAOImpl implements ResultDAO {
     }
 
     @Override
-    public List<Result> getResultList(int testId) {
+    public List<Result> getResultList(int checkId) {
         List pluginCheckList = new ArrayList();
-        String sql = "SELECT * FROM results WHERE test_id=" + testId + " ORDER BY time DESC";
+        String sql = "SELECT * FROM results WHERE check_id=" + checkId + " ORDER BY time DESC";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         pluginCheckList = jdbcTemplate.query(sql, new ResultRowMapper());
@@ -49,9 +43,9 @@ public class ResultDAOImpl implements ResultDAO {
     }
 
     @Override
-    public List<Result> getResultListAsc(int testId) {
+    public List<Result> getResultListAsc(int checkId) {
         List pluginCheckList = new ArrayList();
-        String sql = "SELECT * FROM results WHERE test_id=" + testId + " ORDER BY time ASC";
+        String sql = "SELECT * FROM results WHERE check_id=" + checkId + " ORDER BY time ASC";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         pluginCheckList = jdbcTemplate.query(sql, new ResultRowMapper());
@@ -60,7 +54,7 @@ public class ResultDAOImpl implements ResultDAO {
 
     @Override
     public void createResult(Result result) {
-        String sql = "INSERT INTO results (test_id, agent_id, time, status, data) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO results (check_id, agent_id, time, status, data) VALUES (?, ?, ?, ?, ?)";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         Date timestamp = null;
@@ -73,7 +67,7 @@ public class ResultDAOImpl implements ResultDAO {
         jdbcTemplate.update(
             sql,
             new Object[] {
-                result.getTestId(),
+                result.getCheckId(),
                 result.getAgentId(),
                 timestamp,
                 result.getStatus(),
@@ -84,7 +78,7 @@ public class ResultDAOImpl implements ResultDAO {
 
     @Override
     public void deleteResult(Result result) {
-        String sql = "DELETE FROM results WHERE test_id=" + result.getTestId() + " AND agent_id=" + result.getAgentId() + " AND time='" + result.getTime() + "'";
+        String sql = "DELETE FROM results WHERE check_id=" + result.getCheckId() + " AND agent_id=" + result.getAgentId() + " AND time='" + result.getTime() + "'";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         jdbcTemplate.update(sql);

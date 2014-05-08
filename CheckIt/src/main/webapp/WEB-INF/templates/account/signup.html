@@ -3,39 +3,50 @@
     <body>
         <section layout:fragment="content">
             <div class="content">
-                <h1>Sign up</h1>
+                <h1 th:text="#{account.signup.title}"></h1>
                 <div th:if="${error}" class="errorblock">
-                    Sorry, the following occurred:
+                    <span th:remove="tag" th:text="#{account.form.signup.error}"></span>
                     <ul>
-                        <li th:if="${usernameConflict}">username <span th:text="${oldUsername}" th:remove="tag"></span> has already been used</li>
-                        <li th:if="${usernameLength}">username has to be at least 3 chars long</li>
-                        <li th:if="${weakPassword}">password has to be at least 8 chars long, has to contain number, lowercase and uppercase without any whitespaces</li>
-                        <li th:if="${confirmPassword}">passwords do not match</li>
-                        <li th:if="${emailConflict}">email <span th:text="${oldEmail}" th:remove="tag"></span> has already been used</li>
-                        <li th:if="${emailValidation}"><span th:text="${oldEmail}" th:remove="tag"></span> is not valid email address</li>
+                        <li th:if="${usernameConflict}">
+                            <span th:remove="tag" th:text="#{account.form.signup.error.usernameConflict.part1}"></span>
+                            <span th:text="${oldUsername}" th:remove="tag"></span>
+                            <span th:remove="tag" th:text="#{account.form.signup.error.usernameConflict.part2}"></span>
+                        </li>
+                        <li th:if="${usernameLength}" th:text="#{account.form.signup.error.usernameLength}"></li>
+                        <li th:if="${weakPassword}" th:text="#{account.form.signup.error.weakPassword}"></li>
+                        <li th:if="${confirmPassword}" th:text="#{account.form.signup.error.confirmPassword}"></li>
+                        <li th:if="${emailConflict}">
+                            <span th:remove="tag" th:text="#{account.form.signup.error.emailConflict.part1}"></span>
+                            <span th:text="${oldEmail}" th:remove="tag"></span>
+                            <span th:remove="tag" th:text="#{account.form.signup.error.emailConflict.part2}"></span>
+                        </li>
+                        <li th:if="${emailValidation}">
+                            <span th:text="${oldEmail}" th:remove="tag"></span>
+                            <span th:remove="tag" th:text="#{account.form.signup.error.emailValidation}"></span>
+                        </li>
                     </ul>
                 </div>
                 <form method="post" th:action="@{/signup}" th:object="${user}">
                     <table>
                         <tr>
-                            <td>Username:</td>
+                            <td th:text="#{account.form.username}"></td>
                             <td><input type="text" th:field="*{username}" /></td>
                         </tr>
                         <tr>
-                            <td>Password:</td>
+                            <td th:text="#{account.form.password}"></td>
                             <td><input type="password" th:field="*{password}" /></td>
                         </tr>
                         <tr>
-                            <td>Confirm password:</td>
+                            <td th:text="#{account.form.confirmPassword}"></td>
                             <td><input type="password" th:field="*{confirmPassword}" /></td>
                         </tr>
                         <tr>
-                            <td>Email:</td>
+                            <td th:text="#{account.form.email}"></td>
                             <td><input type="text" th:field="*{email}" /></td>
                         </tr>
                         <tr>
                             <td> </td>
-                            <td><input type="submit" value="Register" /></td>
+                            <td><input type="submit" th:value="#{account.form.signup.send}" /></td>
                         </tr>
                     </table>
                 </form>

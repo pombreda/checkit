@@ -1,16 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package checkit.plugin.service;
 
 import checkit.plugin.dao.PluginReportDAO;
 import checkit.server.domain.ContactDetail;
-import checkit.server.domain.Plugin;
+import checkit.plugin.domain.Plugin;
 import java.util.List;
+import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -19,42 +16,47 @@ public class PluginReportService extends PluginServiceAbstract {
     @Autowired
     private PluginReportDAO pluginReportDAO;
 
+    @Autowired
+    MessageSource messageSource;
+    
+    Locale locale = LocaleContextHolder.getLocale();
+
     @Async
-    public void reportUp(List<ContactDetail> contactDetail, String testTitle) {
+    public void reportUp(List<ContactDetail> contactDetail, String checkTitle) {
         Object instance, params, result;
         for (ContactDetail item : contactDetail) {
-            instance = getPluginInstance(item.getPluginFilename());
+            instance = getPluginInstance(item.getFilename());
             params = getCallParams(instance, item.getData());
 
-            result = call(instance, "reportUp", testTitle, params);
+            result = call(instance, "reportUp", checkTitle, params);
         }                
     }
     
     @Async
-    public void reportDown(List<ContactDetail> contactDetail, String testTitle) {
+    public void reportDown(List<ContactDetail> contactDetail, String checkTitle) {
         Object instance, params, result;
         for (ContactDetail item : contactDetail) {
-            instance = getPluginInstance(item.getPluginFilename());
+            instance = getPluginInstance(item.getFilename());
             params = getCallParams(instance, item.getData());
 
-            result = call(instance, "reportDown", testTitle, params);
+            result = call(instance, "reportDown", checkTitle, params);
         }                
     }
     
     @Async
-    public void reportRegular(List<ContactDetail> contactDetail, String testTitle, int numberOfDowns, long timeOfDowns) {
+    public void reportRegular(List<ContactDetail> contactDetail, String checkTitle, int numberOfDowns, long timeOfDowns) {
         Object instance, params, result;
         for (ContactDetail item : contactDetail) {
-            instance = getPluginInstance(item.getPluginFilename());
+            instance = getPluginInstance(item.getFilename());
             params = getCallParams(instance, item.getData());
 
-            result = call(instance, "reportRegular", testTitle, numberOfDowns, timeOfDowns, params);
+            result = call(instance, "reportRegular", checkTitle, numberOfDowns, timeOfDowns, params);
         }                
     }
     
     @Override
     protected String getPath() {
-        return "D:\\Skola\\CVUT\\bakule\\! zdrojak\\plugins\\report\\";
+        return messageSource.getMessage("path.plugin.report", null, locale);
     }
 
     @Override
