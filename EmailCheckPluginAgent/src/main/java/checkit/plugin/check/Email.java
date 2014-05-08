@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package checkit.plugin.check;
 
 import java.util.Properties;
@@ -12,10 +6,6 @@ import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.Transport;
 
-/**
- *
- * @author Dodo
- */
 public class Email implements CheckAgent {
 
     @Override

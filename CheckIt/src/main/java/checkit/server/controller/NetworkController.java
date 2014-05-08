@@ -60,13 +60,11 @@ public class NetworkController {
 
                         List<ContactDetail> contactDetailList;
                         if (!result.getStatus().equals("U")) {
-//                            contactDetailList = contactDetailService.getContactDetailListByCheckIdWhereDownIsActive(check.getCheckId());
-//                            pluginService.reportDown(contactDetailList, check.getTitle());
-                            System.out.println("Sending down...");
+                            contactDetailList = contactDetailService.getContactDetailListByCheckIdWhereDownIsActive(check.getCheckId());
+                            pluginService.reportDown(contactDetailList, check.getTitle());
                         } else if (check.isChecked()) {
-//                            contactDetailList = contactDetailService.getContactDetailListByCheckIdWhereUpIsActive(check.getCheckId());
-//                            pluginService.reportUp(contactDetailList, check.getTitle());
-                            System.out.println("Sending up...");
+                            contactDetailList = contactDetailService.getContactDetailListByCheckIdWhereUpIsActive(check.getCheckId());
+                            pluginService.reportUp(contactDetailList, check.getTitle());
                         }
 
                         check.setOk(result.getStatus().equals("U"));

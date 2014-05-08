@@ -1,20 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package checkit.plugin.check;
 
 import java.io.IOException;
 import org.apache.commons.net.ftp.FTPClient;
-//import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPConnectionClosedException;
 
-/**
- *
- * @author Dodo
- */
 public class FTP implements CheckAgent {
 
     @Override
