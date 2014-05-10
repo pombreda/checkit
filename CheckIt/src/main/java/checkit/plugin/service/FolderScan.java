@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * Scanning folders for plugins
+ */
+
 package checkit.plugin.service;
 
 import javax.annotation.PostConstruct;
@@ -12,6 +21,10 @@ public class FolderScan {
     @Autowired
     FolderScanCheck checkFolderScan;
 
+    /**
+     * On server start run folder scanning
+     * 
+     */
     @PostConstruct
     public void initialize() {
         reportFolderScan.run();

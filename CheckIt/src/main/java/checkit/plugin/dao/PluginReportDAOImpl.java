@@ -1,3 +1,11 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The PluginReportDAO implementation
+ */
 package checkit.plugin.dao;
 
 import checkit.plugin.domain.Plugin;
@@ -14,6 +22,11 @@ public class PluginReportDAOImpl implements PluginReportDAO {
     @Autowired
     private DataSource dataSource;
     
+    /**
+     * Get the list of all rows (report plugins) from database
+     *
+     * @return List of all report plugins.
+     */
     @Override
     public List<Plugin> getPluginReportList() {
         List pluginReportList = new ArrayList();
@@ -25,6 +38,11 @@ public class PluginReportDAOImpl implements PluginReportDAO {
     }
 
 
+    /**
+     * Get the list of all rows (report plugins) from database, which are activated
+     *
+     * @return List of all report plugins, which are activated.
+     */
     @Override
     public List<Plugin> getActivePluginReportList() {
         List pluginReportList = new ArrayList();
@@ -35,6 +53,11 @@ public class PluginReportDAOImpl implements PluginReportDAO {
         return pluginReportList;    
     }
 
+    /**
+     * Create new row (report plugin) in database
+     *
+     * @param plugin Report plugin for insertion into the database
+     */
     @Override
     public void createPluginReport(Plugin plugin) {
         String sql = "INSERT INTO plugins_report (filename, enabled, title, description) VALUES (?, ?, ?, ?)";
@@ -51,6 +74,11 @@ public class PluginReportDAOImpl implements PluginReportDAO {
         );
     }
 
+    /**
+     * Delete row (report plugin) in database
+     *
+     * @param filename Filename of report plugin to delete
+     */
     @Override
     public void deletePluginReport(String filename) {
         String sql = "DELETE FROM plugins_report WHERE filename='" + filename + "'";
@@ -59,6 +87,12 @@ public class PluginReportDAOImpl implements PluginReportDAO {
         jdbcTemplate.update(sql);
     }
 
+    /**
+     * Update row (report plugin) in database.
+     * Get plugin filename and rewrite all other data.
+     *
+     * @param plugin Plugin to update
+     */
     @Override
     public void updatePluginReport(Plugin plugin) {
         String sql = "UPDATE plugins_report SET enabled=?, title=?, description=? WHERE filename=?";
@@ -75,6 +109,13 @@ public class PluginReportDAOImpl implements PluginReportDAO {
         );
     }
 
+    /**
+     * Get row (report plugin) by plugin filename
+     *
+     * @param filename Filename of plugin to get
+     *
+     * @return Plugin or null if not exists.
+     */
     @Override
     public Plugin getPluginReportByFilename(String filename) {
         List<Plugin> pluginReport = new ArrayList<Plugin>();

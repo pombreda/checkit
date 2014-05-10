@@ -1,6 +1,16 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The UserService interface
+ */
+
 package checkit.server.service;
 
 import checkit.server.domain.User;
+import java.security.Principal;
 import java.util.List;
 
 public interface UserService {
@@ -14,4 +24,5 @@ public interface UserService {
     public void updateUserEmail(User user, String email);
     public void updateUserPassword(User user, String password);
     public boolean confirmEmail(String hash);
+    public User getLoggedUser(Principal principal);
 }

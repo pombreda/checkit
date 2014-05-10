@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * Controller for receiving agents data.
+ */
+
 package checkit.server.controller;
 
 import checkit.plugin.service.PluginReportService;
@@ -38,6 +47,13 @@ public class NetworkController {
     @Autowired
     private ContactDetailService contactDetailService;
     
+    /**
+     * Controller for posting agents data
+     * Receive result data from agents, check agents ip and save result if everything is ok
+     *
+     * @param request Agents request connection
+     * @throws java.io.IOException
+     */
     @RequestMapping(value = "/postResult", method = RequestMethod.POST)
     @ResponseBody
     public void post(HttpServletRequest request) throws IOException {

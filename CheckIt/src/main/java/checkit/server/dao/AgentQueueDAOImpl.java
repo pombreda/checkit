@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The AgentDAO implementation
+ */
+
 package checkit.server.dao;
 
 import checkit.server.domain.AgentQueue;
@@ -14,6 +23,11 @@ public class AgentQueueDAOImpl implements AgentQueueDAO {
     @Autowired
     private DataSource dataSource;
     
+    /**
+     * Get the list of all rows (agentQueue) from database
+     *
+     * @return List of all agentQueue.
+     */
     @Override
     public List<AgentQueue> getAgentQueue() {
         List queue = new ArrayList();
@@ -24,6 +38,11 @@ public class AgentQueueDAOImpl implements AgentQueueDAO {
         return queue;
     }
 
+    /**
+     * Create new row (agentQueue) in database
+     *
+     * @param agentQueue AgentQueue for insertion into the database
+     */
     @Override
     public void add(AgentQueue agentQueue) {
         String sql = "INSERT INTO agent_queue (check_id, agent_id, query) VALUES (?, ?, ?)";
@@ -39,6 +58,11 @@ public class AgentQueueDAOImpl implements AgentQueueDAO {
         );
     }
 
+    /**
+     * Delete row (agentQueue) in database
+     *
+     * @param agentQueueId Id of agentQueue to delete
+     */
     @Override
     public void delete(int agentQueueId) {
         String sql = "DELETE FROM agent_queue WHERE agent_queue_id=" + agentQueueId;

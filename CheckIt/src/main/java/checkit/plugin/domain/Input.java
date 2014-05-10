@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The Input class represents one input field from plugins website form and all their settings.
+ */
+
 package checkit.plugin.domain;
 
 import java.util.List;

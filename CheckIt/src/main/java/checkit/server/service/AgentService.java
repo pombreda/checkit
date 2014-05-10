@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The AgentService interface
+ */
+
 package checkit.server.service;
 
 import checkit.server.domain.Agent;
@@ -10,4 +19,5 @@ public interface AgentService {
     public void updateAgent(Agent agent);
     public Agent getAgentById(int agentId);
     public Agent getAgentByIp(String ip);
+    public int getIdOfLeastBusyAgent();
 }

@@ -1,3 +1,13 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * Controller for everything related to user profile.
+ * Dashboard section.
+ */
+
 package checkit.server.controller;
 
 import checkit.server.domain.User;
@@ -23,18 +33,37 @@ public class DashboardAccountController {
     @Autowired
     private EmailService emailService;
     
+    /**
+     * Controller for displaying /dashboard/account page
+     * Controller loads user data and displays form to edit this data.
+     *
+     * @param model Model of page, received from org.springframework.ui.ModelMap
+     * @param principal Information about logged in user, received from java.security.Principal
+     *
+     * @return Path of HTML tamplate page to display or redirect to login form if user is not logged in
+     */
     @RequestMapping(value = "/dashboard/account", method = RequestMethod.GET)
     public String show(ModelMap model, Principal principal) {
-        String username = principal.getName();
-        User user = userService.getUserByUsername(username);
+        User user = userService.getLoggedUser(principal);
+        if (user == null) return "redirect:/dashboard/";
         model.addAttribute("user", user);
         return "/dashboard/account";
     } 
     
+    /**
+     * Controller for posting user edit from /dashboard/account page
+     * Edit user data
+     *
+     * @param user Posted user
+     * @param model Model of page, received from org.springframework.ui.ModelMap
+     * @param principal Information about logged in user, received from java.security.Principal
+     *
+     * @return Path of HTML tamplate page to display or redirect to login form if user is not logged in
+     */
     @RequestMapping(value = "/dashboard/account", method = RequestMethod.POST)
     public String post(@ModelAttribute User user, ModelMap model, Principal principal) {
-        String loggedUsername = principal.getName();
-        User loggedUser = userService.getUserByUsername(loggedUsername);
+        User loggedUser = userService.getLoggedUser(principal);
+        if (loggedUser == null) return "redirect:/dashboard/";
         boolean error = false;
         boolean ok = false;
         boolean password = false;
@@ -78,10 +107,18 @@ public class DashboardAccountController {
         return "/dashboard/account";
     } 
 
+    /**
+     * Controller for displaying /dashboard/deleteAccount page
+     * Delete logged in user
+     *
+     * @param principal Information about logged in user, received from java.security.Principal
+     *
+     * @return Address to redirect
+     */
     @RequestMapping(value = "/dashboard/deleteAccount", method = RequestMethod.POST)
     public String delete(Principal principal) {
-        String username = principal.getName();
-        User user = userService.getUserByUsername(username);
+        User user = userService.getLoggedUser(principal);
+        if (user == null) return "redirect:/dashboard/";
         userService.deleteUser(user.getUserId());
         return "redirect:/j_spring_security_logout";
     } 

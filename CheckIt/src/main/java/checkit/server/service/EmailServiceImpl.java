@@ -1,3 +1,13 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The EmailService implementation
+ * All services related to emailing
+ */
+
 package checkit.server.service;
 
 import checkit.server.domain.User;
@@ -21,6 +31,13 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private JavaMailSender mailSender;
     
+    /**
+     * Send plain text email
+     *
+     * @param email Recipients email address
+     * @param subject Subject of email
+     * @param message Emails body.
+     */
     private void sendEmail(String email, String subject, String message) {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(email);
@@ -29,6 +46,13 @@ public class EmailServiceImpl implements EmailService {
         mailSender.send(msg);
     }
     
+    /**
+     * Send HTML email
+     *
+     * @param email Recipients email address
+     * @param subject Subject of email
+     * @param message Emails body.
+     */
     private void sendHtmlEmail(String email, String subject, String message) {
         try {
             MimeMessage msg = mailSender.createMimeMessage();
@@ -42,6 +66,13 @@ public class EmailServiceImpl implements EmailService {
 
     }
     
+    /**
+     * Check if string is valid email
+     *
+     * @param email Tested string
+     * 
+     * @return true if string is email, false otherwise.
+     */
     @Override
     public boolean isEmailValid(String email) {
 	final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -51,6 +82,13 @@ public class EmailServiceImpl implements EmailService {
         return matcher.matches();
     }
 
+    /**
+     * Generate hash for activation or changing link
+     *
+     * @param user User for whom is hash generated.
+     * 
+     * @return Final unique hash.
+     */
     @Override
     public String getActivationCode(User user) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -60,6 +98,12 @@ public class EmailServiceImpl implements EmailService {
         return hash;
     }
 
+    /**
+     * Create and send email for activation
+     *
+     * @param user User to whom is email sended.
+     * @param hash Already generated unique hash.
+     */
     @Override
     @Async
     public void sendActivationLink(User user, String hash) {
@@ -75,6 +119,12 @@ public class EmailServiceImpl implements EmailService {
         sendHtmlEmail(user.getEmail(), subject, message);
     }
 
+    /**
+     * Create and send email for changing
+     *
+     * @param user User to whom is email sended.
+     * @param hash Already generated unique hash.
+     */
     @Override
     @Async
     public void sendUpdateLink(User user, String hash) {

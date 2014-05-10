@@ -1,3 +1,13 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * Controller for everything related to results.
+ * Dashboard section.
+ */
+
 package checkit.server.controller;
 
 import checkit.plugin.service.PluginCheckService;
@@ -31,20 +41,39 @@ public class DashboardResultsController {
     @Autowired
     private PluginCheckService pluginService;
     
+    /**
+     * Controller for displaying /dashboard/results page
+     * Page displays list of all checks.
+     *
+     * @param model Model of page, received from org.springframework.ui.ModelMap
+     * @param principal Information about logged in user, received from java.security.Principal
+     *
+     * @return Path of HTML tamplate page to display or redirect to login form if user is not logged in
+     */
     @RequestMapping(value = "/dashboard/results", method = RequestMethod.GET)
     public String show(ModelMap model, Principal principal) {
-        String username = principal.getName();
-        User user = userService.getUserByUsername(username);
+        User user = userService.getLoggedUser(principal);
+        if (user == null) return "redirect:/dashboard/";
         int userId = user.getUserId();
         List<Check> checkList = checkService.getCheckList(userId);
         model.addAttribute("checks", checkList);
         return "/dashboard/results";
     } 
     
+    /**
+     * Controller for displaying /dashboard/results/detail page
+     * Page displays detail results of corresponding check.
+     *
+     * @param model Model of page, received from org.springframework.ui.ModelMap
+     * @param checkId Id of check to display its results
+     * @param principal Information about logged in user, received from java.security.Principal
+     *
+     * @return Path of HTML tamplate page to display or address to redirect if problem occurs
+     */
     @RequestMapping(value = "/dashboard/results/detail", method = RequestMethod.GET, params = {"id"})
     public String show(ModelMap model, @RequestParam(value = "id") int checkId, Principal principal) {
-        String username = principal.getName();
-        User user = userService.getUserByUsername(username);
+        User user = userService.getLoggedUser(principal);
+        if (user == null) return "redirect:/dashboard/";
         int userId = user.getUserId();
         Check check = checkService.getCheckById(checkId);
         if (check.getUserId() == userId) {

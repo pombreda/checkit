@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The PluginService implementation
+ */
+
 package checkit.agent.service;
 
 import checkit.server.domain.Result;
@@ -34,6 +43,11 @@ public class PluginService {
     MessageSource messageSource;
     Locale locale = LocaleContextHolder.getLocale();
     
+    /**
+     * Run check, evaluate the result and add result to queue for servers.
+     * 
+     * @param check Check to test.
+     */
     @Async
     public void runCheckAndSaveResult(Check check) {
         Object instance = getPluginInstance(check.getFilename());
@@ -57,6 +71,14 @@ public class PluginService {
         resultService.createResult(result);
     }
     
+    /**
+     * Get values of parameters required by plugin to run.
+     * 
+     * @param instance Instance of loaded plugin.
+     * @param data JSON in string with user custom setting.
+     * 
+     * @return Always return ARRAY of objects
+     */
     private Object getCallParams(Object instance, String data) {
         //returns values for check running
         Object paramsName = call(instance, "getCallRequiredParamsName", (Object[]) null);
@@ -64,6 +86,15 @@ public class PluginService {
         return params;
     }
     
+    /**
+     * Create JSON string from two objects arrays.
+     * For example: ["color", "shape", "value"] and ["red", "rectangle", 2] create {"color": "red", "shape": "rectangle", "value": 2}
+     * 
+     * @param p Array of parameters names.
+     * @param v Array of values.
+     * 
+     * @return Always return ARRAY of objects
+     */
     private String createJSONStringFromResults(Object p, Object v) {
         //receive params names a params values and from them JSON string
         Object[] params = (Object[]) p;
@@ -76,8 +107,16 @@ public class PluginService {
         return json.toJSONString();
     }
     
+    /**
+     * Give values of names in JSON.
+     * E.g. for {"color": "red"}, params is "color", returns "red".
+     * 
+     * @param json Instance of loaded plugin.
+     * @param params JSON in string with user custom setting.
+     * 
+     * @return Always return ARRAY of objects
+     */
     private Object getValuesFromJSONString(String json, Object params) {
-        //gives values of JSON names in params. E.g. name: Dodo, params is name, returns Dodo. - uses for give an address and followRedirects
         List values = new ArrayList();
         try {
             JSONParser parser = new JSONParser();
@@ -91,6 +130,13 @@ public class PluginService {
         return values.toArray();
     }
     
+    /**
+     * Load a new class from external file by Java Classloader, if it is not already in memory.
+     * 
+     * @param filename Filename of wanted plugin
+     * 
+     * @return Instance of plugin
+     */
     private Object getPluginInstance(String filename) {
         //TODO - this is really awful and painful. ASAP rewrite to OSGi or any other framework
         Object instance = pluginInstance.get(filename);
@@ -116,6 +162,15 @@ public class PluginService {
         return instance;
     }
     
+    /**
+     * Call method of dynamic loaded class
+     * 
+     * @param instance Instance of loaded plugin
+     * @param methodName Method name to call
+     * @param params Optional parameters for calling method. If method has no parameters, call (Object[]) null
+     * 
+     * @return Results of called method.
+     */
     private Object call(Object instance, String methodName, Object... params) {
         Expression expr = new Expression(instance, methodName, params) {};
         Object result = null;

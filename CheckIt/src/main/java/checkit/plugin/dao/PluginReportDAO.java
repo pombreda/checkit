@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The PluginReportDAO interface
+ */
+
 package checkit.plugin.dao;
 
 import checkit.plugin.domain.Plugin;

@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The ResultService interface
+ */
+
 package checkit.agent.service;
 
 import checkit.server.domain.Result;

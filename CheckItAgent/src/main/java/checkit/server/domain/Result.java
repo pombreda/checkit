@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The Result class represents domain class and equals to one row in table "result" from database.
+ */
+
 package checkit.server.domain;
 
 import java.io.Serializable;

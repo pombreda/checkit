@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The Agent class represents domain class and equals to one row in table "agents" from database.
+ */
+
 package checkit.server.domain;
 
 import org.hibernate.validator.constraints.NotEmpty;

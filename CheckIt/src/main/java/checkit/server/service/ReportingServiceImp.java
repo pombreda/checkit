@@ -1,3 +1,13 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The ReportingService implementation
+ * All services related to reporting
+ */
+
 package checkit.server.service;
 
 import checkit.plugin.service.PluginReportService;
@@ -32,31 +42,66 @@ public class ReportingServiceImp implements ReportingService {
     @Autowired
     private ContactDetailService contactDetailService;
     
+    /**
+     * Get the list of all reportings belong to user
+     *
+     * @param userId Id of user
+     *
+     * @return List of all reporting belong to user.
+     */
     @Override
     public List<Reporting> getReportingListByUser(int userId) {
         return reportingDAO.getReportingListByUser(userId);
     }
 
+    /**
+     * Get the list of all reportings belong to check
+     *
+     * @param checkId Id of check
+     *
+     * @return List of all reporting belong to check.
+     */
     @Override
     public List<Reporting> getReportingListByCheck(int checkId) {
         return reportingDAO.getReportingListByCheck(checkId);
     }
 
+    /**
+     * Get the list of all reportings belong to contact
+     *
+     * @param contactId Id of contact
+     *
+     * @return List of all reporting belong to contact.
+     */
     @Override
     public List<Reporting> getReportingListByContact(int contactId) {
         return reportingDAO.getReportingListByContact(contactId);
     }
 
+    /**
+     * Create new reporting
+     *
+     * @param reporting Reporting to create
+     */
     @Override
     public void createReporting(Reporting reporting) {
         reportingDAO.createReporting(reporting);
     }
 
+    /**
+     * Delete reporting
+     *
+     * @param reporting Reporting to delete
+     */
     @Override
     public void deleteReporting(Reporting reporting) {
         reportingDAO.deleteReporting(reporting);
     }
     
+    /**
+     * Cron, sends every week on Sunday at 6PM regular reports.
+     *
+     */
     @Scheduled(cron="0 0 18 ? * SUN")
     public void sendRegularReports() {
         List<Checking> checkingList = checkingService.getAllChecking();

@@ -3,6 +3,7 @@ package checkit.server.service;
 import checkit.server.dao.UserDAO;
 import checkit.server.domain.User;
 import checkit.server.domain.UserActivation;
+import java.security.Principal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,5 +86,13 @@ public class UserServiceImpl implements UserService {
         String encodedPassword = passwordService.encodePassword(user);
         user.setPassword(encodedPassword);
         updateUser(user);
+    }
+
+    @Override
+    public User getLoggedUser(Principal principal) {
+        if (principal == null) return null;
+        String username = principal.getName();
+        User user = getUserByUsername(username);
+        return user;
     }
 }

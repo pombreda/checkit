@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The CheckDAO implementation
+ */
+
 package checkit.agent.dao;
 
 import checkit.server.domain.Check;
@@ -18,6 +27,13 @@ public class CheckDAOImpl implements CheckDAO {
     @Autowired
     private DataSource dataSource;
 
+    /**
+     * Convert JSON string to Postgres JSON
+     *
+     * @param jsonString JSON string to convert
+     *
+     * @return Postgres JSON.
+     */
     private PGobject stringToJSON(String jsonString) {
         PGobject json = new PGobject();
         json.setType("json");
@@ -29,6 +45,11 @@ public class CheckDAOImpl implements CheckDAO {
         return json;
     }
     
+    /**
+     * Get the list of all rows (checks) in database
+     *
+     * @return List of all checks.
+     */
     @Override
     public List<Check> getCheckList() {
         List checkList = new ArrayList();
@@ -39,6 +60,11 @@ public class CheckDAOImpl implements CheckDAO {
         return checkList;    
     }
 
+    /**
+     * Create new row (check) in database
+     *
+     * @param check Check for insertion into the database
+     */
     @Override
     public void createCheck(Check check) {
         String sql = "INSERT INTO checks (check_id, data, filename, interval) VALUES (?, ?, ?, ?)";
@@ -55,6 +81,11 @@ public class CheckDAOImpl implements CheckDAO {
         );
     }
 
+    /**
+     * Delete row (check) in database
+     *
+     * @param checkId Id of check to delete
+     */
     @Override
     public void deleteCheck(int checkId) {
         String sql = "DELETE FROM checks WHERE check_id=" + checkId;
@@ -63,6 +94,12 @@ public class CheckDAOImpl implements CheckDAO {
         jdbcTemplate.update(sql);
     }
 
+    /**
+     * Update row (check) in database.
+     * Get check id and user id and rewrite all other data.
+     *
+     * @param check Check to update
+     */
     @Override
     public void updateCheck(Check check) {
         String sql = "UPDATE checks SET data=?, interval=? WHERE check_id=?";
@@ -78,6 +115,13 @@ public class CheckDAOImpl implements CheckDAO {
         );
     }
 
+    /**
+     * Get row (check) by check id
+     *
+     * @param checkId Id of check to get
+     *
+     * @return Check or null if not exists.
+     */
     @Override
     public Check getCheckById(int checkId) {
         List<Check> check = new ArrayList<Check>();

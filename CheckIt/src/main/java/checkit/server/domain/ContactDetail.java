@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The ContactDetail class represents domain class and equals to one row in table "contact_detail" from database.
+ */
+
 package checkit.server.domain;
 
 public class ContactDetail {

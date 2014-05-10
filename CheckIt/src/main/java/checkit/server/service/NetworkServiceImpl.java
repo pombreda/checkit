@@ -1,3 +1,13 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The NetworkService implementation
+ * All services related to communication with agents
+ */
+
 package checkit.server.service;
 
 import checkit.server.domain.Agent;
@@ -28,11 +38,14 @@ public class NetworkServiceImpl implements NetworkService {
     @Autowired
     private CheckService checkService;
 
+    /**
+     * Cron, send every minute queue to agents.
+     *
+     */
     @Scheduled(fixedDelay = 60000)
     public void sendAndEmptyQueue() {
         List<AgentQueue> queue = agentQueueService.getAgentQueue();
         Checking checking = new Checking();
-        //TODO send and empty only if agent is reachable, it will be faster in case of long queue
         for (AgentQueue item : queue) {
             checking.setCheckId(item.getCheckId());
             checking.setAgentId(item.getAgentId());
@@ -42,6 +55,12 @@ public class NetworkServiceImpl implements NetworkService {
         }
     }
     
+    /**
+     * Send request to agent.
+     *
+     * @param checking Checking for getting more details.
+     * @param query Type of request (e.g. create, delete, update).
+     */
     @Async
     private boolean postRequestToAgent(Checking checking, String query) {
         Agent agent = agentService.getAgentById(checking.getAgentId());
@@ -70,6 +89,11 @@ public class NetworkServiceImpl implements NetworkService {
         return (responseCode == 200 && responseMessage.equals("OK"));
     }
     
+    /**
+     * Send a request to create
+     *
+     * @param checking Checking for getting more details.
+     */
     @Override
     public void postCreatingToAgent(Checking checking) {
         if (!postRequestToAgent(checking, "create")) {
@@ -77,6 +101,11 @@ public class NetworkServiceImpl implements NetworkService {
         }
     }
 
+    /**
+     * Send a request to delete
+     *
+     * @param checking Checking for getting more details.
+     */
     @Override
     public void postDeletingToAgent(Checking checking) {
         if (!postRequestToAgent(checking, "delete")) {
@@ -84,6 +113,11 @@ public class NetworkServiceImpl implements NetworkService {
         }
     }
 
+    /**
+     * Send a request to update
+     *
+     * @param checking Checking for getting more details.
+     */
     @Override
     public void postUpdatingToAgent(Checking checking) {
         if (!postRequestToAgent(checking, "update")) {

@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The Check class represents domain class and equals to one row in table "checks" from database.
+ */
+
 package checkit.server.domain;
 
 import java.io.Serializable;

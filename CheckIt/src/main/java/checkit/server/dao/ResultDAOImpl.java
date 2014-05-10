@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The AgentDAO implementation
+ */
+
 package checkit.server.dao;
 
 import checkit.server.jdbc.ResultRowMapper;
@@ -21,6 +30,13 @@ public class ResultDAOImpl implements ResultDAO {
     @Autowired
     private DataSource dataSource;
     
+    /**
+     * Convert JSON string to Postgres JSON
+     *
+     * @param jsonString JSON string to convert
+     *
+     * @return Postgres JSON.
+     */
     private PGobject stringToJSON(String jsonString) {
         PGobject json = new PGobject();
         json.setType("json");
@@ -32,6 +48,13 @@ public class ResultDAOImpl implements ResultDAO {
         return json;
     }
 
+    /**
+     * Get the list of all rows (results) belong to check id in database, sorted descending by date
+     *
+     * @param checkId Id of check
+     *
+     * @return List of all results belong to check, sorted descending by date.
+     */
     @Override
     public List<Result> getResultList(int checkId) {
         List pluginCheckList = new ArrayList();
@@ -42,6 +65,13 @@ public class ResultDAOImpl implements ResultDAO {
         return pluginCheckList;    
     }
 
+    /**
+     * Get the list of all rows (results) belong to check id in database, sorted ascending by date
+     *
+     * @param checkId Id of check
+     *
+     * @return List of all checks belong to check, sorted ascending by date.
+     */
     @Override
     public List<Result> getResultListAsc(int checkId) {
         List pluginCheckList = new ArrayList();
@@ -52,6 +82,11 @@ public class ResultDAOImpl implements ResultDAO {
         return pluginCheckList;    
     }
 
+    /**
+     * Create new row (result) in database
+     *
+     * @param result Result for insertion into the database
+     */
     @Override
     public void createResult(Result result) {
         String sql = "INSERT INTO results (check_id, agent_id, time, status, data) VALUES (?, ?, ?, ?, ?)";
@@ -76,6 +111,11 @@ public class ResultDAOImpl implements ResultDAO {
         );
     }
 
+    /**
+     * Delete row (result) in database
+     *
+     * @param result Result to delete
+     */
     @Override
     public void deleteResult(Result result) {
         String sql = "DELETE FROM results WHERE check_id=" + result.getCheckId() + " AND agent_id=" + result.getAgentId() + " AND time='" + result.getTime() + "'";

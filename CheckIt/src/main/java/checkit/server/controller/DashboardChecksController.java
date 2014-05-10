@@ -1,3 +1,13 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * Controller for everything related to checks.
+ * Dashboard section.
+ */
+
 package checkit.server.controller;
 
 import checkit.plugin.domain.FormStruct;
@@ -53,10 +63,19 @@ public class DashboardChecksController {
     MessageSource messageSource;
     Locale locale = LocaleContextHolder.getLocale();
     
+    /**
+     * Controller for displaying /dashboard/checks page
+     * Page displays list of all checks.
+     *
+     * @param model Model of page, received from org.springframework.ui.ModelMap
+     * @param principal Information about logged in user, received from java.security.Principal
+     *
+     * @return Path of HTML tamplate page to display or redirect to login form if user is not logged in
+     */
     @RequestMapping(value = "/dashboard/checks", method = RequestMethod.GET)
     public String show(ModelMap model, Principal principal) {
-        String username = principal.getName();
-        User user = userService.getUserByUsername(username);
+        User user = userService.getLoggedUser(principal);
+        if (user == null) return "redirect:/dashboard/";
         int userId = user.getUserId();
         List<Check> checks = checkService.getCheckList(userId);
         
@@ -64,16 +83,35 @@ public class DashboardChecksController {
         return "/dashboard/checks";
     }
 
+    /**
+     * Controller for displaying /dashboard/checks/add page
+     * Page displays form to adding new check.
+     *
+     * @param model Model of page, received from org.springframework.ui.ModelMap
+     * @param check Check class to receive the data
+     *
+     * @return Path of HTML tamplate page to display
+     */
     @RequestMapping(value = "/dashboard/checks/add", method = RequestMethod.GET)
     public String add(ModelMap model, @ModelAttribute Check check) {
         model.addAttribute("plugins", pluginService.getActivePluginList());
         return "/dashboard/checksAdd";
     }
 
+    /**
+     * Controller for displaying /dashboard/checks/remove page
+     * Controller verifies user and deletes check, if everything is ok.
+     *
+     * @param model Model of page, received from org.springframework.ui.ModelMap
+     * @param checkId Id of check to delete
+     * @param principal Information about logged in user, received from java.security.Principal
+     *
+     * @return Address to redirect or redirect to login form if user is not logged in
+     */
     @RequestMapping(value = "/dashboard/checks/remove", method = RequestMethod.GET, params = {"id"})
     public String remove(ModelMap model, @RequestParam(value = "id") int checkId, Principal principal) {
-        String username = principal.getName();
-        User user = userService.getUserByUsername(username);
+        User user = userService.getLoggedUser(principal);
+        if (user == null) return "redirect:/dashboard/";
         int userId = user.getUserId();
         Check check = checkService.getCheckById(checkId);
         if (check.getUserId() == userId) {
@@ -82,10 +120,20 @@ public class DashboardChecksController {
         return "redirect:/dashboard/checks";
     }
 
+    /**
+     * Controller for displaying /dashboard/checks/edit page
+     * Controller loads check and displays form to edit this data.
+     *
+     * @param model Model of page, received from org.springframework.ui.ModelMap
+     * @param checkId Id of check to edit
+     * @param principal Information about logged in user, received from java.security.Principal
+     *
+     * @return Path of HTML tamplate page to display or address to redirect if problem occurs
+     */
     @RequestMapping(value = "/dashboard/checks/edit", method = RequestMethod.GET, params = {"id"})
     public String detail(ModelMap model, @RequestParam(value = "id") int checkId, Principal principal) {
-        String username = principal.getName();
-        User user = userService.getUserByUsername(username);
+        User user = userService.getLoggedUser(principal);
+        if (user == null) return "redirect:/dashboard/";
         int userId = user.getUserId();
         Check check = checkService.getCheckById(checkId);
         List<Reporting> reportingList = reportingService.getReportingListByCheck(checkId);
@@ -108,10 +156,21 @@ public class DashboardChecksController {
         return "redirect:/dashboard/checks";
     }
     
+    /**
+     * Controller for displaying /dashboard/checks/connect page with id query
+     * Page displays form for adding new reporting to the check
+     *
+     * @param model Model of page, received from org.springframework.ui.ModelMap
+     * @param checkId Id of check to add reporting
+     * @param reporting Reporting class to receive the data
+     * @param principal Information about logged in user, received from java.security.Principal
+     *
+     * @return Path of HTML tamplate page to display or address to redirect if problem occurs
+     */
     @RequestMapping(value = "/dashboard/checks/connect", method = RequestMethod.GET, params = {"id"})
     public String connect(ModelMap model, @RequestParam(value = "id") int checkId, @ModelAttribute Reporting reporting, Principal principal) {
-        String username = principal.getName();
-        User user = userService.getUserByUsername(username);
+        User user = userService.getLoggedUser(principal);
+        if (user == null) return "redirect:/dashboard/";
         int userId = user.getUserId();
         Check check = checkService.getCheckById(checkId);
 
@@ -123,10 +182,22 @@ public class DashboardChecksController {
         return "redirect:/dashboard/checks/edit?id=" + checkId;
     }
 
+    /**
+     * Controller for displaying /dashboard/checks/connect page with contactId, checkId and remove query
+     * Controller verifies user and deletes reporting connected to the check, if everything is ok.
+     *
+     * @param model Model of page, received from org.springframework.ui.ModelMap
+     * @param checkId Id of check to add reporting
+     * @param contactId Reporting class to receive the data
+     * @param remove Reporting class to receive the data
+     * @param principal Information about logged in user, received from java.security.Principal
+     *
+     * @return Address to redirect or redirect to login form if user is not logged in
+     */
     @RequestMapping(value = "/dashboard/checks/connect", method = RequestMethod.GET, params = {"contactId", "checkId", "remove"})
     public String connect(ModelMap model, @RequestParam(value = "checkId") int checkId, @RequestParam(value = "contactId") int contactId, @RequestParam(value = "remove") boolean remove, Principal principal) {
-        String username = principal.getName();
-        User user = userService.getUserByUsername(username);
+        User user = userService.getLoggedUser(principal);
+        if (user == null) return "redirect:/dashboard/";
         int userId = user.getUserId();
 
         if (remove) {
@@ -139,10 +210,19 @@ public class DashboardChecksController {
         return "redirect:/dashboard/checks/edit?id=" + checkId;
     }
 
+    /**
+     * Controller for posting new check from /dashboard/checks/add page
+     * Create new check
+     *
+     * @param check Posted check
+     * @param principal Information about logged in user, received from java.security.Principal
+     *
+     * @return Address to redirect or redirect to login form if user is not logged in
+     */
     @RequestMapping(value = "/dashboard/checks/add", method = RequestMethod.POST)
     public String post(@ModelAttribute Check check, Principal principal) {
-        String username = principal.getName();
-        User user = userService.getUserByUsername(username);
+        User user = userService.getLoggedUser(principal);
+        if (user == null) return "redirect:/dashboard/";
         int userId = user.getUserId();
         check.setUserId(userId);
         if (check.getTitle().equals("")) {
@@ -152,10 +232,20 @@ public class DashboardChecksController {
         return "redirect:/dashboard/checks";
     }
 
+    /**
+     * Controller for posting check edit from /dashboard/checks/edit page
+     * Edit check
+     *
+     * @param check Posted check
+     * @param formStruct All data from plugin custom settings to stringify into JSON
+     * @param principal Information about logged in user, received from java.security.Principal
+     *
+     * @return Address to redirect or redirect to login form if user is not logged in
+     */
     @RequestMapping(value = "/dashboard/checks/edit", method = RequestMethod.POST)
     public String edit(@ModelAttribute Check check, @ModelAttribute FormStruct formStruct, Principal principal) {
-        String username = principal.getName();
-        User user = userService.getUserByUsername(username);
+        User user = userService.getLoggedUser(principal);
+        if (user == null) return "redirect:/dashboard/";
         int userId = user.getUserId();
         if (check.getUserId() == userId) {
             formStruct = formStructService.resolveNull(formStruct);
@@ -176,10 +266,20 @@ public class DashboardChecksController {
         return "redirect:/dashboard/checks";
     }
 
+    /**
+     * Controller for posting new reporting from /dashboard/checks/connect page
+     * Create new reporting
+     *
+     * @param reporting Posted reporting
+     * @param checkId Id of check to add reporting
+     * @param principal Information about logged in user, received from java.security.Principal
+     *
+     * @return Address to redirect or redirect to login form if user is not logged in
+     */
     @RequestMapping(value = "/dashboard/checks/connect", method = RequestMethod.POST, params = {"id"})
-    public String add(@ModelAttribute Reporting reporting, Principal principal, @RequestParam(value = "id") int checkId) {
-        String username = principal.getName();
-        User user = userService.getUserByUsername(username);
+    public String add(@ModelAttribute Reporting reporting, @RequestParam(value = "id") int checkId, Principal principal) {
+        User user = userService.getLoggedUser(principal);
+        if (user == null) return "redirect:/dashboard/";
         int userId = user.getUserId();
         int userIdByCheckId = checkService.getCheckById(checkId).getUserId();
         int userIdByContactId = contactService.getContactById(reporting.getContactId()).getUserId();

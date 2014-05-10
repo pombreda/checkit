@@ -1,3 +1,13 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The PasswordService implementation
+ * All services related to password
+ */
+
 package checkit.server.service;
 
 import checkit.server.domain.User;
@@ -11,6 +21,13 @@ public class PasswordServiceImpl implements PasswordService {
     private PasswordEncoder passwordEncoder;
     
 
+    /**
+     * Check if string is convenient for password
+     *
+     * @param password Tested string
+     * 
+     * @return True if string satisfies, false otherwise.
+     */
     @Override
     public boolean isPasswordStrong(String password) {
         if (password.length() < 8) return false;
@@ -21,6 +38,13 @@ public class PasswordServiceImpl implements PasswordService {
         return true;
     }
 
+    /**
+     * Create password hash for user
+     *
+     * @param user User for whom is hash generated.
+     * 
+     * @return Password hash
+     */
     @Override
     public String encodePassword(User user) {
         return passwordEncoder.encodePassword(user.getPassword(), user.getUsername());

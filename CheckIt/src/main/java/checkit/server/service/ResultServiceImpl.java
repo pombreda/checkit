@@ -1,3 +1,13 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The ResultService implementation
+ * All services related to result
+ */
+
 package checkit.server.service;
 
 import checkit.server.dao.ResultDAO;
@@ -23,26 +33,55 @@ public class ResultServiceImpl implements ResultService {
     
     private final String dateFormat = "yyyy-MM-dd HH:mm:ss.SSS";
     
+    /**
+     * Get the list of all results belong to check, sorted descending by date
+     *
+     * @param checkId Id of check
+     *
+     * @return List of all results belong to check, sorted descending by date.
+     */
     @Override
     public List<Result> getResultList(int checkId) {
         return resultDAO.getResultList(checkId);
     }
 
+    /**
+     * Get the list of all results belong to check, sorted ascending by date
+     *
+     * @param checkId Id of check
+     *
+     * @return List of all results belong to check, sorted ascending by date.
+     */
     @Override
     public List<Result> getResultListAsc(int checkId) {
         return resultDAO.getResultListAsc(checkId);
     }
 
+    /**
+     * Create new result
+     *
+     * @param result Result to create
+     */
     @Override
     public void createResult(Result result) {
         resultDAO.createResult(result);
     }
 
+    /**
+     * Delete result
+     *
+     * @param result Id of result to delete
+     */
     @Override
     public void deleteResult(Result result) {
         resultDAO.deleteResult(result);
     }
 
+    /**
+     * Save start of checking
+     *
+     * @param checking Checking which is started
+     */
     @Override
     public void postStartChecking(Checking checking) {
         Result result = createResultFromChecking(checking);
@@ -54,6 +93,11 @@ public class ResultServiceImpl implements ResultService {
         checkService.updateCheck(check);
     }
 
+    /**
+     * Save stop of checking
+     *
+     * @param checking Checking which is stoped
+     */
     @Override
     public void postStopChecking(Checking checking) {
         Result result = createResultFromChecking(checking);
@@ -61,6 +105,13 @@ public class ResultServiceImpl implements ResultService {
         createResult(result);
     }
     
+    /**
+     * Create result of checking
+     *
+     * @param checking Checking of which result is processed
+     * 
+     * @return Result of checking
+     */
     private Result createResultFromChecking(Checking checking) {
 	Date today = new java.util.Date();
 	Date now = new Timestamp(today.getTime());
@@ -73,12 +124,17 @@ public class ResultServiceImpl implements ResultService {
         return result;
     }
     
-    
-
+    /**
+     * Prepare data for graph output, which required only three stages - UP, DOWN and NOT MEASURED
+     * Set status of "run" action from following status and the following one removes (R, U, S -> U, S     R, D, U, D, U -> D, U, D, U)
+     * Also change all S statuses and R statuses without following U or D to N - Not measured
+     * 
+     * @param results List of results to display
+     * 
+     * @return List of results which are prepared for graph output
+     */
     @Override
     public List<Result> createResultGraphOutput(List<Result> results) {
-        //Sets status of "run" action from following status and the following one removes (R, U, S -> U, S     R, D, U, D, U -> D, U, D, U)
-        //Also changes all S statuses and R statuses without following U or D to N - Not measured
         for (int i=0; i < results.size(); i++) {
             switch (results.get(i).getStatus()) {
                 case "R":
@@ -96,6 +152,16 @@ public class ResultServiceImpl implements ResultService {
         return results;
     }
 
+    /**
+     * Ascribe time between two dates to corresponding activity - UP, DOWN or NOT MEASURED
+     * 
+     * @param status Current stutus
+     * @param resultDate Date of stage end
+     * @param date Date of stage start
+     * @param results Array of current values (0 - N, 1 - U, 2 - D)
+     * 
+     * @return Array of updated values
+     */
     private long[] addTimeToActivity(String status, Date resultDate, Date date, long[] currentValues) {
         switch (status) {
             case "N":
@@ -111,6 +177,14 @@ public class ResultServiceImpl implements ResultService {
         return currentValues;
     }
     
+    /**
+     * Increase count of corresponding activity - UP, DOWN or NOT MEASURED
+     * 
+     * @param status Current stutus
+     * @param results Array of current values (0 - N, 1 - U, 2 - D)
+     * 
+     * @return Array of updated values
+     */
     private int[] addCountToActivity(String status, int[] currentValues) {
         switch (status) {
             case "N":
@@ -126,6 +200,14 @@ public class ResultServiceImpl implements ResultService {
         return currentValues;
     }
     
+    /**
+     * Get results of specific number of last days
+     * 
+     * @param results The results list from which to select.
+     * @param numberOfDays Number of days
+     * 
+     * @return List of results icluding left and right limits of the interval
+     */
     @Override
     public List<Result> getDataForLastDays(List<Result> results, long numberOfDays) {
         Date date = new Date();
@@ -155,7 +237,7 @@ public class ResultServiceImpl implements ResultService {
             beginningStatus = "N";
         }
 
-        //add beginning and last status to the left and right edge of the interval
+        //add beginning and last status to the left and right limits of the interval
         Result result = new Result();
         result.setTime(simpleDateFormat.format(date));
         result.setStatus(beginningStatus);
@@ -169,10 +251,16 @@ public class ResultServiceImpl implements ResultService {
         return results;
     }
     
+    /**
+     * Get time of corresponding activity (UP, DOWN or NOT MEASURED) for specific number of last days
+     * 
+     * @param results The results list from which to select.
+     * @param numberOfDays Number of days, -1 for all checking time
+     * 
+     * @return List of times for corresponding activity (0 - N, 1 - U, 2 - D)
+     */
     @Override
     public List<Long> getTimesForLastDays(List<Result> results, long numberOfDays) {
-        //Return list of three items: 0 - do not measured, 1 - up, 2 - down
-        //-1 for all data
         long[] output = new long[]{0L, 0L, 0L};
         Date date = new Date();
         if (numberOfDays >= 0) {
@@ -205,10 +293,16 @@ public class ResultServiceImpl implements ResultService {
         return outputList;
     }
 
+    /**
+     * Get number of occurrences of corresponding activity (UP, DOWN or NOT MEASURED) for specific number of last days
+     * 
+     * @param results The results list from which to select.
+     * @param numberOfDays Number of days, -1 for all checking time
+     * 
+     * @return List of times for corresponding activity (0 - N, 1 - U, 2 - D)
+     */
     @Override
     public List<Integer> getCountsForLastDays(List<Result> results, long numberOfDays) {
-        //Return list of three items: 0 - do not measured, 1 - up, 2 - down
-        //-1 for all data
         int[] output = new int[]{0, 0, 0};
         Date date = new Date();
         if (numberOfDays >= 0) {
@@ -238,12 +332,26 @@ public class ResultServiceImpl implements ResultService {
         return outputList;
     }
 
+    /**
+     * Get number of occurrences of DOWN events for regular report
+     * 
+     * @param results The results list from which to select.
+     * 
+     * @return Number of DOWN events for last 7 days
+     */
     @Override
     public int getRegularReportDownCount(List<Result> results) {
         int downCount = getCountsForLastDays(results, 7).get(2);
         return downCount;
     }
 
+    /**
+     * Get time of DOWN events for regular report
+     * 
+     * @param results The results list from which to select.
+     * 
+     * @return Time of DOWN events for last 7 days
+     */
     @Override
     public long getRegularReportDownTime(List<Result> results) {
         long downTime = getTimesForLastDays(results, 7).get(2);

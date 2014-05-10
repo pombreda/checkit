@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * Controller for everything related to user signing up.
+ */
+
 package checkit.server.controller;
 
 import checkit.server.domain.User;
@@ -22,17 +31,40 @@ public class SignupController {
     @Autowired
     private PasswordService passwordService;
 
+    /**
+     * Controller for displaying /signup page
+     *
+     * @param user User class to receive the data
+     *
+     * @return Path of HTML tamplate page to display
+     */
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public String signupUser(@ModelAttribute User user) {
         return "/account/signup";
     }
 
+    /**
+     * Controller for displaying /registration-complete page
+     *
+     * @param model Model of page, received from org.springframework.ui.ModelMap
+     *
+     * @return Path of HTML tamplate page to display
+     */
     @RequestMapping(value = "/registration-complete", method = RequestMethod.GET)
     public String signupUser(ModelMap model) {
         return "/account/signup-complete";
     }
 
-    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    /**
+     * Controller for posting new user from /signup page
+     * Check posting data and if problem does not occur, create new user
+     *
+     * @param user Posted user
+     * @param model Model of page, received from org.springframework.ui.ModelMap
+     *
+     * @return Address to redirect or path of HTML tamplate page to display if problem occurs
+     */
+   @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public String createUser(@ModelAttribute User user, ModelMap model) {
         boolean error = false;
         if (user != null) {

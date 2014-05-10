@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * Scanning report folder for plugins
+ */
+
 package checkit.plugin.service;
 
 import java.io.IOException;
@@ -27,9 +36,13 @@ public class FolderScanReport {
     
     Locale locale = LocaleContextHolder.getLocale();
 
+    /**
+     * Scan specific folder for create, delete and modify events.
+     * 
+     */
     @Async
     public void run() {
-        boolean scanFolder = true; //TODO - add to global settings
+        boolean scanFolder = true; //TODO - create global settings for administrator, add this variable to the future settings
         Path myDir = Paths.get(messageSource.getMessage("path.plugin.report", null, locale));
         while (scanFolder) {
             try {

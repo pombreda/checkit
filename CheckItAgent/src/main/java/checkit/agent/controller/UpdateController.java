@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * Controller for updating task.
+ */
+
 package checkit.agent.controller;
 
 import checkit.agent.service.ServerService;
@@ -20,6 +29,13 @@ public class UpdateController {
     @Autowired
     private CheckService checkService;
     
+    /**
+     * Controller for updating task.
+     * Receive data from servers, check servers ip and update task if everything is ok
+     *
+     * @param request Servers request connection
+     * @throws java.io.IOException
+     */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     public void post(HttpServletRequest request) throws IOException {

@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The FormStruct class represents plugins website form struct, which is suited for Thymeleaf needs.
+ */
+
 package checkit.plugin.domain;
 
 import java.util.ArrayList;

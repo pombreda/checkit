@@ -1,3 +1,13 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * Controller for everything related to contact details.
+ * Dashboard section.
+ */
+
 package checkit.server.controller;
 
 import checkit.plugin.domain.FormStruct;
@@ -43,16 +53,35 @@ public class DashboardContactDetailsController {
     MessageSource messageSource;
     Locale locale = LocaleContextHolder.getLocale();
     
+    /**
+     * Controller for displaying /dashboard/contactDetail/add page with parent contact id query
+     * Page displays form to adding new contact detail into the contact.
+     *
+     * @param model Model of page, received from org.springframework.ui.ModelMap
+     * @param contactDetail Contact detail class to receive the data
+     *
+     * @return Path of HTML tamplate page to display
+     */
     @RequestMapping(value = "/dashboard/contactDetail/add", method = RequestMethod.GET, params = {"id"})
     public String add(ModelMap model, @ModelAttribute ContactDetail contactDetail) {
         model.addAttribute("plugins", reportService.getActivePluginList());
         return "/dashboard/contactDetailAdd";
     }
 
+    /**
+     * Controller for displaying /dashboard/contactDetail/remove page
+     * Controller verifies user and deletes contact detail, if everything is ok.
+     *
+     * @param model Model of page, received from org.springframework.ui.ModelMap
+     * @param contactDetailId Id of contact detail to delete
+     * @param principal Information about logged in user, received from java.security.Principal
+     *
+     * @return Address to redirect or redirect to login form if user is not logged in
+     */
     @RequestMapping(value = "/dashboard/contactDetail/remove", method = RequestMethod.GET, params = {"id"})
     public String remove(ModelMap model, @RequestParam(value = "id") int contactDetailId, Principal principal) {
-        String username = principal.getName();
-        User user = userService.getUserByUsername(username);
+        User user = userService.getLoggedUser(principal);
+        if (user == null) return "redirect:/dashboard/";
         int userId = user.getUserId();
         ContactDetail contactDetail = contactDetailService.getContactDetailById(contactDetailId);
         if (contactDetail.getUserId() == userId) {
@@ -61,10 +90,20 @@ public class DashboardContactDetailsController {
         return "redirect:/dashboard/contacts/edit?id=" + contactDetail.getContactId();
     }
 
+    /**
+     * Controller for displaying /dashboard/contactDetail/edit page
+     * Controller loads contact detail data and displays form to edit this data.
+     *
+     * @param model Model of page, received from org.springframework.ui.ModelMap
+     * @param contactDetailId Id of contact detail to edit
+     * @param principal Information about logged in user, received from java.security.Principal
+     *
+     * @return Path of HTML tamplate page to display or address to redirect if problem occurs
+     */
     @RequestMapping(value = "/dashboard/contactDetail/edit", method = RequestMethod.GET, params = {"id"})
     public String detail(ModelMap model, @RequestParam(value = "id") int contactDetailId, Principal principal) {
-        String username = principal.getName();
-        User user = userService.getUserByUsername(username);
+        User user = userService.getLoggedUser(principal);
+        if (user == null) return "redirect:/dashboard/";
         int userId = user.getUserId();
         ContactDetail contactDetail = contactDetailService.getContactDetailById(contactDetailId);
 
@@ -85,10 +124,20 @@ public class DashboardContactDetailsController {
         return "redirect:/dashboard/contacts/edit?id=" + contactDetail.getContactId();
     }
 
+    /**
+     * Controller for posting new contact detail from /dashboard/contactDetail/add page
+     * Create new contact detail
+     *
+     * @param contactDetail Posted contact detail
+     * @param contactId Id of parent contact for adding contact detail into
+     * @param principal Information about logged in user, received from java.security.Principal
+     *
+     * @return Address to redirect or redirect to login form if user is not logged in
+     */
     @RequestMapping(value = "/dashboard/contactDetail/add", method = RequestMethod.POST, params = {"id"})
-    public String add(@ModelAttribute ContactDetail contactDetail, Principal principal, @RequestParam(value = "id") int contactId) {
-        String username = principal.getName();
-        User user = userService.getUserByUsername(username);
+    public String add(@ModelAttribute ContactDetail contactDetail, @RequestParam(value = "id") int contactId, Principal principal) {
+        User user = userService.getLoggedUser(principal);
+        if (user == null) return "redirect:/dashboard/";
         int userId = user.getUserId();
 
         if (contactDetail.getTitle().equals("")) {
@@ -103,10 +152,20 @@ public class DashboardContactDetailsController {
         return "redirect:/dashboard/contacts/edit?id=" + contactDetail.getContactId();
     }
 
+    /**
+     * Controller for posting contact detail edit from /dashboard/contactDetail/edit page
+     * Edit contact detail
+     *
+     * @param contactDetail Posted contact detail
+     * @param formStruct All data from plugin custom settings to stringify into JSON
+     * @param principal Information about logged in user, received from java.security.Principal
+     *
+     * @return Address to redirect or redirect to login form if user is not logged in
+     */
     @RequestMapping(value = "/dashboard/contactDetail/edit", method = RequestMethod.POST)
     public String edit(@ModelAttribute ContactDetail contactDetail, @ModelAttribute FormStruct formStruct, Principal principal) {
-        String username = principal.getName();
-        User user = userService.getUserByUsername(username);
+        User user = userService.getLoggedUser(principal);
+        if (user == null) return "redirect:/dashboard/";
         int userId = user.getUserId();
         if (contactDetail.getUserId() == userId) {
             formStruct = formStructService.resolveNull(formStruct);

@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The AgentDAO implementation
+ */
+
 package checkit.server.dao;
 
 import checkit.server.domain.Agent;
@@ -14,6 +23,11 @@ public class AgentDAOImpl implements AgentDAO {
     @Autowired
     private DataSource dataSource;
 
+    /**
+     * Get the list of all rows (agents) from database
+     *
+     * @return List of all agents.
+     */
     @Override
     public List<Agent> getAgentList() {
         List agentList = new ArrayList();
@@ -24,6 +38,11 @@ public class AgentDAOImpl implements AgentDAO {
         return agentList;
     }
 
+    /**
+     * Create new row (agent) in database
+     *
+     * @param agent Agent for insertion into the database
+     */
     @Override
     public void createAgent(Agent agent) {
         String sql = "INSERT INTO agents (ip, post_address, location, enabled) VALUES (?, ?, ?, FALSE)";
@@ -39,6 +58,11 @@ public class AgentDAOImpl implements AgentDAO {
         );
     }
 
+    /**
+     * Delete row (agent) in database
+     *
+     * @param agentId Id of agent to delete
+     */
     @Override
     public void deleteAgent(int agentId) {
         String sql = "DELETE FROM agents WHERE agent_id=" + agentId;
@@ -47,6 +71,12 @@ public class AgentDAOImpl implements AgentDAO {
         jdbcTemplate.update(sql);
     }
 
+    /**
+     * Update row (agent) in database.
+     * Get agent id and rewrite all other data.
+     *
+     * @param agent Agent to update
+     */
     @Override
     public void updateAgent(Agent agent) {
         String sql = "UPDATE agents SET ip=?, post_address=?, location=?, enabled=? WHERE agent_id=?";
@@ -64,6 +94,13 @@ public class AgentDAOImpl implements AgentDAO {
         );
     }
 
+    /**
+     * Get row (agent) by agent id
+     *
+     * @param agentId Id of agent to get
+     *
+     * @return Agent or null if not exists.
+     */
     @Override
     public Agent getAgentById(int agentId) {
         List<Agent> agent = new ArrayList<Agent>();
@@ -75,6 +112,13 @@ public class AgentDAOImpl implements AgentDAO {
         return agent.get(0);  
     }
 
+    /**
+     * Get row (agent) by agent ip
+     *
+     * @param ip Ip of agent to get
+     *
+     * @return Agent or null if not exists.
+     */
     @Override
     public Agent getAgentByIp(String ip) {
         List<Agent> agent = new ArrayList<Agent>();

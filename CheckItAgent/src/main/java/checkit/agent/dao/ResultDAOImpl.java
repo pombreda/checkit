@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The ResultDAO implementation
+ */
+
 package checkit.agent.dao;
 
 import checkit.agent.jdbc.ResultRowMapper;
@@ -20,11 +29,23 @@ public class ResultDAOImpl implements ResultDAO {
     @Autowired
     private DataSource dataSource;
     
-    private static java.sql.Timestamp getCurrentTimestamp() {
+    /**
+     * Get current timestamp
+     *
+     * @return Current timestamp.
+     */
+    private static Timestamp getCurrentTimestamp() {
 	Date today = new java.util.Date();
 	return new Timestamp(today.getTime());
     }
         
+    /**
+     * Convert JSON string to Postgres JSON
+     *
+     * @param jsonString JSON string to convert
+     *
+     * @return Postgres JSON.
+     */
     private PGobject stringToJSON(String jsonString) {
         PGobject json = new PGobject();
         json.setType("json");
@@ -36,6 +57,11 @@ public class ResultDAOImpl implements ResultDAO {
         return json;
     }
 
+    /**
+     * Get the list of all rows (results) in database sorted ascending by date
+     *
+     * @return List of all results sorted ascending by date.
+     */
     @Override
     public List<Result> getResultList() {
         List pluginCheckList = new ArrayList();
@@ -46,6 +72,11 @@ public class ResultDAOImpl implements ResultDAO {
         return pluginCheckList;    
     }
 
+    /**
+     * Create new row (result) in database
+     *
+     * @param result Result for insertion into the database
+     */
     @Override
     public void createResult(Result result) {
         String sql = "INSERT INTO results (check_id, time, status, data) VALUES (?, ?, ?, ?)";
@@ -62,6 +93,11 @@ public class ResultDAOImpl implements ResultDAO {
         );
     }
 
+    /**
+     * Delete row (result) in database
+     *
+     * @param result Result to delete
+     */
     @Override
     public void deleteResult(Result result) {
         String sql = "DELETE FROM results WHERE check_id=" + result.getCheckId() + " AND time='" + result.getTime() + "'";

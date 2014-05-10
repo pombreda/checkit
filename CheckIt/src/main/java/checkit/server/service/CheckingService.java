@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The CheckingService interface
+ */
+
 package checkit.server.service;
 
 import checkit.server.domain.Check;

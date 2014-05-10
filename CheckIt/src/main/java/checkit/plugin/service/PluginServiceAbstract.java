@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The PluginService abstract class
+ */
+
 package checkit.plugin.service;
 
 import checkit.plugin.domain.FormStruct;
@@ -24,10 +33,27 @@ import org.json.simple.parser.ParseException;
 public abstract class PluginServiceAbstract {
     private Map<String, Object> pluginInstance = new HashMap<String, Object>();
 
-    //Classloader
+    /**
+     * Get path to folder with plugins files
+     * 
+     * @return Path to the folder
+     */
     protected abstract String getPath();
+
+    /**
+     * Get package name of plugins class
+     * 
+     * @return Package name of plugins class
+     */
     protected abstract String getClassPrefix();
     
+    /**
+     * Load a new class from external file by Java Classloader, if it is not already in memory.
+     * 
+     * @param filename Filename of wanted plugin
+     * 
+     * @return Instance of plugin
+     */
     public Object getPluginInstance(String filename) {
         //TODO - this is really awful and painful. ASAP rewrite to OSGi or any other framework
         Object instance = pluginInstance.get(filename);
@@ -52,6 +78,15 @@ public abstract class PluginServiceAbstract {
         return instance;
     }
     
+    /**
+     * Call method of dynamic loaded class
+     * 
+     * @param instance Instance of loaded plugin
+     * @param methodName Method name to call
+     * @param params Optional parameters for calling method. If method has no parameters, call (Object[]) null
+     * 
+     * @return Results of called method.
+     */
     public Object call(Object instance, String methodName, Object... params) {
         Expression expr = new Expression(instance, methodName, params);
         Object result = null;
@@ -63,6 +98,14 @@ public abstract class PluginServiceAbstract {
         return result;
     }
     
+    /**
+     * Create inputs for customizing the plugin.
+     * All these data is required for plugin running.
+     * 
+     * @param instance Instance of loaded plugin
+     * 
+     * @return List of inputs.
+     */
     public List<Input> getInputs(Object instance) {
         String jsonString = call(instance, "getOptionsJSON", (Object[]) null).toString();
         List<Input> json = new ArrayList<Input>();
@@ -102,6 +145,15 @@ public abstract class PluginServiceAbstract {
         return json;
     }
     
+    /**
+     * Initialize inputs by default values based on previous settings.
+     * If user already filled settings, this function loads these values to inputs.
+     * 
+     * @param inputs List of inputs to initialize by previous settings.
+     * @param data Data with custom settings
+     * 
+     * @return Complete form struct for view layer.
+     */
     public FormStruct getInputValues(List<Input> inputs, String data) {
         FormStruct formStruct = new FormStruct();
         ArrayList<FormStructRow> rows = new ArrayList<FormStructRow>();
@@ -121,6 +173,13 @@ public abstract class PluginServiceAbstract {
         return formStruct;
     }
     
+    /**
+     * Initialize inputs by empty values.
+     * 
+     * @param inputs List of inputs to initialize.
+     * 
+     * @return JSON in string with empty data required by plugin
+     */
     public String getInitEmptyDataJSON(List<Input> inputs) {
         JSONObject json = new JSONObject();
         for (Input row : inputs) {
@@ -129,6 +188,14 @@ public abstract class PluginServiceAbstract {
         return json.toJSONString();
     }
 
+    /**
+     * Get values of parameters required by plugin to run.
+     * 
+     * @param instance Instance of loaded plugin.
+     * @param data JSON in string with user custom setting.
+     * 
+     * @return Always return ARRAY of objects
+     */
     protected Object getCallParams(Object instance, String data) {
         //returns values for plugin running
         Object paramsName = call(instance, "getCallRequiredParamsName", (Object[]) null);
@@ -136,8 +203,16 @@ public abstract class PluginServiceAbstract {
         return params;
     }
     
+    /**
+     * Give values of names in JSON.
+     * E.g. for {"color": "red"}, params is "color", returns "red".
+     * 
+     * @param json Instance of loaded plugin.
+     * @param params JSON in string with user custom setting.
+     * 
+     * @return Always return ARRAY of objects
+     */
     protected Object getValuesFromJSONString(String json, Object params) {
-        //gives values of JSON names in params. E.g. name: Dodo, params is name, returns Dodo. - uses for give a data to run plugin
         List values = new ArrayList();
         try {
             JSONParser parser = new JSONParser();
@@ -153,11 +228,47 @@ public abstract class PluginServiceAbstract {
         return values.toArray();
     }
 
-//Services
+    /**
+     * Register new plugin
+     *
+     * @param filename Filename of new plugin
+     */
     public abstract void registerPlugin(String filename);
+
+    /**
+     * Delete plugin
+     *
+     * @param filename Filename of plugin to delete
+     */
     public abstract void deletePlugin(String filename);
+
+    /**
+     * Update plugin
+     *
+     * @param plugin Plugin to update, which already includes the updated data.
+     */
     public abstract void updatePlugin(Plugin plugin);
+
+    /**
+     * Get plugin by filename
+     *
+     * @param filename Filename of plugin to get
+     *
+     * @return Plugin or null if not exists.
+     */
     public abstract Plugin getPluginByFilename(String filename);
+    
+    /**
+     * Get the list of all plugins
+     *
+     * @return List of all plugins.
+     */
     public abstract List<Plugin> getPluginList();
+    
+    /**
+     * Get the list of all plugins which are active
+     *
+     * @return List of all plugins which are active.
+     */
     public abstract List<Plugin> getActivePluginList();
 }

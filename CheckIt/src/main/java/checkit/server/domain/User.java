@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The User class represents domain class and equals to one row in table "users" from database.
+ */
+
 package checkit.server.domain;
 
 public class User {

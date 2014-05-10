@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * Cron service.
+ */
+
 package checkit.agent.service;
 
 import checkit.server.domain.Result;
@@ -35,6 +44,10 @@ public class CronService {
     
     private int timeCounter = minInterval;
     
+    /**
+     * Count time to run right checkings. After reach maximum, reset to min value.
+     *
+     */
     private void setTimeCounter() {
         timeCounter += minInterval;
         if (timeCounter > maxInterval) {
@@ -42,6 +55,10 @@ public class CronService {
         }
     }
     
+    /**
+     * Run all the tests to be run at any given moment.
+     *
+     */
     @Scheduled(fixedDelay = minInterval * 1000)
     public void Cron() {
         List<Check> checkList = checkService.getCheckList();
@@ -55,6 +72,11 @@ public class CronService {
         setTimeCounter();
     }
 
+    /**
+     * Send ever mininimal interval queue to servers.
+     * Delete item from queue, if everything is ok.
+     *
+     */
     @Scheduled(fixedDelay = minInterval * 1000)
     public void SendAndEmptyResults() {
         List<Result> resultList = resultService.getResultList();
@@ -67,6 +89,11 @@ public class CronService {
 
     }
     
+    /**
+     * Send reslts to server.
+     *
+     * @param result Result to send.
+     */
     @Async
     private boolean postRequestToServer(Result result) {
         Server server = serverService.getServerWithTheHighestPriority();

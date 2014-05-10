@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The ServerDAO implementation
+ */
+
 package checkit.agent.dao;
 
 import checkit.agent.jdbc.ServerRowMapper;
@@ -14,6 +23,11 @@ public class ServerDAOImpl implements ServerDAO {
     @Autowired
     private DataSource dataSource;
 
+    /**
+     * Get the list of all rows (servers) in database
+     *
+     * @return List of all servers.
+     */
     @Override
     public List<Server> getServerList() {
         List serverList = new ArrayList();
@@ -24,6 +38,11 @@ public class ServerDAOImpl implements ServerDAO {
         return serverList;        
     }
     
+    /**
+     * Get the row (server) in database, where priority column has highest value
+     *
+     * @return Server with highest priority (first, if found more) or null if not exists.
+     */
     @Override
     public Server getServerWithTheHighestPriority() {
         List<Server> server = new ArrayList<Server>();
@@ -35,6 +54,13 @@ public class ServerDAOImpl implements ServerDAO {
         return server.get(0);
     }
 
+    /**
+     * Get row (server) by ip
+     *
+     * @param ip Ip of server to get
+     *
+     * @return Server or null if not exists.
+     */
     @Override
     public Server getServerByIp(String ip) {
         List<Server> server = new ArrayList<Server>();

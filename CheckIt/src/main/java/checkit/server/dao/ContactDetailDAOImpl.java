@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The AgentDAO implementation
+ */
+
 package checkit.server.dao;
 
 import checkit.server.domain.ContactDetail;
@@ -18,6 +27,13 @@ public class ContactDetailDAOImpl implements ContactDetailDAO {
     @Autowired
     private DataSource dataSource;
     
+    /**
+     * Convert JSON string to Postgres JSON
+     *
+     * @param jsonString JSON string to convert
+     *
+     * @return Postgres JSON.
+     */
     private PGobject stringToJSON(String jsonString) {
         PGobject json = new PGobject();
         json.setType("json");
@@ -29,6 +45,14 @@ public class ContactDetailDAOImpl implements ContactDetailDAO {
         return json;
     }
     
+    /**
+     * Get the list of all rows (contactDetails) belong to user and contact id in database
+     *
+     * @param contactId Id of contect
+     * @param userId Id of user
+     *
+     * @return List of all contact details belong to user and contact.
+     */
     @Override
     public List<ContactDetail> getContactDetailList(int contactId, int userId) {
         List contactDetailList = new ArrayList();
@@ -39,6 +63,14 @@ public class ContactDetailDAOImpl implements ContactDetailDAO {
         return contactDetailList;
     }
 
+    /**
+     * Get the list of all rows (contactDetails) belong to user and contact id in database, where DOWN notification is on
+     *
+     * @param contactId Id of contect
+     * @param userId Id of user
+     *
+     * @return List of all contact details belong to user and contact, where DOWN notification is on.
+     */
     @Override
     public List<ContactDetail> getContactDetailListWhereDownIsActive(int contactId, int userId) {
         List contactDetailList = new ArrayList();
@@ -49,6 +81,14 @@ public class ContactDetailDAOImpl implements ContactDetailDAO {
         return contactDetailList;
     }
 
+    /**
+     * Get the list of all rows (contactDetails) belong to user and contact id in database, where UP notification is on
+     *
+     * @param contactId Id of contect
+     * @param userId Id of user
+     *
+     * @return List of all contact details belong to user and contact, where UP notification is on.
+     */
     @Override
     public List<ContactDetail> getContactDetailListWhereUpIsActive(int contactId, int userId) {
         List contactDetailList = new ArrayList();
@@ -59,6 +99,14 @@ public class ContactDetailDAOImpl implements ContactDetailDAO {
         return contactDetailList;
     }
     
+    /**
+     * Get the list of all rows (contactDetails) belong to user and contact id in database, where REGULAR notification is on
+     *
+     * @param contactId Id of contect
+     * @param userId Id of user
+     *
+     * @return List of all contact details belong to user and contact, where REGULAR notification is on.
+     */
     @Override
     public List<ContactDetail> getContactDetailListWhereRegularIsActive(int contactId, int userId) {
         List contactDetailList = new ArrayList();
@@ -69,6 +117,11 @@ public class ContactDetailDAOImpl implements ContactDetailDAO {
         return contactDetailList;
     }
     
+    /**
+     * Create new row (contactDetail) in database
+     *
+     * @param contactDetail Contact detail for insertion into the database
+     */
     @Override
     public void createContactDetail(ContactDetail contactDetail) {
         String sql = "INSERT INTO contact_detail (title, data, contact_id, user_id, filename, down, up, regular) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -89,6 +142,11 @@ public class ContactDetailDAOImpl implements ContactDetailDAO {
         );
     }
 
+    /**
+     * Delete row (contactDetail) in database
+     *
+     * @param contactDetailId Id of contact detail to delete
+     */
     @Override
     public void deleteContactDetail(int contactDetailId) {
         String sql = "DELETE FROM contact_detail WHERE contact_detail_id=" + contactDetailId;
@@ -97,6 +155,12 @@ public class ContactDetailDAOImpl implements ContactDetailDAO {
         jdbcTemplate.update(sql);
     }
 
+    /**
+     * Update row (contactDetail) in database.
+     * Get contact detail id and user id and rewrite all other data.
+     *
+     * @param contactDetail Contact detail to update
+     */
     @Override
     public void updateContactDetail(ContactDetail contactDetail) {
         String sql = "UPDATE contact_detail SET title=?, data=?, down=?, up=?, regular=? WHERE contact_detail_id=? AND user_id=?";
@@ -116,6 +180,13 @@ public class ContactDetailDAOImpl implements ContactDetailDAO {
         );
     }
 
+    /**
+     * Get row (contactDetail) by agent id
+     *
+     * @param contactDetailId Id of agent to get
+     *
+     * @return Contact detail or null if not exists.
+     */
     @Override
     public ContactDetail getContactDetailById(int contactDetailId) {
         List<ContactDetail> contactDetail = new ArrayList<ContactDetail>();

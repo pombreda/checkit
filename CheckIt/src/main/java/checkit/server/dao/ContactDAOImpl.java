@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The AgentDAO implementation
+ */
+
 package checkit.server.dao;
 
 import checkit.server.domain.Contact;
@@ -14,6 +23,13 @@ public class ContactDAOImpl implements ContactDAO {
     @Autowired
     private DataSource dataSource;
 
+    /**
+     * Get the list of all rows (contacts) belong to user id in database
+     *
+     * @param userId Id of user
+     *
+     * @return List of all contacts belong to user.
+     */
     @Override
     public List<Contact> getContactList(int userId) {
         List contactList = new ArrayList();
@@ -24,6 +40,11 @@ public class ContactDAOImpl implements ContactDAO {
         return contactList;
     }
 
+    /**
+     * Create new row (contact) in database
+     *
+     * @param contact Contact for insertion into the database
+     */
     @Override
     public void createContact(Contact contact) {
         String sql = "INSERT INTO contacts (title, user_id) VALUES (?, ?)";
@@ -38,6 +59,11 @@ public class ContactDAOImpl implements ContactDAO {
         );
     }
 
+    /**
+     * Delete row (contact) in database
+     *
+     * @param contactId Id of contact to delete
+     */
     @Override
     public void deleteContact(int contactId) {
         String sql = "DELETE FROM contacts WHERE contact_id=" + contactId;
@@ -46,6 +72,12 @@ public class ContactDAOImpl implements ContactDAO {
         jdbcTemplate.update(sql);
     }
 
+    /**
+     * Update row (contact) in database.
+     * Get contact id and user id and rewrite all other data.
+     *
+     * @param contact Contact to update
+     */
     @Override
     public void updateContact(Contact contact) {
         String sql = "UPDATE contacts SET title=? WHERE contact_id=? AND user_id=?";
@@ -61,6 +93,13 @@ public class ContactDAOImpl implements ContactDAO {
         );
     }
 
+    /**
+     * Get row (contact) by contact id
+     *
+     * @param contactId Id of contact to get
+     *
+     * @return Contact or null if not exists.
+     */
     @Override
     public Contact getContactById(int contactId) {
         List<Contact> contact = new ArrayList<Contact>();

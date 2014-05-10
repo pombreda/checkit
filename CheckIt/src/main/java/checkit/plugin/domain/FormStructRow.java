@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The FormStructRow class represents one row in plugins website forms, which is suited for Thymeleaf needs.
+ */
+
 package checkit.plugin.domain;
 
 public class FormStructRow {

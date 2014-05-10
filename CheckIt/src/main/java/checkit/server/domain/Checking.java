@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The Checking class represents domain class and equals to one row in table "checking" from database.
+ */
+
 package checkit.server.domain;
 
 public class Checking {

@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The CheckDAO interface
+ */
+
 package checkit.agent.dao;
 
 import checkit.server.domain.Check;

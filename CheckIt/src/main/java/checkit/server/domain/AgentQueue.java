@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The AgentQueue class represents domain class and equals to one row in table "agent_queue" from database.
+ */
+
 package checkit.server.domain;
 
 public class AgentQueue {

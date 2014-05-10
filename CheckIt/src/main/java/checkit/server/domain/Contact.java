@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The Contact class represents domain class and equals to one row in table "contacts" from database.
+ */
+
 package checkit.server.domain;
 
 import java.util.List;

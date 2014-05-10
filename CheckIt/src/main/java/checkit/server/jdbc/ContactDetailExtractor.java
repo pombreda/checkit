@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The "contact_detail" database table row extractor
+ */
+
 package checkit.server.jdbc;
 
 import checkit.server.domain.ContactDetail;
@@ -7,6 +16,17 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
 public class ContactDetailExtractor implements ResultSetExtractor<ContactDetail> {
+    
+    /**
+     * Extract appropriate database table row into the class ContactDetail
+     *
+     * @param resultSet Row data given from org.springframework.jdbc.core.RowMapper
+     *
+     * @return Extracted contact detail from appropriate table row.
+     * 
+     * @throws java.sql.SQLException
+     * @throws org.springframework.dao.DataAccessException
+     */
     @Override
     public ContactDetail extractData(ResultSet resultSet) throws SQLException, DataAccessException {
         ContactDetail contactDetail = new ContactDetail();

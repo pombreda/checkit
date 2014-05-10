@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * Controller for everything related to email confirmation.
+ */
+
 package checkit.server.controller;
 
 import checkit.server.service.UserService;
@@ -20,6 +29,15 @@ public class ConfirmController {
     MessageSource messageSource;
     Locale locale = LocaleContextHolder.getLocale();
     
+    /**
+     * Controller for displaying /confirm page with activation query
+     * Activate new user via activation hash and display result
+     *
+     * @param model Model of page, received from org.springframework.ui.ModelMap
+     * @param hash Hash of activation request
+     *
+     * @return Path of HTML tamplate page to display
+     */
     @RequestMapping(value = "/confirm", method = RequestMethod.GET, params = {"activation"})
     public String confirm(ModelMap model, @RequestParam(value = "activation") String hash) {
         if (userService.confirmEmail(hash)) {
@@ -30,6 +48,15 @@ public class ConfirmController {
         return "/account/confirm";
     }
 
+    /**
+     * Controller for displaying /confirm page with change query
+     * Confirm email change via changing hash and display result
+     *
+     * @param model Model of page, received from org.springframework.ui.ModelMap
+     * @param hash Hash of activation request
+     *
+     * @return Path of HTML tamplate page to display
+     */
     @RequestMapping(value = "/confirm", method = RequestMethod.GET, params = {"change"})
     public String change(ModelMap model, @RequestParam(value = "change") String hash) {
         if (userService.confirmEmail(hash)) {

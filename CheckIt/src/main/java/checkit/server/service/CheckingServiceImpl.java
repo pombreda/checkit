@@ -1,8 +1,16 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The CheckingService implementation
+ * All services related to checking
+ */
+
 package checkit.server.service;
 
-import checkit.server.dao.AgentDAO;
 import checkit.server.dao.CheckingDAO;
-import checkit.server.domain.Agent;
 import checkit.server.domain.Check;
 import checkit.server.domain.Checking;
 import java.util.List;
@@ -15,7 +23,7 @@ public class CheckingServiceImpl implements CheckingService {
     private CheckingDAO checkingDAO;
     
     @Autowired
-    private AgentDAO agentDAO;
+    private AgentService agentService;
 
     @Autowired
     private NetworkService networkService;
@@ -23,24 +31,11 @@ public class CheckingServiceImpl implements CheckingService {
     @Autowired
     private ResultService resultService;
     
-    private int getIdOfLeastBusyAgent() {
-        List<Agent> agents = agentDAO.getAgentList();
-
-        int minId = agents.get(0).getAgentId();
-        int minValue = checkingDAO.getCheckingByAgentId(minId).size();
-
-        int currentValue;
-
-        for (Agent agent : agents) {
-            currentValue = checkingDAO.getCheckingByAgentId(agent.getAgentId()).size();
-            if (currentValue < minValue) {
-                minValue = currentValue;
-                minId = agent.getAgentId();
-            }
-        }
-        return minId;
-    }
-    
+    /**
+     * Create new checking
+     *
+     * @param checking Checking to create
+     */
     @Override
     public void createChecking(Checking checking) {
         networkService.postCreatingToAgent(checking);
@@ -48,15 +43,25 @@ public class CheckingServiceImpl implements CheckingService {
         checkingDAO.createChecking(checking);
     }
 
+    /**
+     * Create new checking
+     *
+     * @param check Check to create
+     */
     @Override
     public void createChecking(Check check) {
         Checking checking = new Checking();
         checking.setCheckId(check.getCheckId());
         checking.setUserId(check.getUserId());
-        checking.setAgentId(getIdOfLeastBusyAgent());
+        checking.setAgentId(agentService.getIdOfLeastBusyAgent());
         createChecking(checking);
     }
 
+    /**
+     * Update checking by check
+     *
+     * @param check Check for updating checking, which already includes the updated data.
+     */
     @Override
     public void updateChecking(Check check) {
         //update check only at agent side
@@ -70,36 +75,80 @@ public class CheckingServiceImpl implements CheckingService {
         }
     }
 
+    /**
+     * Get checking by user id
+     *
+     * @param userId Id of user
+     *
+     * @return Checking or null if not exists.
+     */
     @Override
     public List<Checking> getCheckingByUserId(int userId) {
         return checkingDAO.getCheckingByUserId(userId);
     }
 
+    /**
+     * Get checking by agent id
+     *
+     * @param agentId Id of agent
+     *
+     * @return Checking or null if not exists.
+     */
     @Override
     public List<Checking> getCheckingByAgentId(int agentId) {
         return checkingDAO.getCheckingByAgentId(agentId);
     }
 
+    /**
+     * Get checking by check id
+     *
+     * @param checkId Id of agent
+     *
+     * @return Checking or null if not exists.
+     */
     @Override
     public List<Checking> getCheckingByCheckId(int checkId) {
         return checkingDAO.getCheckingByCheckId(checkId);
     }
 
+    /**
+     * Get checking by check and agent id
+     *
+     * @param checkId Id of check
+     * @param agentId Id of agent
+     *
+     * @return Checking or null if not exists.
+     */
     @Override
     public Checking getCheckingByCheckAndAgentId(int checkId, int agentId) {
         return checkingDAO.getCheckingByCheckAndAgentId(checkId, agentId);
     }
 
+    /**
+     * Get the list of all checking
+     *
+     * @return List of all checking.
+     */
     @Override
     public List<Checking> getAllChecking() {
         return checkingDAO.getAllChecking();
     }
 
+    /**
+     * Delete checking
+     *
+     * @param checking Checking to delete
+     */
     @Override
     public void deleteChecking(Checking checking) {
         checkingDAO.deleteChecking(checking);
     }
 
+    /**
+     * Delete checking by check
+     *
+     * @param check Check for deleting checking
+     */
     @Override
     public void deleteChecking(Check check) {
         List<Checking> checkingList = checkingDAO.getCheckingByCheckId(check.getCheckId());
@@ -114,6 +163,13 @@ public class CheckingServiceImpl implements CheckingService {
         }
     }
 
+    /**
+     * Verify if check is running
+     *
+     * @param checkId Id of check
+     * 
+     * @return true if check is running, otherwise false.
+     */
     @Override
     public boolean isAlreadyChecked(int checkId) {
         return checkingDAO.getCheckingByCheckId(checkId).size() > 0;

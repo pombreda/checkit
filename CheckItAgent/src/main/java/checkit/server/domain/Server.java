@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The Server class represents domain class and equals to one row in table "servers" from database.
+ */
+
 package checkit.server.domain;
 
 public class Server {

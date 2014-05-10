@@ -37,7 +37,6 @@ public class Email implements Report {
     
     @Override
     public void reportDown(String testTitle, Object[] params) {
-        //receives values for params from getCallRequiredParamsName(), in Object type. testTitle is sended always.
         String email = params[0].toString();
         sendEmail(email, "Monitor is DOWN: " + testTitle, "<p>Hi,<br />"
                 + "<br />"
@@ -51,7 +50,6 @@ public class Email implements Report {
 
     @Override
     public void reportUp(String testTitle, Object[] params) {
-        //receives values for params from getCallRequiredParamsName(), in Object type. testTitle is sended always.
         String email = params[0].toString();
         sendEmail(email, "Monitor is UP: " + testTitle, "<p>Hi,<br />"
                 + "<br />"
@@ -65,7 +63,6 @@ public class Email implements Report {
 
     @Override
     public void reportRegular(String testTitle, int numberOfDowns, long timeOfDowns, Object[] params) {
-        //receives values for params from getCallRequiredParamsName(), in Object type. testTitle, numberOfDowns and timeOfDowns are sended always.
         String email = params[0].toString();
         sendEmail(email, "Weekly report: " + testTitle, "<p>Hi,<br />"
                 + "<br />"

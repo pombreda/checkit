@@ -1,3 +1,13 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The PluginService derivate for report plugins
+ * Inherited methods are documented in its parent.
+ */
+
 package checkit.plugin.service;
 
 import checkit.plugin.dao.PluginReportDAO;
@@ -21,6 +31,12 @@ public class PluginReportService extends PluginServiceAbstract {
     
     Locale locale = LocaleContextHolder.getLocale();
 
+    /**
+     * Send reports if monitoring service is up again.
+     *
+     * @param contactDetail List of contact details to send reports.
+     * @param checkTitle Title of check to report.
+     */
     @Async
     public void reportUp(List<ContactDetail> contactDetail, String checkTitle) {
         Object instance, params, result;
@@ -32,6 +48,12 @@ public class PluginReportService extends PluginServiceAbstract {
         }                
     }
     
+    /**
+     * Send reports if monitoring service is down.
+     *
+     * @param contactDetail List of contact details to send reports.
+     * @param checkTitle Title of check to report.
+     */
     @Async
     public void reportDown(List<ContactDetail> contactDetail, String checkTitle) {
         Object instance, params, result;
@@ -43,6 +65,14 @@ public class PluginReportService extends PluginServiceAbstract {
         }                
     }
     
+    /**
+     * Send regular reports.
+     *
+     * @param contactDetail List of contact details to send reports.
+     * @param checkTitle Title of check to report.
+     * @param numberOfDowns Number of times the service has been DOWN during last period.
+     * @param timeOfDowns Time how long the service has been DOWN during last period.
+     */
     @Async
     public void reportRegular(List<ContactDetail> contactDetail, String checkTitle, int numberOfDowns, long timeOfDowns) {
         Object instance, params, result;

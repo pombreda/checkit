@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The AgentDAO implementation
+ */
+
 package checkit.server.dao;
 
 import checkit.server.domain.User;
@@ -18,11 +27,21 @@ public class UserDAOImpl implements UserDAO {
     @Autowired
     private DataSource dataSource;
     
-    private static java.sql.Timestamp getCurrentTimestamp() {
+    /**
+     * Get current timestamp
+     *
+     * @return Current timestamp.
+     */
+    private static Timestamp getCurrentTimestamp() {
 	Date today = new java.util.Date();
 	return new Timestamp(today.getTime());
     }
     
+    /**
+     * Create new row (user) in database
+     *
+     * @param user User for insertion into the database
+     */
     @Override
     public void createUser(User user) {
         String sql = "INSERT INTO users (username, user_role_id, password, email, enabled, created) VALUES (?, 1, ?, ?, FALSE, ?)";
@@ -39,6 +58,11 @@ public class UserDAOImpl implements UserDAO {
         );
     }
   
+    /**
+     * Get the list of all rows (users) from database
+     *
+     * @return List of all users.
+     */
     @Override
     public List<User> getUserList() {
         List userList = new ArrayList();
@@ -49,29 +73,25 @@ public class UserDAOImpl implements UserDAO {
         return userList;
     }
 
+    /**
+     * Delete row (user) in database
+     *
+     * @param userId Id of user to delete
+     */
     @Override
-    public void deleteUser(int id) {
-        String sql = "DELETE FROM users WHERE user_id=" + id;
+    public void deleteUser(int userId) {
+        String sql = "DELETE FROM users WHERE user_id=" + userId;
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         jdbcTemplate.update(sql);
     }
 
-    @Override
-    public void requestActivation(int id, String hash, String email) {
-        String sql = "INSERT INTO user_activation (user_activation_id, user_id, email) VALUES (?, ?, ?)";
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-
-        jdbcTemplate.update(
-            sql,
-            new Object[] {
-                hash,
-                id,
-                email
-            }
-        );
-    }
-
+    /**
+     * Update row (user) in database.
+     * Get user id and rewrite all other data.
+     *
+     * @param user User to update
+     */
     @Override
     public void updateUser(User user) {
         String sql = "UPDATE users SET username=?, user_role_id=?, password=?, email=?, enabled=? WHERE user_id=?";
@@ -90,10 +110,17 @@ public class UserDAOImpl implements UserDAO {
         );
     }
 
+    /**
+     * Get row (user) by user id
+     *
+     * @param userId Id of user to get
+     *
+     * @return User or null if not exists.
+     */
     @Override
-    public User getUserById(int id) {
+    public User getUserById(int userId) {
         List<User> userList = new ArrayList<User>();
-        String sql = "SELECT * FROM users WHERE user_id=" + id;
+        String sql = "SELECT * FROM users WHERE user_id=" + userId;
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         userList = jdbcTemplate.query(sql, new UserRowMapper());
@@ -101,6 +128,13 @@ public class UserDAOImpl implements UserDAO {
         return userList.get(0);
     }
 
+    /**
+     * Get row (user) by username
+     *
+     * @param username Username to get
+     *
+     * @return User or null if not exists.
+     */
     @Override
     public User getUserByUsername(String username) {
         List<User> userList = new ArrayList<User>();
@@ -112,6 +146,13 @@ public class UserDAOImpl implements UserDAO {
         return userList.get(0);
     }
 
+    /**
+     * Get row (user) by user email
+     *
+     * @param email Email of user to get
+     *
+     * @return User or null if not exists.
+     */
     @Override
     public User getUserByEmail(String email) {
         List<User> userList = new ArrayList<User>();
@@ -123,6 +164,35 @@ public class UserDAOImpl implements UserDAO {
         return userList.get(0);
     }
 
+    /**
+     * Create new row (userActivation) in database
+     *
+     * @param userId Id of user
+     * @param hash Hash of request
+     * @param email Email of user
+     */
+    @Override
+    public void requestActivation(int userId, String hash, String email) {
+        String sql = "INSERT INTO user_activation (user_activation_id, user_id, email) VALUES (?, ?, ?)";
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        jdbcTemplate.update(
+            sql,
+            new Object[] {
+                hash,
+                userId,
+                email
+            }
+        );
+    }
+
+    /**
+     * Get row (userActivation) by hash
+     *
+     * @param hash Hash of activation to get
+     *
+     * @return User activation or null if not exists.
+     */
     @Override
     public UserActivation getUserActivationByHash(String hash) {
         List<UserActivation> userActivation = new ArrayList<UserActivation>();
@@ -134,9 +204,14 @@ public class UserDAOImpl implements UserDAO {
         return userActivation.get(0);
     }
 
+    /**
+     * Delete row (userActivation) in database
+     *
+     * @param userId Id of user activation to delete
+     */
     @Override
-    public void deleteUserActivationRequest(int id) {
-        String sql = "DELETE FROM user_activation WHERE user_id=" + id;
+    public void deleteUserActivationRequest(int userId) {
+        String sql = "DELETE FROM user_activation WHERE user_id=" + userId;
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         jdbcTemplate.update(sql);

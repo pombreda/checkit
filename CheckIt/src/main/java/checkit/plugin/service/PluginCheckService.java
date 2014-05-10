@@ -1,3 +1,13 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The PluginService derivate for check plugins
+ * Inherited methods are documented in its parent.
+ */
+
 package checkit.plugin.service;
 
 import checkit.plugin.dao.PluginCheckDAO;
@@ -67,8 +77,15 @@ public class PluginCheckService extends PluginServiceAbstract {
         pluginCheckDAO.updatePluginCheck(plugin);
     }
 
-    public List<String> getTableHeader(String pluginName) {
-        Object instance = getPluginInstance(pluginName);
+    /**
+     * Get header of additional information for table in result page.
+     *
+     * @param filename Filename of plugin.
+     * 
+     * @return List of strings with table header titles.
+     */
+    public List<String> getTableHeader(String filename) {
+        Object instance = getPluginInstance(filename);
         Object[] header = (Object[]) call(instance, "getTableRequiredHeaderTitle", (Object[]) null);
         List<String> output = new ArrayList<String>();
         if (header != null) {
@@ -79,8 +96,16 @@ public class PluginCheckService extends PluginServiceAbstract {
         return output;
     }
     
-    public List< List<Object> > getTableValues(String pluginName, List<String> data) {
-        Object instance = getPluginInstance(pluginName);
+    /**
+     * Get values for additional information for table in result page.
+     *
+     * @param filename Filename of plugin.
+     * @param data List of result display.
+     * 
+     * @return List of lists of objects (table) of additional data to display in table.
+     */
+    public List< List<Object> > getTableValues(String filename, List<String> data) {
+        Object instance = getPluginInstance(filename);
         Object params = call(instance, "getTableRequiredParamsName", (Object[]) null);
         List< List<Object> > output = new ArrayList<List<Object>>();
         Object[] values;

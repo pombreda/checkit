@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @author  Marek Dorda
+ *
+ * @section DESCRIPTION
+ *
+ * The "checks" database table row extractor
+ */
+
 package checkit.agent.jdbc;
 
 import checkit.server.domain.Check;
@@ -7,6 +16,17 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
 public class CheckExtractor implements ResultSetExtractor<Check> {
+    
+    /**
+     * Extract appropriate database table row into the class Check
+     *
+     * @param resultSet Row data given from org.springframework.jdbc.core.RowMapper
+     *
+     * @return Extracted check from appropriate table row.
+     * 
+     * @throws java.sql.SQLException
+     * @throws org.springframework.dao.DataAccessException
+     */
     @Override
     public Check extractData(ResultSet resultSet) throws SQLException, DataAccessException {
         Check check = new Check();
