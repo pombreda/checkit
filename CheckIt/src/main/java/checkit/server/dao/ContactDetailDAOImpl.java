@@ -9,15 +9,12 @@
 
 package checkit.server.dao;
 
+import checkit.global.component.JsonComponent;
 import checkit.server.domain.ContactDetail;
 import checkit.server.jdbc.ContactDetailRowMapper;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sql.DataSource;
-import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -26,24 +23,9 @@ import org.springframework.stereotype.Repository;
 public class ContactDetailDAOImpl implements ContactDetailDAO {
     @Autowired
     private DataSource dataSource;
-    
-    /**
-     * Convert JSON string to Postgres JSON
-     *
-     * @param jsonString JSON string to convert
-     *
-     * @return Postgres JSON.
-     */
-    private PGobject stringToJSON(String jsonString) {
-        PGobject json = new PGobject();
-        json.setType("json");
-        try {
-            json.setValue(jsonString);
-        } catch (SQLException ex) {
-            Logger.getLogger(ContactDetailDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return json;
-    }
+
+    @Autowired
+    private JsonComponent jsonService;
     
     /**
      * Get the list of all rows (contactDetails) belong to user and contact id in database
@@ -131,7 +113,7 @@ public class ContactDetailDAOImpl implements ContactDetailDAO {
             sql,
             new Object[] {
                 contactDetail.getTitle(),
-                stringToJSON(contactDetail.getData()),
+                jsonService.stringToJSON(contactDetail.getData()),
                 contactDetail.getContactId(),
                 contactDetail.getUserId(),
                 contactDetail.getFilename(),
@@ -170,7 +152,7 @@ public class ContactDetailDAOImpl implements ContactDetailDAO {
             sql,
             new Object[] {
                 contactDetail.getTitle(),
-                stringToJSON(contactDetail.getData()),
+                jsonService.stringToJSON(contactDetail.getData()),
                 contactDetail.isDown(),
                 contactDetail.isUp(),
                 contactDetail.isRegular(),

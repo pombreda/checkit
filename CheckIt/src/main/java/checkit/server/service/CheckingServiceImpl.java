@@ -50,11 +50,15 @@ public class CheckingServiceImpl implements CheckingService {
      */
     @Override
     public void createChecking(Check check) {
-        Checking checking = new Checking();
-        checking.setCheckId(check.getCheckId());
-        checking.setUserId(check.getUserId());
-        checking.setAgentId(agentService.getIdOfLeastBusyAgent());
-        createChecking(checking);
+        int agentId = agentService.getIdOfLeastBusyAgent();
+        
+        if (agentId > 0) {
+            Checking checking = new Checking();
+            checking.setCheckId(check.getCheckId());
+            checking.setUserId(check.getUserId());
+            checking.setAgentId(agentId);
+            createChecking(checking);
+        }
     }
 
     /**

@@ -11,7 +11,7 @@
 package checkit.server.service;
 
 import checkit.plugin.domain.Input;
-import checkit.plugin.service.PluginReportService;
+import checkit.plugin.component.PluginReportComponent;
 import checkit.server.dao.ContactDetailDAO;
 import checkit.server.domain.Contact;
 import checkit.server.domain.ContactDetail;
@@ -33,7 +33,7 @@ public class ContactDetailServiceImpl implements ContactDetailService {
     private ContactService contactService;
     
     @Autowired
-    private PluginReportService pluginReportService;
+    private PluginReportComponent pluginReportService;
 
     /**
      * Get the list of all contact details belong to user and contact

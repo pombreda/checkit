@@ -4,11 +4,11 @@
  *
  * @section DESCRIPTION
  *
- * The PluginService derivate for report plugins
+ * The PluginComponent derivate for report plugins
  * Inherited methods are documented in its parent.
  */
 
-package checkit.plugin.service;
+package checkit.plugin.component;
 
 import checkit.plugin.dao.PluginReportDAO;
 import checkit.server.domain.ContactDetail;
@@ -19,10 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
-public class PluginReportService extends PluginServiceAbstract {
+@Component
+public class PluginReportComponent extends PluginComponentAbstract {
     @Autowired
     private PluginReportDAO pluginReportDAO;
 

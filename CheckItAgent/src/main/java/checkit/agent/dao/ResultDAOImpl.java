@@ -10,16 +10,13 @@
 package checkit.agent.dao;
 
 import checkit.agent.jdbc.ResultRowMapper;
+import checkit.global.component.JsonComponent;
 import checkit.server.domain.Result;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sql.DataSource;
-import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -28,7 +25,10 @@ import org.springframework.stereotype.Repository;
 public class ResultDAOImpl implements ResultDAO {
     @Autowired
     private DataSource dataSource;
-    
+
+    @Autowired
+    private JsonComponent jsonService;
+
     /**
      * Get current timestamp
      *
@@ -39,24 +39,6 @@ public class ResultDAOImpl implements ResultDAO {
 	return new Timestamp(today.getTime());
     }
         
-    /**
-     * Convert JSON string to Postgres JSON
-     *
-     * @param jsonString JSON string to convert
-     *
-     * @return Postgres JSON.
-     */
-    private PGobject stringToJSON(String jsonString) {
-        PGobject json = new PGobject();
-        json.setType("json");
-        try {
-            json.setValue(jsonString);
-        } catch (SQLException ex) {
-            Logger.getLogger(ResultDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return json;
-    }
-
     /**
      * Get the list of all rows (results) in database sorted ascending by date
      *
@@ -88,7 +70,7 @@ public class ResultDAOImpl implements ResultDAO {
                 result.getCheckId(),
                 getCurrentTimestamp(),
                 result.getStatus(),
-                stringToJSON(result.getData())
+                jsonService.stringToJSON(result.getData())
             }
         );
     }

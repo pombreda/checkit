@@ -1,5 +1,7 @@
 package checkit.server.service;
 
+import checkit.server.component.EmailComponent;
+import checkit.server.component.PasswordComponent;
 import checkit.server.dao.UserDAO;
 import checkit.server.domain.User;
 import checkit.server.domain.UserActivation;
@@ -14,10 +16,10 @@ public class UserServiceImpl implements UserService {
     private UserDAO userDAO;
     
     @Autowired
-    private PasswordService passwordService;
+    private PasswordComponent passwordService;
     
     @Autowired
-    private EmailService emailService;
+    private EmailComponent emailService;
     
     @Override
     public void createUser(User user) {

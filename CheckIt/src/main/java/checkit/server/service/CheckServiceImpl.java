@@ -11,7 +11,7 @@
 package checkit.server.service;
 
 import checkit.plugin.domain.Input;
-import checkit.plugin.service.PluginCheckService;
+import checkit.plugin.component.PluginCheckComponent;
 import checkit.server.dao.CheckDAO;
 import checkit.server.domain.Reporting;
 import checkit.server.domain.Check;
@@ -26,7 +26,7 @@ public class CheckServiceImpl implements CheckService {
     private CheckDAO checkDAO;
     
     @Autowired
-    private PluginCheckService pluginCheckService;
+    private PluginCheckComponent pluginCheckService;
     
     /**
      * Get the list of all checks belong to user

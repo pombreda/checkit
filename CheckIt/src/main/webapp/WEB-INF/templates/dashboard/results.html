@@ -7,9 +7,14 @@
                 <table th:unless="${#lists.isEmpty(checks)}">
                     <tr th:each="check: ${checks}">
                         <td><a th:href="@{/dashboard/results/detail(id=${check.checkId})}" th:text="${check.title}"></a></td>
-                        <td th:if="${check.enabled == false}" th:text="#{result.paused}"></td>
-                        <td th:unless="${check.enabled == false}" th:text="${check.ok == false} ? #{result.down} : #{result.up}"></td>
-                    </tr>
+                            <if th:remove="tag" th:if="${check.enabled == false}">
+                                <td th:text="#{result.paused}"></td>
+                            </if>
+                            <if th:remove="tag" th:unless="${check.enabled == false}">
+                                <td th:if="${check.checked == false}" th:text="#{result.waiting}"></td>
+                                <td th:unless="${check.checked == false}" th:text="${check.ok == false} ? #{result.down} : #{result.up}"></td>
+                            </if>
+                        </tr>
                 </table>
                 <p th:if="${#lists.isEmpty(checks)}" th:text="#{result.empty}"></p>
             </div>

@@ -4,14 +4,14 @@
  *
  * @section DESCRIPTION
  *
- * The EmailService interface
+ * The EmailComponent interface
  */
 
-package checkit.server.service;
+package checkit.server.component;
 
 import checkit.server.domain.User;
 
-public interface EmailService {
+public interface EmailComponent {
     public boolean isEmailValid(String email);
     public String getActivationCode(User user);
     public void sendActivationLink(User user, String hash);

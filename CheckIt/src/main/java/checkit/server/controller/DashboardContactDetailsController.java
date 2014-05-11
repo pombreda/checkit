@@ -13,7 +13,7 @@ package checkit.server.controller;
 import checkit.plugin.domain.FormStruct;
 import checkit.plugin.domain.Input;
 import checkit.plugin.service.FormStructService;
-import checkit.plugin.service.PluginReportService;
+import checkit.plugin.component.PluginReportComponent;
 import checkit.server.domain.ContactDetail;
 import checkit.server.domain.User;
 import checkit.server.service.ContactDetailService;
@@ -47,7 +47,7 @@ public class DashboardContactDetailsController {
     private ContactService contactService;
     
     @Autowired
-    private PluginReportService reportService;
+    private PluginReportComponent reportService;
     
     @Autowired
     MessageSource messageSource;

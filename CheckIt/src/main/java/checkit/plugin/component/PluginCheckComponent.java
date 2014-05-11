@@ -4,11 +4,11 @@
  *
  * @section DESCRIPTION
  *
- * The PluginService derivate for check plugins
+ * The PluginComponent derivate for check plugins
  * Inherited methods are documented in its parent.
  */
 
-package checkit.plugin.service;
+package checkit.plugin.component;
 
 import checkit.plugin.dao.PluginCheckDAO;
 import checkit.plugin.domain.Plugin;
@@ -19,10 +19,10 @@ import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
-public class PluginCheckService extends PluginServiceAbstract {
+@Component
+public class PluginCheckComponent extends PluginComponentAbstract {
     @Autowired
     private PluginCheckDAO pluginCheckDAO;
 

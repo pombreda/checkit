@@ -10,7 +10,7 @@
 
 package checkit.server.service;
 
-import checkit.plugin.service.PluginReportService;
+import checkit.plugin.component.PluginReportComponent;
 import checkit.server.dao.ReportingDAO;
 import checkit.server.domain.ContactDetail;
 import checkit.server.domain.Reporting;
@@ -37,7 +37,7 @@ public class ReportingServiceImp implements ReportingService {
     private ResultService resultService;
     
     @Autowired
-    private PluginReportService pluginService;
+    private PluginReportComponent pluginService;
     
     @Autowired
     private ContactDetailService contactDetailService;

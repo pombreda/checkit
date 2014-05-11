@@ -10,8 +10,8 @@
 package checkit.server.controller;
 
 import checkit.server.domain.User;
-import checkit.server.service.EmailService;
-import checkit.server.service.PasswordService;
+import checkit.server.component.EmailComponent;
+import checkit.server.component.PasswordComponent;
 import checkit.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,10 +26,10 @@ public class SignupController {
     private UserService userService;
 
     @Autowired
-    private EmailService emailService;
+    private EmailComponent emailService;
 
     @Autowired
-    private PasswordService passwordService;
+    private PasswordComponent passwordService;
 
     /**
      * Controller for displaying /signup page

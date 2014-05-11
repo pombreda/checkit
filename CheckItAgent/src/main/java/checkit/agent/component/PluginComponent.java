@@ -4,11 +4,12 @@
  *
  * @section DESCRIPTION
  *
- * The PluginService implementation
+ * The PluginComponent
  */
 
-package checkit.agent.service;
+package checkit.agent.component;
 
+import checkit.agent.service.ResultService;
 import checkit.server.domain.Result;
 import checkit.server.domain.Check;
 import java.beans.Expression;
@@ -30,10 +31,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
-public class PluginService {
+@Component
+public class PluginComponent {
     private Map<String, Object> pluginInstance = new HashMap<String, Object>();
 
     @Autowired
@@ -125,7 +126,7 @@ public class PluginService {
                 values.add(jsonObject.get(param));
             }
         } catch (ParseException ex) {
-            Logger.getLogger(PluginService.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PluginComponent.class.getName()).log(Level.SEVERE, null, ex);
         }
         return values.toArray();
     }
@@ -155,7 +156,7 @@ public class PluginService {
                 instance = cls.newInstance();
                 pluginInstance.put(filename, instance);
             } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | MalformedURLException ex) {
-                Logger.getLogger(PluginService.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(PluginComponent.class.getName()).log(Level.SEVERE, null, ex);
                 System.out.println(ex);
             }
         }
@@ -177,7 +178,7 @@ public class PluginService {
         try {
             result = expr.getValue();
         } catch (Exception ex) {
-            Logger.getLogger(PluginService.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PluginComponent.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
     }

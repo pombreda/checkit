@@ -52,7 +52,9 @@ public class AgentServiceImpl implements AgentService {
      */
     @Override
     public void deleteAgent(int agentId) {
-        agentDAO.deleteAgent(agentId);
+        if (checkingDAO.getCheckingByAgentId(agentId).isEmpty()) {
+            agentDAO.deleteAgent(agentId);
+        }
     }
 
     /**
@@ -97,7 +99,10 @@ public class AgentServiceImpl implements AgentService {
     @Override
     public int getIdOfLeastBusyAgent() {
         List<Agent> agents = agentDAO.getAgentList();
-
+        
+        if (agents.isEmpty()) {
+            return -1;
+        }
         int minId = agents.get(0).getAgentId();
         int minValue = checkingDAO.getCheckingByAgentId(minId).size();
 

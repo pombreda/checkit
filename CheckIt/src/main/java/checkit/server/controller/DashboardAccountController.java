@@ -11,8 +11,8 @@
 package checkit.server.controller;
 
 import checkit.server.domain.User;
-import checkit.server.service.EmailService;
-import checkit.server.service.PasswordService;
+import checkit.server.component.EmailComponent;
+import checkit.server.component.PasswordComponent;
 import checkit.server.service.UserService;
 import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +28,10 @@ public class DashboardAccountController {
     private UserService userService;
     
     @Autowired
-    private PasswordService passwordService;
+    private PasswordComponent passwordService;
     
     @Autowired
-    private EmailService emailService;
+    private EmailComponent emailService;
     
     /**
      * Controller for displaying /dashboard/account page

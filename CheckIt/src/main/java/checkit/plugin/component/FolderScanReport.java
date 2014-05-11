@@ -4,10 +4,10 @@
  *
  * @section DESCRIPTION
  *
- * Scanning check folder for plugins
+ * Scanning report folder for plugins
  */
 
-package checkit.plugin.service;
+package checkit.plugin.component;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -27,9 +27,9 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FolderScanCheck {
+public class FolderScanReport {
     @Autowired
-    private PluginCheckService checkService;
+    private PluginReportComponent reportService;
 
     @Autowired
     MessageSource messageSource;
@@ -43,7 +43,7 @@ public class FolderScanCheck {
     @Async
     public void run() {
         boolean scanFolder = true; //TODO - create global settings for administrator, add this variable to the future settings
-        Path myDir = Paths.get(messageSource.getMessage("path.plugin.check", null, locale));
+        Path myDir = Paths.get(messageSource.getMessage("path.plugin.report", null, locale));
         while (scanFolder) {
             try {
                 WatchService watcher = myDir.getFileSystem().newWatchService();
@@ -55,15 +55,15 @@ public class FolderScanCheck {
                     if (event.kind() == StandardWatchEventKinds.ENTRY_CREATE) {
                         String[] tokens = event.context().toString().split("\\.(?=[^\\.]+$)");
                         if (tokens[1].equalsIgnoreCase("jar")) {
-                            if (checkService.getPluginByFilename(tokens[0]) == null) {
-                                checkService.registerPlugin(tokens[0]);
+                            if (reportService.getPluginByFilename(tokens[0]) == null) {
+                                reportService.registerPlugin(tokens[0]);
                             }
                         }
                     }
                     if (event.kind() == StandardWatchEventKinds.ENTRY_DELETE) {
                         String[] tokens = event.context().toString().split("\\.(?=[^\\.]+$)");
-                        if (checkService.getPluginByFilename(tokens[0]) != null) {
-                            checkService.deletePlugin(tokens[0]);
+                        if (reportService.getPluginByFilename(tokens[0]) != null) {
+                            reportService.deletePlugin(tokens[0]);
                         }
                     }
                     if (event.kind() == StandardWatchEventKinds.ENTRY_MODIFY) {

@@ -4,12 +4,13 @@
  *
  * @section DESCRIPTION
  *
- * Controller for receiving agents data.
+ * Component for receiving agents data.
+ * Although it is annotated as Controller, it is Component. It has Controller annotation only because of @RequestMapping, which can be only in @Controller
  */
 
-package checkit.server.controller;
+package checkit.server.component;
 
-import checkit.plugin.service.PluginReportService;
+import checkit.plugin.component.PluginReportComponent;
 import checkit.server.domain.Agent;
 import checkit.server.domain.ContactDetail;
 import checkit.server.domain.Result;
@@ -31,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class NetworkController {
+public class NetworkComponent {
     @Autowired
     private ResultService resultService;
     
@@ -42,7 +43,7 @@ public class NetworkController {
     private CheckService checkService;
     
     @Autowired
-    private PluginReportService pluginService;
+    private PluginReportComponent pluginService;
     
     @Autowired
     private ContactDetailService contactDetailService;
@@ -88,7 +89,7 @@ public class NetworkController {
                         checkService.updateCheck(check);
                     }
                 } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(NetworkController.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(NetworkComponent.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }    
         }

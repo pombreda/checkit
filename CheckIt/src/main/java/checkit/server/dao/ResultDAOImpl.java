@@ -9,18 +9,15 @@
 
 package checkit.server.dao;
 
+import checkit.global.component.JsonComponent;
 import checkit.server.jdbc.ResultRowMapper;
 import checkit.server.domain.Result;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sql.DataSource;
-import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -29,25 +26,10 @@ import org.springframework.stereotype.Repository;
 public class ResultDAOImpl implements ResultDAO {
     @Autowired
     private DataSource dataSource;
-    
-    /**
-     * Convert JSON string to Postgres JSON
-     *
-     * @param jsonString JSON string to convert
-     *
-     * @return Postgres JSON.
-     */
-    private PGobject stringToJSON(String jsonString) {
-        PGobject json = new PGobject();
-        json.setType("json");
-        try {
-            json.setValue(jsonString);
-        } catch (SQLException ex) {
-            Logger.getLogger(ResultDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return json;
-    }
 
+    @Autowired
+    private JsonComponent jsonService;
+    
     /**
      * Get the list of all rows (results) belong to check id in database, sorted descending by date
      *
@@ -106,7 +88,7 @@ public class ResultDAOImpl implements ResultDAO {
                 result.getAgentId(),
                 timestamp,
                 result.getStatus(),
-                stringToJSON(result.getData())
+                jsonService.stringToJSON(result.getData())
             }
         );
     }

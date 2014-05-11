@@ -7,7 +7,7 @@
  * The PluginService abstract class
  */
 
-package checkit.plugin.service;
+package checkit.plugin.component;
 
 import checkit.plugin.domain.FormStruct;
 import checkit.plugin.domain.FormStructRow;
@@ -30,7 +30,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public abstract class PluginServiceAbstract {
+public abstract class PluginComponentAbstract {
     private Map<String, Object> pluginInstance = new HashMap<String, Object>();
 
     /**
@@ -72,7 +72,7 @@ public abstract class PluginServiceAbstract {
                 instance = cls.newInstance();                
                 pluginInstance.put(filename, instance);
             } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | MalformedURLException ex) {
-                Logger.getLogger(PluginReportService.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(PluginReportComponent.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return instance;
@@ -93,7 +93,7 @@ public abstract class PluginServiceAbstract {
         try {
             result = expr.getValue();
         } catch (Exception ex) {
-            Logger.getLogger(PluginReportService.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PluginReportComponent.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
     }
@@ -139,7 +139,7 @@ public abstract class PluginServiceAbstract {
                 json.add(input);
             }
         } catch (ParseException ex) {
-            Logger.getLogger(PluginServiceAbstract.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PluginComponentAbstract.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return json;
@@ -168,7 +168,7 @@ public abstract class PluginServiceAbstract {
             }
             formStruct.setArrData(rows);
         } catch (ParseException ex) {
-            Logger.getLogger(PluginServiceAbstract.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PluginComponentAbstract.class.getName()).log(Level.SEVERE, null, ex);
         }
         return formStruct;
     }

@@ -4,11 +4,11 @@
  *
  * @section DESCRIPTION
  *
- * The EmailService implementation
+ * The EmailComponent implementation
  * All services related to emailing
  */
 
-package checkit.server.service;
+package checkit.server.component;
 
 import checkit.server.domain.User;
 import java.text.DateFormat;
@@ -24,10 +24,10 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
-public class EmailServiceImpl implements EmailService {
+@Component
+public class EmailComponentImpl implements EmailComponent {
     @Autowired
     private JavaMailSender mailSender;
     

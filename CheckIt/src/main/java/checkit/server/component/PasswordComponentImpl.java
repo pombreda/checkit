@@ -4,19 +4,19 @@
  *
  * @section DESCRIPTION
  *
- * The PasswordService implementation
+ * The PasswordComponent implementation
  * All services related to password
  */
 
-package checkit.server.service;
+package checkit.server.component;
 
 import checkit.server.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
-public class PasswordServiceImpl implements PasswordService {
+@Component
+public class PasswordComponentImpl implements PasswordComponent {
     @Autowired
     private PasswordEncoder passwordEncoder;
     

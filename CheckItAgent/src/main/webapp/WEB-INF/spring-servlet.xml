@@ -22,7 +22,7 @@
 
     <context:annotation-config />
     
-    <context:component-scan base-package="checkit.agent" />
+    <context:component-scan base-package="checkit" />
     
     <task:annotation-driven executor="executor" />
     <task:executor id="executor" pool-size="50" />

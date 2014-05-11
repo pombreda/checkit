@@ -10,8 +10,8 @@
 
 package checkit.server.controller;
 
-import checkit.plugin.service.PluginCheckService;
-import checkit.plugin.service.PluginReportService;
+import checkit.plugin.component.PluginCheckComponent;
+import checkit.plugin.component.PluginReportComponent;
 import checkit.plugin.domain.Plugin;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +25,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class AdminPluginsController {
     @Autowired
-    private PluginReportService pluginReportService;
+    private PluginReportComponent pluginReportService;
     
     @Autowired
-    private PluginCheckService pluginCheckService;
+    private PluginCheckComponent pluginCheckService;
     
     /**
      * Controller for displaying /admin/plugins page

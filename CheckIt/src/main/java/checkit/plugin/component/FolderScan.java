@@ -7,7 +7,7 @@
  * Scanning folders for plugins
  */
 
-package checkit.plugin.service;
+package checkit.plugin.component;
 
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;

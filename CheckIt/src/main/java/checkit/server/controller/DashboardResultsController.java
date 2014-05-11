@@ -10,7 +10,7 @@
 
 package checkit.server.controller;
 
-import checkit.plugin.service.PluginCheckService;
+import checkit.plugin.component.PluginCheckComponent;
 import checkit.server.domain.Result;
 import checkit.server.domain.Check;
 import checkit.server.domain.User;
@@ -39,7 +39,7 @@ public class DashboardResultsController {
     private ResultService resultService;
     
     @Autowired
-    private PluginCheckService pluginService;
+    private PluginCheckComponent pluginService;
     
     /**
      * Controller for displaying /dashboard/results page

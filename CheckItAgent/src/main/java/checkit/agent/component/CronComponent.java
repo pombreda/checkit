@@ -7,8 +7,11 @@
  * Cron service.
  */
 
-package checkit.agent.service;
+package checkit.agent.component;
 
+import checkit.agent.service.CheckService;
+import checkit.agent.service.ResultService;
+import checkit.agent.service.ServerService;
 import checkit.server.domain.Result;
 import checkit.server.domain.Server;
 import checkit.server.domain.Check;
@@ -23,10 +26,10 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
-public class CronService {
+@Component
+public class CronComponent {
     @Autowired
     private CheckService checkService;
     
@@ -37,7 +40,7 @@ public class CronService {
     private ResultService resultService;
     
     @Autowired
-    private PluginService pluginService;
+    private PluginComponent pluginService;
     
     private final int minInterval = 15;
     private final int maxInterval = 3600;
@@ -112,9 +115,9 @@ public class CronService {
             responseCode = urlCon.getResponseCode();
             responseMessage = urlCon.getResponseMessage();
         } catch (MalformedURLException ex) {
-            Logger.getLogger(CronService.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CronComponent.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(CronService.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CronComponent.class.getName()).log(Level.SEVERE, null, ex);
         }
         return (responseCode == 200 && responseMessage.equals("OK"));
     }
