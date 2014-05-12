@@ -10,8 +10,6 @@
 
 package checkit.plugin.component;
 
-import checkit.plugin.dao.PluginCheckDAO;
-import checkit.plugin.domain.Plugin;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,9 +21,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PluginCheckComponent extends PluginComponentAbstract {
-    @Autowired
-    private PluginCheckDAO pluginCheckDAO;
-
     @Autowired
     MessageSource messageSource;
     
@@ -39,42 +34,6 @@ public class PluginCheckComponent extends PluginComponentAbstract {
     @Override
     protected String getClassPrefix() {
         return "checkit.plugin.check";
-    }
-
-    @Override
-    public void registerPlugin(String filename) {
-        Plugin report = new Plugin();
-        report.setFilename(filename);
-        report.setEnabled(false);
-        report.setTitle(filename);
-        report.setDescription(" ");
-        
-        pluginCheckDAO.createPluginCheck(report);
-    }
-
-    @Override
-    public void deletePlugin(String filename) {
-        pluginCheckDAO.deletePluginCheck(filename);
-    }
-
-    @Override
-    public Plugin getPluginByFilename(String filename) {
-        return pluginCheckDAO.getPluginCheckByFilename(filename);
-    }
-    
-    @Override
-    public List<Plugin> getPluginList() {
-        return pluginCheckDAO.getPluginCheckList();
-    }
-
-    @Override
-    public List<Plugin> getActivePluginList() {
-        return pluginCheckDAO.getActivePluginCheckList();
-    }
-
-    @Override
-    public void updatePlugin(Plugin plugin) {
-        pluginCheckDAO.updatePluginCheck(plugin);
     }
 
     /**

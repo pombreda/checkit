@@ -12,7 +12,6 @@ package checkit.plugin.component;
 import checkit.plugin.domain.FormStruct;
 import checkit.plugin.domain.FormStructRow;
 import checkit.plugin.domain.Input;
-import checkit.plugin.domain.Plugin;
 import java.beans.Expression;
 import java.io.File;
 import java.net.MalformedURLException;
@@ -228,47 +227,4 @@ public abstract class PluginComponentAbstract {
         return values.toArray();
     }
 
-    /**
-     * Register new plugin
-     *
-     * @param filename Filename of new plugin
-     */
-    public abstract void registerPlugin(String filename);
-
-    /**
-     * Delete plugin
-     *
-     * @param filename Filename of plugin to delete
-     */
-    public abstract void deletePlugin(String filename);
-
-    /**
-     * Update plugin
-     *
-     * @param plugin Plugin to update, which already includes the updated data.
-     */
-    public abstract void updatePlugin(Plugin plugin);
-
-    /**
-     * Get plugin by filename
-     *
-     * @param filename Filename of plugin to get
-     *
-     * @return Plugin or null if not exists.
-     */
-    public abstract Plugin getPluginByFilename(String filename);
-    
-    /**
-     * Get the list of all plugins
-     *
-     * @return List of all plugins.
-     */
-    public abstract List<Plugin> getPluginList();
-    
-    /**
-     * Get the list of all plugins which are active
-     *
-     * @return List of all plugins which are active.
-     */
-    public abstract List<Plugin> getActivePluginList();
 }

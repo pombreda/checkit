@@ -4,17 +4,17 @@
  *
  * @section DESCRIPTION
  *
- * The "plugins_report" and "plugins_check" database table row mapper
+ * The "plugins_report" database table row mapper
  */
 
 package checkit.plugin.jdbc;
 
-import checkit.plugin.domain.Plugin;
+import checkit.plugin.domain.PluginReport;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 
-public class PluginRowMapper implements RowMapper<Plugin> {
+public class PluginReportRowMapper implements RowMapper<PluginReport> {
 
     /**
      * Get plugin from appropriate database table row
@@ -27,8 +27,8 @@ public class PluginRowMapper implements RowMapper<Plugin> {
      * @throws java.sql.SQLException
      */
     @Override
-    public Plugin mapRow(ResultSet resultSet, int line) throws SQLException {
-        PluginExtractor pluginExtractor = new PluginExtractor();
+    public PluginReport mapRow(ResultSet resultSet, int line) throws SQLException {
+        PluginReportExtractor pluginExtractor = new PluginReportExtractor();
         return pluginExtractor.extractData(resultSet);
     }
 }

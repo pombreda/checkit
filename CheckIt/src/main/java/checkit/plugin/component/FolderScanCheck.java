@@ -9,6 +9,7 @@
 
 package checkit.plugin.component;
 
+import checkit.plugin.service.PluginCheckService;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,7 +30,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class FolderScanCheck {
     @Autowired
-    private PluginCheckComponent checkService;
+    private PluginCheckService checkService;
 
     @Autowired
     MessageSource messageSource;

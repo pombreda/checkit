@@ -8,8 +8,9 @@
  */
 package checkit.plugin.dao;
 
-import checkit.plugin.domain.Plugin;
-import checkit.plugin.jdbc.PluginRowMapper;
+import checkit.plugin.domain.PluginCheck;
+import checkit.plugin.jdbc.PluginCheckRowMapper;
+import checkit.plugin.jdbc.PluginReportRowMapper;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
@@ -28,12 +29,12 @@ public class PluginCheckDAOImpl implements PluginCheckDAO {
      * @return List of all check plugins.
      */
     @Override
-    public List<Plugin> getPluginCheckList() {
+    public List<PluginCheck> getPluginCheckList() {
         List pluginCheckList = new ArrayList();
         String sql = "SELECT * FROM plugins_check";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-        pluginCheckList = jdbcTemplate.query(sql, new PluginRowMapper());
+        pluginCheckList = jdbcTemplate.query(sql, new PluginReportRowMapper());
         return pluginCheckList;    
     }
 
@@ -43,12 +44,12 @@ public class PluginCheckDAOImpl implements PluginCheckDAO {
      * @return List of all check plugins, which are activated.
      */
     @Override
-    public List<Plugin> getActivePluginCheckList() {
+    public List<PluginCheck> getActivePluginCheckList() {
         List pluginReportList = new ArrayList();
         String sql = "SELECT * FROM plugins_check WHERE enabled=true";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-        pluginReportList = jdbcTemplate.query(sql, new PluginRowMapper());
+        pluginReportList = jdbcTemplate.query(sql, new PluginReportRowMapper());
         return pluginReportList;    
     }
 
@@ -58,7 +59,7 @@ public class PluginCheckDAOImpl implements PluginCheckDAO {
      * @param plugin Check plugin for insertion into the database
      */
     @Override
-    public void createPluginCheck(Plugin plugin) {
+    public void createPluginCheck(PluginCheck plugin) {
         String sql = "INSERT INTO plugins_check (filename, enabled, title, description) VALUES (?, ?, ?, ?)";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
@@ -93,7 +94,7 @@ public class PluginCheckDAOImpl implements PluginCheckDAO {
      * @param plugin Plugin to update
      */
     @Override
-    public void updatePluginCheck(Plugin plugin) {
+    public void updatePluginCheck(PluginCheck plugin) {
         String sql = "UPDATE plugins_check SET enabled=?, title=?, description=? WHERE filename=?";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
@@ -116,12 +117,12 @@ public class PluginCheckDAOImpl implements PluginCheckDAO {
      * @return Plugin or null if not exists.
      */
     @Override
-    public Plugin getPluginCheckByFilename(String filename) {
-        List<Plugin> pluginCheck = new ArrayList<Plugin>();
+    public PluginCheck getPluginCheckByFilename(String filename) {
+        List<PluginCheck> pluginCheck = new ArrayList<PluginCheck>();
         String sql = "SELECT * FROM plugins_check WHERE filename='" + filename + "'";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-        pluginCheck = jdbcTemplate.query(sql, new PluginRowMapper());
+        pluginCheck = jdbcTemplate.query(sql, new PluginCheckRowMapper());
         if (pluginCheck.isEmpty()) return null;
         return pluginCheck.get(0);
     }

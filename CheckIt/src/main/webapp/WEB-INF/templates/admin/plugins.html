@@ -11,7 +11,7 @@
                         <td th:text="${report.description}"></td>
                         <td th:text="${report.filename}"></td>
                         <td th:text="${report.enabled} ? enabled : disabled"></td>
-                        <td><a th:href="@{/admin/plugins/edit(id=${report.filename},type=report)}" th:text="#{edit}"></a></td>
+                        <td><a th:href="@{/admin/plugins/editReport(id=${report.filename})}" th:text="#{edit}"></a></td>
                     </tr>
                 </table>
                 <h2 th:text="#{admin.plugin.check}"></h2>
@@ -21,7 +21,7 @@
                         <td th:text="${check.description}"></td>
                         <td th:text="${check.filename}"></td>
                         <td th:text="${check.enabled} ? enabled : disabled"></td>
-                        <td><a th:href="@{/admin/plugins/edit(id=${check.filename},type=check)}" th:text="#{edit}"></a></td>
+                        <td><a th:href="@{/admin/plugins/editCheck(id=${check.filename})}" th:text="#{edit}"></a></td>
                     </tr>
                 </table>
             </div>

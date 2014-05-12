@@ -14,6 +14,7 @@ import checkit.plugin.domain.FormStruct;
 import checkit.plugin.domain.Input;
 import checkit.plugin.service.FormStructService;
 import checkit.plugin.component.PluginReportComponent;
+import checkit.plugin.service.PluginReportService;
 import checkit.server.domain.ContactDetail;
 import checkit.server.domain.User;
 import checkit.server.service.ContactDetailService;
@@ -47,7 +48,10 @@ public class DashboardContactDetailsController {
     private ContactService contactService;
     
     @Autowired
-    private PluginReportComponent reportService;
+    private PluginReportComponent reportComponent;
+    
+    @Autowired
+    private PluginReportService reportService;
     
     @Autowired
     MessageSource messageSource;
@@ -109,11 +113,11 @@ public class DashboardContactDetailsController {
 
         if (contactDetail.getUserId() == userId) {
             String pluginFilename = contactDetail.getFilename();
-            Object plugin = reportService.getPluginInstance(pluginFilename);
+            Object plugin = reportComponent.getPluginInstance(pluginFilename);
             //get required inputs of plugin
-            List<Input> inputs = reportService.getInputs(plugin);
+            List<Input> inputs = reportComponent.getInputs(plugin);
             //get user values of inputs + set IDs
-            FormStruct formStruct = reportService.getInputValues(inputs, contactDetail.getData());
+            FormStruct formStruct = reportComponent.getInputValues(inputs, contactDetail.getData());
 
             model.addAttribute("contactDetail", contactDetail);
             //need to parse users input with variable number of lines

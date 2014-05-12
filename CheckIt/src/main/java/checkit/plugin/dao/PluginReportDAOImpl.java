@@ -8,8 +8,8 @@
  */
 package checkit.plugin.dao;
 
-import checkit.plugin.domain.Plugin;
-import checkit.plugin.jdbc.PluginRowMapper;
+import checkit.plugin.domain.PluginReport;
+import checkit.plugin.jdbc.PluginReportRowMapper;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
@@ -28,12 +28,12 @@ public class PluginReportDAOImpl implements PluginReportDAO {
      * @return List of all report plugins.
      */
     @Override
-    public List<Plugin> getPluginReportList() {
+    public List<PluginReport> getPluginReportList() {
         List pluginReportList = new ArrayList();
         String sql = "SELECT * FROM plugins_report";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-        pluginReportList = jdbcTemplate.query(sql, new PluginRowMapper());
+        pluginReportList = jdbcTemplate.query(sql, new PluginReportRowMapper());
         return pluginReportList;    
     }
 
@@ -44,12 +44,12 @@ public class PluginReportDAOImpl implements PluginReportDAO {
      * @return List of all report plugins, which are activated.
      */
     @Override
-    public List<Plugin> getActivePluginReportList() {
+    public List<PluginReport> getActivePluginReportList() {
         List pluginReportList = new ArrayList();
         String sql = "SELECT * FROM plugins_report WHERE enabled=true";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-        pluginReportList = jdbcTemplate.query(sql, new PluginRowMapper());
+        pluginReportList = jdbcTemplate.query(sql, new PluginReportRowMapper());
         return pluginReportList;    
     }
 
@@ -59,7 +59,7 @@ public class PluginReportDAOImpl implements PluginReportDAO {
      * @param plugin Report plugin for insertion into the database
      */
     @Override
-    public void createPluginReport(Plugin plugin) {
+    public void createPluginReport(PluginReport plugin) {
         String sql = "INSERT INTO plugins_report (filename, enabled, title, description) VALUES (?, ?, ?, ?)";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
@@ -94,7 +94,7 @@ public class PluginReportDAOImpl implements PluginReportDAO {
      * @param plugin Plugin to update
      */
     @Override
-    public void updatePluginReport(Plugin plugin) {
+    public void updatePluginReport(PluginReport plugin) {
         String sql = "UPDATE plugins_report SET enabled=?, title=?, description=? WHERE filename=?";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
@@ -117,12 +117,12 @@ public class PluginReportDAOImpl implements PluginReportDAO {
      * @return Plugin or null if not exists.
      */
     @Override
-    public Plugin getPluginReportByFilename(String filename) {
-        List<Plugin> pluginReport = new ArrayList<Plugin>();
+    public PluginReport getPluginReportByFilename(String filename) {
+        List<PluginReport> pluginReport = new ArrayList<PluginReport>();
         String sql = "SELECT * FROM plugins_report WHERE filename='" + filename + "'";
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-        pluginReport = jdbcTemplate.query(sql, new PluginRowMapper());
+        pluginReport = jdbcTemplate.query(sql, new PluginReportRowMapper());
         if (pluginReport.isEmpty()) return null;
         return pluginReport.get(0);
     }

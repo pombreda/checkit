@@ -4,14 +4,14 @@
  *
  * @section DESCRIPTION
  *
- * The Plugin class represents domain class and equals to one row in table "plugins_report" or "plugins_check" from database.
+ * The parent abstract class for plugins.
  */
 
 package checkit.plugin.domain;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-public class Plugin {
+public abstract class Plugin {
     private String filename;
     private boolean enabled;
     @NotEmpty

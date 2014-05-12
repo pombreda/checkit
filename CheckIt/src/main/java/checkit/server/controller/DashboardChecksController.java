@@ -10,10 +10,11 @@
 
 package checkit.server.controller;
 
+import checkit.plugin.component.PluginCheckComponent;
 import checkit.plugin.domain.FormStruct;
 import checkit.plugin.domain.Input;
 import checkit.plugin.service.FormStructService;
-import checkit.plugin.component.PluginCheckComponent;
+import checkit.plugin.service.PluginCheckService;
 import checkit.server.domain.Contact;
 import checkit.server.domain.Reporting;
 import checkit.server.domain.Check;
@@ -48,7 +49,10 @@ public class DashboardChecksController {
     private CheckingService checkingService;
     
     @Autowired
-    private PluginCheckComponent pluginService;
+    private PluginCheckService pluginService;
+    
+    @Autowired
+    private PluginCheckComponent pluginComponent;
     
     @Autowired
     private ContactService contactService;
@@ -141,11 +145,11 @@ public class DashboardChecksController {
         
         if (check.getUserId() == userId) {
             String pluginFilename = check.getFilename();
-            Object plugin = pluginService.getPluginInstance(pluginFilename);
+            Object plugin = pluginComponent.getPluginInstance(pluginFilename);
             //get required inputs of plugin
-            List<Input> inputs = pluginService.getInputs(plugin);
+            List<Input> inputs = pluginComponent.getInputs(plugin);
             //get user values of inputs + set IDs
-            FormStruct formStruct = pluginService.getInputValues(inputs, check.getData());
+            FormStruct formStruct = pluginComponent.getInputValues(inputs, check.getData());
             //need to parse users input with variable number of lines
             model.addAttribute("formStruct", formStruct);
             model.addAttribute("inputs", inputs);

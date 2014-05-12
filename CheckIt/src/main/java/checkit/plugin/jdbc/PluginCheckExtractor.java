@@ -4,18 +4,18 @@
  *
  * @section DESCRIPTION
  *
- * The "plugins_report" and "plugins_check" database table row extractor
+ * The "plugins_check" database table row extractor
  */
 
 package checkit.plugin.jdbc;
 
-import checkit.plugin.domain.Plugin;
+import checkit.plugin.domain.PluginCheck;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
-public class PluginExtractor implements ResultSetExtractor<Plugin> {
+public class PluginCheckExtractor implements ResultSetExtractor<PluginCheck> {
     
     /**
      * Extract appropriate database table row into the class Plugin
@@ -28,8 +28,8 @@ public class PluginExtractor implements ResultSetExtractor<Plugin> {
      * @throws org.springframework.dao.DataAccessException
      */
     @Override
-    public Plugin extractData(ResultSet resultSet) throws SQLException, DataAccessException {
-        Plugin plugin = new Plugin();
+    public PluginCheck extractData(ResultSet resultSet) throws SQLException, DataAccessException {
+        PluginCheck plugin = new PluginCheck();
         plugin.setFilename(resultSet.getString(1));
         plugin.setEnabled(resultSet.getBoolean(2));
         plugin.setTitle(resultSet.getString(3));
