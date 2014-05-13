@@ -1,5 +1,8 @@
-checkit
-=======
+# Developers wanted!
+If you want to help us with future development, feel free to contact us. Any help is welcome.
 
-Server and domain monitoring
-SNAPSHOT. I have already worked on source documentation and jUnit tests. 
+# CheckIT!
+CheckIT! is project for domain and server monitoring. It is platform independent functional prototype, which offers basic monitoring (HTTP, FTP, IMAP, SMTP, MSSQL, MySQL and PostgreSQL) and reporting (Email). It also allows an addition of further monitoring and notification functions by plugins system.
+
+## Install
+Project consists from more parts. Each folder is separete project.
