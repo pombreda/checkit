@@ -21,6 +21,8 @@ Each folder is separete project:
  * **HTTPCheckPluginAgent** - plugin for checking HTTP
 
 ## How to run it?
+> Only very briefly, if you are really interested, please contact me for more information.
+
 Just download and compile. For **CheckIt** and **CheckItAgent** is required PosgreSQL database. Scripts for creation are included in project folders.
 
 It is necessary to add to database following:
@@ -34,3 +36,31 @@ It is necessary to add to database following:
 127.0.0.1 http://localhost:8080/CheckIt/ 50
 ```
  * agents add via administration
+
+It is also necessary to add settings.properties files:
+ * CheckIt
+```
+jdbc.driverClassName = org.postgresql.Driver
+jdbc.url = URL
+jdbc.username = USERNAME
+jdbc.password = PASSWORD
+
+mail.host = HOST
+mail.port = PORT
+mail.username = USERNAME
+mail.password = PASSWORD
+```
+ * CheckItAgent
+```
+jdbc.driverClassName = org.postgresql.Driver
+jdbc.url = URL
+jdbc.username = USERNAME
+jdbc.password = PASSWORD
+```
+ * EmailReportPlugin
+```
+mail.host = HOST
+mail.port = PORT
+mail.username = USERNAME
+mail.password = PASS
+```
