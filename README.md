@@ -1,5 +1,5 @@
 # Developers wanted!
-If you want to help us with future development, feel free to contact us. Any help is welcome.
+If you want to help us with future development, feel free to contact us. Every help is welcome.
 
 # CheckIT!
 CheckIT! is a project for domain and server monitoring. It is an platform independent functional prototype, which offers basic monitoring (HTTP, FTP, IMAP, SMTP, MSSQL, MySQL and PostgreSQL) and reporting (Email). It also allows an addition of further monitoring and notification functions by plugins system.
