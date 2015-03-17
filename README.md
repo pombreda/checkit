@@ -25,7 +25,7 @@ Each folder is a separete project:
 
 Just download and compile. For **CheckIt** and **CheckItAgent** PosgreSQL database is required. Creating scripts are included in the project folders.
 
-It is necessary to add to database following:
+It is necessary to add to the database following:
  * user roles
 ```
 1 ROLE_USER
